@@ -8,7 +8,9 @@
 
 ## Executive Summary
 
-This document provides a unified comparative analysis of four major AI agent architectures — OpenClaw, Manus, Runner H/Surfer H (H Company), and Vy (Vercept/Anthropic) — along with supplementary analysis of coding agents (Cursor, Windsurf, v0, Lovable, Devin) and foundation models (Claude, GPT-5, Gemini, Grok). The goal is to identify which architectural patterns, security models, and design decisions should be adopted, adapted, or avoided in the Omega System.
+This document provides a unified comparative analysis of four major AI agent architectures — OpenClaw, Manus, Runner H/Surfer H (H Company), and Vy (Vercept/Anthropic) — along with supplementary analysis of coding agents (Cursor, Windsurf, v0, Lovable, Devin) and foundation models (Claude, GPT-5, Gemini, Grok). The goal is to identify which architectural patterns, security models, and design decisions should be adopted, adapted, or avoided in the **Omega System**.
+
+The Omega System is a **hierarchical multi-agent platform** consisting of 25 specialized agents organized into three tiers: one supreme commander (PRIME), five meta agents (LOOM, WARDEN, MAESTRO, PHANTOM, SIGMA), ten core operations agents (ARCANE through MODULUS), and nine specialist agents (RELIC through SYNTH). This document synthesizes the best practices from studied systems to inform Omega's architecture, security model, and agent coordination patterns.
 
 ---
 
