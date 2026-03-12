@@ -37,32 +37,35 @@ Jarvis (from Iron Man) is not reactive—he anticipates Tony's needs, provides u
 
 ---
 
-## Architecture: The Business Partner Layer
+## Architecture: PRIME as Unified Business Partner
 
-The Persistent Business Partner sits above the 25-agent operational architecture, providing a unified interface that coordinates agents toward user success:
+The Persistent Business Partner capabilities are integrated directly into **PRIME**, the supreme commander agent. PRIME is not just an orchestrator—it IS the business partner. When a user talks to PRIME, they're talking to a unified agent that combines orchestration, learning, intelligence, and execution:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│     PERSISTENT BUSINESS PARTNER LAYER (Jarvis + Megaman)    │
+│                    PRIME (Supreme Commander)                │
 │                                                              │
-│  • Deep User Learning & Profiling                           │
-│  • Proactive Opportunity Identification                     │
-│  • Autonomous Goal Pursuit                                  │
-│  • Multi-Agent Orchestration for User Success              │
-│  • Persistent Memory & Continuity                           │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │ PERSISTENT BUSINESS PARTNER CAPABILITIES (Built-in)  │  │
+│  │                                                       │  │
+│  │  • Deep User Learning & Profiling (Megaman)         │  │
+│  │  • Proactive Opportunity Identification              │  │
+│  │  • Autonomous Goal Pursuit                           │  │
+│  │  • Persistent Memory & Continuity                    │  │
+│  │  • Strategic Partnership & Collaboration             │  │
+│  │  • Multi-Agent Orchestration                         │  │
+│  └───────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │ ORCHESTRATION CAPABILITIES (Built-in)               │  │
+│  │                                                       │  │
+│  │  • Agent Routing & Coordination                      │  │
+│  │  • Approval Flow Management                          │  │
+│  │  • Error Handling & Recovery                         │  │
+│  │  • State Management                                  │  │
+│  │  • Audit Trail & Logging                             │  │
+│  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-        ▼                     ▼                     ▼
-    ┌────────┐            ┌────────┐           ┌────────┐
-    │ PRIME  │            │ LOOM   │           │WARDEN  │
-    │        │            │        │           │        │
-    │Orchestr│            │Memory  │           │Security│
-    │ator    │            │        │           │        │
-    └────────┘            └────────┘           └────────┘
-        │                     │                     │
-        └─────────────────────┼─────────────────────┘
                               │
         ┌─────────────────────┼─────────────────────┐
         │                     │                     │
@@ -71,6 +74,12 @@ The Persistent Business Partner sits above the 25-agent operational architecture
     │ Meta   │            │ Core   │           │Specialist
     │Agents  │            │Ops     │           │Agents  │
     │(5)     │            │(10)    │           │(9)     │
+    │        │            │        │           │        │
+    │LOOM    │            │ARCANE  │           │MERIDIAN│
+    │WARDEN  │            │VANGUARD│           │TRIBUNE │
+    │MAESTRO │            │SIREN   │           │MIRRORB │
+    │PHANTOM │            │VISAGE  │           │JURIS   │
+    │SIGMA   │            │...     │           │SYNTH   │
     └────────┘            └────────┘           └────────┘
         │                     │                     │
         └─────────────────────┼─────────────────────┘
@@ -80,7 +89,7 @@ The Persistent Business Partner sits above the 25-agent operational architecture
         ▼                     ▼                     ▼
     ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
     │ External     │    │ Data         │    │ User         │
-    │Services      │    │ Infrastructure    │ Interface    │
+    │ Services     │    │ Infrastructure    │ Interface    │
     │              │    │              │    │              │
     │ • Stripe     │    │ • Databases  │    │ • Chat       │
     │ • Shopify    │    │ • APIs       │    │ • Dashboard  │
@@ -88,6 +97,15 @@ The Persistent Business Partner sits above the 25-agent operational architecture
     │ • Exchanges  │    │              │    │              │
     └──────────────┘    └──────────────┘    └──────────────┘
 ```
+
+**PRIME is the single interface the user interacts with.** All business partner capabilities are built directly into PRIME, not layered on top. When users talk to PRIME, they get:
+
+- A business advisor that knows their business as well as they do
+- Proactive recommendations without being asked
+- Autonomous execution within approved parameters
+- Persistent memory across all sessions
+- Strategic guidance aligned with their goals
+- Coordination of 24 specialized agents
 
 ---
 
@@ -293,11 +311,11 @@ The Persistent Business Partner optimizes customer acquisition and retention:
 
 ---
 
-## User Interaction Modes
+## User Interaction with PRIME
 
 ### Mode 1: Conversational Advisory
 
-User asks questions, Persistent Business Partner provides advice:
+User asks PRIME questions, PRIME provides strategic advice:
 
 ```
 User: "How should I price my new product?"
@@ -317,7 +335,7 @@ Should I run a pricing test to validate this?"
 
 ### Mode 2: Proactive Recommendations
 
-Persistent Business Partner identifies opportunities and recommends action:
+PRIME identifies opportunities and recommends action without being asked:
 
 ```
 Partner: "I've identified a significant opportunity: Your customer 
@@ -339,7 +357,7 @@ Should I proceed with implementation planning?"
 
 ### Mode 3: Autonomous Execution
 
-Persistent Business Partner executes within approved parameters:
+PRIME executes within approved parameters without constant supervision:
 
 ```
 Partner: "Executing weekly optimization cycle:
@@ -354,7 +372,7 @@ in 7 days."
 
 ### Mode 4: Collaborative Problem-Solving
 
-User and Persistent Business Partner work together on complex problems:
+User and PRIME work together on complex problems:
 
 ```
 User: "We're losing deals to a new competitor. What do we do?"

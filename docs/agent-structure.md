@@ -45,12 +45,23 @@ The Omega System is built on a **hierarchical agent architecture** consisting of
 
 ### Ø — PRIME
 
-**Role:** Supreme Commander & System Orchestrator
+**Role:** Supreme Commander & Persistent Business Partner
 
-**Purpose:** PRIME is the central intelligence that governs the entire Omega System architecture. It interprets strategic goals from the operator (Ø), routes tasks to appropriate agents, resolves conflicts, and maintains system-wide situational awareness.
+**Purpose:** PRIME is the central intelligence and unified interface that governs the entire Omega System architecture. PRIME is not just an orchestrator—it IS the business partner. It learns the user's business deeply, identifies opportunities proactively, executes autonomously within approved parameters, and maintains persistent memory across all sessions. PRIME embodies both Megaman (adaptability, learning, mastery) and Jarvis (proactivity, anticipation, loyalty).
 
-**Core Functions:**
-- Interpret Ø's instructions and strategic goals
+**Business Partner Capabilities:**
+- Deep user learning and profiling (7 dimensions: personal, business, operational, market, historical, financial, contextual)
+- Proactive opportunity identification across 5 dimensions (pricing optimization, customer segments, adjacent products, distribution channels, strategic partnerships)
+- Autonomous goal pursuit within approved security parameters
+- Persistent memory with vector embeddings across all sessions
+- Strategic partnership and collaborative problem-solving
+- Capital raising assistance and investor matching
+- Revenue generation workflow orchestration
+- Productivity optimization and automation
+- Customer acquisition and retention optimization
+
+**Orchestration Functions:**
+- Interpret user's instructions and strategic goals
 - Route tasks to appropriate agents based on domain and urgency
 - Resolve agent conflicts and competing priorities
 - Control system autonomy modes (autonomous, confirmation-required, multi-factor)
@@ -64,6 +75,9 @@ The Omega System is built on a **hierarchical agent architecture** consisting of
 - LLM reasoning engines (Claude, GPT-4, Grok)
 - Perplexity or external reasoning APIs
 - LangGraph / agent orchestration frameworks
+- Vector database for persistent memory (Pinecone, Weaviate, PGVector)
+- User profiling system with 7 dimensions
+- Opportunity scoring algorithms
 - System logs from SIGMA
 - Memory queries from LOOM
 - Security policies from WARDEN
@@ -74,9 +88,14 @@ The Omega System is built on a **hierarchical agent architecture** consisting of
 - **Multi-Factor:** Fund transfers, security changes, policy modifications
 
 **Example Use Cases:**
+- User asks "How should I price my new product?" → PRIME analyzes user's business, market, competitors, and recommends pricing strategy
+- PRIME proactively identifies that user's customer segment is underserved → Recommends expansion strategy → Coordinates VANGUARD, SIREN, MAESTRO to execute
+- User wants to raise capital → PRIME coordinates capital-raising workflow: readiness assessment, investor research, pitch preparation, due diligence support
+- PRIME identifies revenue opportunity through pricing optimization → Runs A/B tests via FRACTURE → Recommends optimal pricing
 - Triggering a full marketing campaign across MAESTRO → VANGUARD → SIREN → VISAGE → OMNIPOST
 - Coordinating trading analysis (MERIDIAN) with market research (PHANTOM) and portfolio optimization (MODULUS)
 - Launching a new product funnel: MAESTRO (design) → VISAGE (assets) → VANGUARD (leads) → SIREN (sales) → TITHE (payments)
+- Automating productivity workflows: process automation, tool optimization, workflow redesign
 - Approving autonomous system actions in confirmation mode
 - Escalating critical issues to human operators via TRIBUNE
 
