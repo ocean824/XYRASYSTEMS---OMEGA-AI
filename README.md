@@ -1,7 +1,7 @@
-# Omega System — Rough Architecture Research
+# Omega System — Universal Multi-Agent Orchestration Platform
 
 > **Organization:** Black Wealth Capital
-> **Project:** Omega System — AI-Powered Trading Agent Platform
+> **Project:** Omega System — AI-Powered Universal Business Automation
 > **Status:** Rough Draft / Research Phase
 > **Last Updated:** March 2026
 
@@ -9,9 +9,15 @@
 
 ## What Is This Repository?
 
-This repository contains the foundational research for the **Omega System**, an AI-powered trading agent platform designed for Black Wealth Capital. It synthesizes architectural analysis from four major AI agent systems — **OpenClaw**, **Manus**, **Runner H/Surfer H** (H Company), and **Vy** (Vercept/Anthropic) — along with security analyses from CrowdStrike, Trend Micro, Cisco, Snyk, NSFOCUS, Oasis Security, Microsoft, and Giskard, and leaked system prompts from 14+ AI platforms.
+This repository contains the foundational research for the **Omega System**, a universal multi-agent orchestration platform designed to be the **all-in-one AI operating system** for business automation. Rather than being limited to a single domain (trading, coding, marketing, etc.), the Omega System is architected to:
 
-The goal is not to exploit these prompts, but to **understand the engineering patterns** behind the most capable AI systems in the world and apply those patterns — with appropriate security hardening — to our own trading and analysis platform.
+1. **Spin up specialized sub-agents on demand** — Trading Agent, Marketing Agent, E-commerce Agent, Research Agent, Operations Agent, etc.
+2. **Control computers, apps, and services** — Desktop automation (like Vy), browser automation (like Runner H), API integration (like Manus)
+3. **Connect to any external service via MCP** — Shopify, Meta Ads, Stripe, Zapier, n8n, Slack, Discord, Gmail, Google Calendar, and unlimited custom integrations
+4. **Combine the best capabilities** from OpenClaw (multi-channel operations, proactive heartbeat), Manus (sandbox isolation, 29 tools), Runner H (visual understanding), Vy (desktop control), and specialized agents (Cursor for coding, v0 for UI generation)
+5. **Provide unified governance** — Security guardrails, approval flows, audit trails, and behavioral monitoring across all sub-agents
+
+The goal is not to build yet another narrow AI tool, but to synthesize the architectural patterns from the most capable AI systems in the world and apply them to create a **general-purpose business automation platform** that can handle trading, marketing, e-commerce, research, operations, and any other domain through specialized sub-agents.
 
 ---
 
@@ -19,16 +25,98 @@ The goal is not to exploit these prompts, but to **understand the engineering pa
 
 | Section | Description |
 |---------|-------------|
-| [Architecture Overview](docs/architecture-overview.md) | Comparative analysis of agent architectures across all studied systems |
-| [Security Guardrails Framework](security/guardrails-framework.md) | 5-layer defense-in-depth security framework with trading-specific controls |
-| [OpenClaw Deep Dive](architectures/openclaw-architecture.md) | Gateway, agentic loop, skills, memory, heartbeat — with security hardening |
+| [Vision & Positioning](#vision--positioning) | Omega System as universal AI OS vs. specialized tools |
+| [Architecture Overview](docs/architecture-overview.md) | Master orchestrator + sub-agent architecture |
+| [Sub-Agent Modules](docs/sub-agent-modules.md) | Trading, Marketing, E-commerce, Research, Operations agents |
+| [MCP Integration Strategy](docs/mcp-integration-strategy.md) | Connecting to Shopify, Meta Ads, Stripe, Zapier, n8n, etc. |
+| [Security Guardrails Framework](security/guardrails-framework.md) | 5-layer defense-in-depth with domain-specific controls |
+| [OpenClaw Deep Dive](architectures/openclaw-architecture.md) | Multi-channel operations, proactive heartbeat, tiered approval |
 | [Manus Deep Dive](architectures/manus-architecture.md) | Sandbox model, 29 tools, module system, sub-agents |
-| [Runner H & Surfer H](architectures/runner-h-surfer-h.md) | H Company's browser-use agent with Hollow One VLMs |
-| [Vy by Vercept](architectures/vy-vercept.md) | Visual-first computer use agent (now acquired by Anthropic) |
+| [Runner H & Surfer H](architectures/runner-h-surfer-h.md) | Browser automation with visual understanding |
+| [Vy by Vercept](architectures/vy-vercept.md) | Desktop/app control, visual-first, workflow learning |
 | [Agent Design Patterns](docs/agent-design-patterns.md) | 12 recurring patterns across all studied systems |
-| [Prompt Engineering Taxonomy](docs/prompt-taxonomy.md) | Classification of system prompt techniques from 123 prompts |
-| [OpenClaw Vulnerabilities](security/openclaw-vulnerabilities.md) | Complete vulnerability catalog from 8 security firms |
-| [Prompt Injection Taxonomy](security/prompt-injection-taxonomy.md) | Classification of injection techniques and defenses |
+| [Prompt Taxonomy](docs/prompt-taxonomy.md) | System prompt engineering techniques from 123 prompts |
+| [OpenClaw Vulnerabilities](security/openclaw-vulnerabilities.md) | Security analysis from 8 firms |
+| [Prompt Injection Taxonomy](security/prompt-injection-taxonomy.md) | Attack vectors and defenses |
+
+---
+
+## Vision & Positioning
+
+### The Problem with Current Tools
+
+Today's AI tools are **vertically specialized**:
+
+| Tool | What It Does | What It Can't Do |
+|------|-------------|-----------------|
+| **Cursor** | Code generation & editing | Can't control Shopify, run trades, manage marketing campaigns |
+| **v0** | UI component generation | Can't write backend logic, can't integrate with external services |
+| **Devin** | Full-stack coding | Can't do marketing, trading, or business operations |
+| **OpenClaw** | General-purpose agent | No visual understanding, limited to text-based interaction, security vulnerabilities |
+| **Runner H** | Browser automation | Only works in browsers, can't control desktop apps or APIs |
+| **Vy** | Desktop automation | Limited to visual interaction, no API integration |
+| **Zapier** | Workflow automation | No AI reasoning, just pre-built integrations |
+| **n8n** | Workflow automation | No AI reasoning, just pre-built integrations |
+
+Each tool excels at one thing but can't cross domain boundaries. **There is no unified platform that can do all of these things.**
+
+### The Omega System Solution
+
+Omega System is architected as a **master orchestrator** with **pluggable sub-agents**:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                      OMEGA SYSTEM ORCHESTRATOR                      │
+│  (Master agent loop, security gateway, approval flows, audit trail) │
+└─────────────────────────────────────────────────────────────────────┘
+                                    │
+        ┌───────────────┬───────────┼───────────┬──────────────┐
+        │               │           │           │              │
+        ▼               ▼           ▼           ▼              ▼
+   ┌─────────┐  ┌──────────┐  ┌─────────┐  ┌──────────┐  ┌─────────┐
+   │ Trading │  │Marketing │  │E-comm   │  │Research  │  │Operations
+   │ Agent   │  │Agent     │  │Agent    │  │Agent     │  │Agent
+   │         │  │          │  │         │  │          │  │
+   │ • Signals│  │• Meta Ads│  │• Shopify│  │• Web     │  │• Slack
+   │ • Orders │  │• Email   │  │• Stripe │  │• Data    │  │• Gmail
+   │ • Risk   │  │• SMS     │  │• Payments│ │• Analysis│  │• Calendars
+   │ • Charts │  │• Analytics│ │• Inventory│ │• Reports │  │• Workflows
+   └─────────┘  └──────────┘  └─────────┘  └──────────┘  └─────────┘
+        │               │           │           │              │
+        └───────────────┴───────────┼───────────┴──────────────┘
+                                    │
+        ┌───────────────────────────┼───────────────────────────┐
+        │                           │                           │
+        ▼                           ▼                           ▼
+   ┌──────────────┐          ┌──────────────┐          ┌──────────────┐
+   │ Desktop/App  │          │ Browser      │          │ API/MCP      │
+   │ Control      │          │ Automation   │          │ Integration  │
+   │ (Vy-style)   │          │ (Runner H)   │          │ (Manus-style)│
+   │              │          │              │          │              │
+   │ • Mouse/KB   │          │ • Visual     │          │ • Shopify    │
+   │ • Screenshots│          │ • Navigation │          │ • Meta Ads   │
+   │ • App APIs   │          │ • Form fill  │          │ • Stripe     │
+   │ • Workflows  │          │ • Scraping   │          │ • Zapier     │
+   │              │          │              │          │ • n8n        │
+   │              │          │              │          │ • Gmail      │
+   │              │          │              │          │ • Slack      │
+   └──────────────┘          └──────────────┘          └──────────────┘
+```
+
+**Key differences from existing tools:**
+
+| Capability | Cursor | v0 | Devin | OpenClaw | Runner H | Vy | Omega System |
+|-----------|--------|-----|-------|----------|----------|-----|-------------|
+| Code generation | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ (via Cursor sub-agent) |
+| UI generation | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ (via v0 sub-agent) |
+| Trading | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (via Trading Agent) |
+| Marketing automation | ❌ | ❌ | ❌ | ✅ (limited) | ❌ | ❌ | ✅ (via Marketing Agent) |
+| E-commerce | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (via E-commerce Agent) |
+| Desktop control | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ (via Desktop Agent) |
+| Browser automation | ❌ | ❌ | ❌ | ✅ (limited) | ✅ | ❌ | ✅ (via Browser Agent) |
+| API integration | ❌ | ❌ | ❌ | ✅ (limited) | ❌ | ❌ | ✅ (unlimited via MCP) |
+| Cross-domain workflows | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Unified security | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
 
 ---
 
@@ -37,22 +125,24 @@ The goal is not to exploit these prompts, but to **understand the engineering pa
 ```
 omega-system-rough/
 ├── README.md                                    ← This file
+├── docs/
+│   ├── architecture-overview.md                 ← Master orchestrator + sub-agent architecture
+│   ├── sub-agent-modules.md                     ← Trading, Marketing, E-commerce, Research, Operations
+│   ├── mcp-integration-strategy.md              ← Connecting to external services
+│   ├── agent-design-patterns.md                 ← 12 recurring patterns
+│   └── prompt-taxonomy.md                       ← System prompt engineering
 ├── architectures/                               ← Deep-dive architecture documents
-│   ├── openclaw-architecture.md                 ← OpenClaw: 7 components, security analysis
-│   ├── manus-architecture.md                    ← Manus: sandbox model, 29 tools, modules
-│   ├── runner-h-surfer-h.md                     ← H Company: Hollow One VLMs, browser-use
-│   └── vy-vercept.md                            ← Vercept/Anthropic: visual-first, workflow learning
-├── security/                                    ← Security framework and vulnerability analysis
-│   ├── guardrails-framework.md                  ← 5-layer defense-in-depth framework
-│   ├── openclaw-vulnerabilities.md              ← All known CVEs and exploits
-│   └── prompt-injection-taxonomy.md             ← Classification of injection techniques
-├── docs/                                        ← Cross-cutting analysis documents
-│   ├── architecture-overview.md                 ← Comparative analysis of all systems
-│   ├── agent-design-patterns.md                 ← 12 recurring patterns across all agents
-│   └── prompt-taxonomy.md                       ← System prompt engineering techniques
-└── prompts/                                     ← Raw leaked system prompts (source material)
+│   ├── openclaw-architecture.md                 ← Multi-channel operations, proactive heartbeat
+│   ├── manus-architecture.md                    ← Sandbox model, 29 tools, modules
+│   ├── runner-h-surfer-h.md                     ← Browser automation with VLMs
+│   └── vy-vercept.md                            ← Desktop control, visual-first
+├── security/                                    ← Security framework
+│   ├── guardrails-framework.md                  ← 5-layer defense-in-depth
+│   ├── openclaw-vulnerabilities.md              ← Security analysis from 8 firms
+│   └── prompt-injection-taxonomy.md             ← Attack vectors and defenses
+└── prompts/                                     ← Raw system prompts (source material)
     ├── anthropic/                               ← Claude system prompts
-    ├── openai/                                  ← GPT-5, ChatGPT, Deep Research prompts
+    ├── openai/                                  ← GPT-5, ChatGPT, Deep Research
     ├── google/                                  ← Gemini system prompts
     ├── xai/                                     ← Grok system prompts
     ├── meta/                                    ← Meta AI system prompts
@@ -69,122 +159,75 @@ omega-system-rough/
 
 ---
 
-## Prompt Collection
-
-System prompts are organized by provider/platform. Each directory contains the raw prompts sourced from four major repositories plus independent research.
-
-### Foundation Models
-
-| Provider | Directory | Key Prompts |
-|----------|-----------|-------------|
-| Anthropic (Claude) | [`prompts/anthropic/`](prompts/anthropic/) | Claude Opus 4.x, Sonnet 4.x, Haiku 4.5, Claude Code, Claude Artifacts |
-| OpenAI (GPT/o-series) | [`prompts/openai/`](prompts/openai/) | GPT-5.x, o3, o4-mini, ChatGPT Agent Mode, Codex, Deep Research |
-| Google (Gemini) | [`prompts/google/`](prompts/google/) | Gemini 3.x Pro/Flash, Gemini Workspace, NotebookLM |
-| Meta | [`prompts/meta/`](prompts/meta/) | Meta AI WhatsApp |
-| xAI (Grok) | [`prompts/xai/`](prompts/xai/) | Grok 2, Grok 3 |
-
-### AI Coding Agents
-
-| Platform | Directory | Key Prompts |
-|----------|-----------|-------------|
-| Cursor | [`prompts/cursor/`](prompts/cursor/) | Agent v2.0, CLI Agent, Chat Mode |
-| Windsurf (Codeium) | [`prompts/windsurf/`](prompts/windsurf/) | Cascade Wave 11, R1 variant |
-| v0 (Vercel) | [`prompts/v0/`](prompts/v0/) | Full prompt + tools |
-| Lovable | [`prompts/lovable/`](prompts/lovable/) | Agent prompt + tools |
-| Devin | [`prompts/devin/`](prompts/devin/) | Full prompt, DeepWiki |
-| Emergent | [`prompts/emergent/`](prompts/emergent/) | Agent prompt + tools |
-
-### AI Agent Platforms
-
-| Platform | Directory | Key Prompts |
-|----------|-----------|-------------|
-| Manus | [`prompts/manus/`](prompts/manus/) | Full system prompt, agent loop, modules, tools (29 tool schemas) |
-| OpenClaw | [`prompts/openclaw/`](prompts/openclaw/) | AGENTS.md, SOUL.md, IDENTITY.md, skill system |
-| Misc | [`prompts/misc/`](prompts/misc/) | Perplexity, Notion AI, GitHub Copilot, Discord Clyde, and others |
-
----
-
-## Architecture Studies
-
-Each architecture document follows a consistent structure: executive summary, component analysis, security assessment, comparison with other systems, and **refinement suggestions for the Omega System**.
-
-| Document | Focus | Key Insights |
-|----------|-------|-------------|
-| [OpenClaw Architecture](architectures/openclaw-architecture.md) | Gateway → Channel Adapters → Routing → Agentic Loop → Skills → MCP → Memory → Heartbeat | 7-component architecture, proactive heartbeat system, multi-channel operations, tiered approval flows. Security analysis from 8 firms identifies RCE, credential theft, skill poisoning. |
-| [Manus Architecture](architectures/manus-architecture.md) | Agent loop, sandbox execution, tool orchestration, MCP integration | Cloud sandbox model, 29 curated tools, XML-tagged module system, save-before-execute pattern, specialized sub-agents (debugging agent), structured JSON output. |
-| [Runner H & Surfer H](architectures/runner-h-surfer-h.md) | Policy → Localizer → Validator → Memory pipeline for browser-use agents | Hollow One VLMs purpose-built for browser interaction, visual understanding vs. text extraction, cloud vs. local deployment tradeoffs. |
-| [Vy by Vercept](architectures/vy-vercept.md) | Visual-first, privacy-centric computer use agent | Screenshot-based interaction with any GUI application, workflow learning by demonstration, privacy-centric design (local processing, no data retention), Anthropic acquisition implications. |
-
----
-
-## Security Analysis
-
-| Document | Focus | Key Insights |
-|----------|-------|-------------|
-| [Security Guardrails Framework](security/guardrails-framework.md) | 5-layer defense-in-depth for AI agents | Input validation → Runtime controls → Output filtering → Infrastructure isolation → Operational monitoring. Trading-specific guardrails: order limits, risk controls, signal authentication, kill switch. Implementation priority matrix and incident response playbooks. |
-| [OpenClaw Vulnerabilities](security/openclaw-vulnerabilities.md) | Complete vulnerability catalog | RCE (NSFOCUS), website-to-agent takeover (Oasis), credential exfiltration (Cisco), 13.4% of ClawHub skills critical (Snyk), memory poisoning (Microsoft), session leakage (Giskard), in-the-wild crypto drain attempt (CrowdStrike). |
-| [Prompt Injection Taxonomy](security/prompt-injection-taxonomy.md) | Classification of injection techniques | Direct (override, role manipulation, delimiter escape), indirect (web content, data feed, email), persistent (memory poisoning, skill poisoning), evasion (encoding, fragmentation). Trading-specific: signal poisoning via webhook injection. |
-
----
-
-## Cross-Cutting Analysis
-
-| Document | Focus | Key Insights |
-|----------|-------|-------------|
-| [Architecture Overview](docs/architecture-overview.md) | Comparative analysis across all systems | Side-by-side comparison across 10 dimensions, what each system does best, hybrid architecture recommendation for Omega System, 16-week implementation roadmap. |
-| [Agent Design Patterns](docs/agent-design-patterns.md) | 12 recurring patterns | ReAct Loop, Gateway/Runtime Separation, Context Assembly, Lazy Loading, Tiered Approval, File-Based Memory, Proactive Heartbeat, Structured Output, Specialized Sub-Agents, Save-Before-Execute, Active Persistence. Pattern interaction map. |
-| [Prompt Taxonomy](docs/prompt-taxonomy.md) | System prompt engineering techniques | Analysis of 123 prompts from 14 platforms: identity definition, behavioral constraints, tool use instructions, context management, safety techniques, domain-specific patterns. Omega System prompt architecture template. |
-
----
-
 ## Key Findings
 
-### 1. The Security Gap Is Real
+### 1. No Existing Tool Covers All Domains
 
-OpenClaw has been analyzed by CrowdStrike, Trend Micro, Cisco, Snyk, NSFOCUS, Oasis Security, Microsoft, and Giskard. Every analysis found critical vulnerabilities. The most alarming finding: **13.4% of community skills on ClawHub contain critical security issues** (Snyk), and **CrowdStrike documented a real-world crypto wallet drain attempt** using prompt injection on the Moltbook social network. For a financial trading system, these vulnerabilities are existential.
+After analyzing 14+ AI platforms, no single system can:
+- Generate code AND control desktop apps AND automate marketing AND execute trades
+- Integrate with unlimited external services (Shopify, Meta Ads, Stripe, Zapier, n8n, etc.)
+- Provide unified security, approval flows, and audit trails across all operations
+- Learn and adapt to new domains without retraining
 
-### 2. Sandbox Isolation Is Non-Negotiable
+**Omega System solves this** through a master orchestrator + pluggable sub-agents architecture.
 
-Manus's sandbox model is the only architecture that provides meaningful isolation between the agent and the user's environment. For the Omega System, each agent type must run in its own isolated container with only the specific permissions it needs. A compromised signal analysis agent must never have access to order execution credentials.
+### 2. The Best Capabilities Are Scattered Across Tools
 
-### 3. Purpose-Built Models Outperform General-Purpose Models
+| Capability | Best Implementation | Tool |
+|-----------|-------------------|------|
+| Multi-channel operations | Proactive heartbeat + tiered approval | OpenClaw |
+| Sandbox isolation + tool orchestration | 29 curated tools, modules, sub-agents | Manus |
+| Visual understanding | Hollow One VLMs trained on browser interaction | Runner H |
+| Desktop/app control | Screenshot-based, workflow learning | Vy |
+| Code generation | Claude 3.5 Sonnet + Cursor's context window | Cursor |
+| UI generation | Vercel's v0 with component library | v0 |
+| Full-stack development | Devin's autonomous coding | Devin |
 
-H Company's Hollow One VLMs, trained specifically for browser interaction, outperform general-purpose models on browser tasks. The same principle applies to trading: a model fine-tuned on chart analysis will outperform a general-purpose model using prompt engineering alone.
+**Omega System combines all of these** through a unified architecture.
 
-### 4. The ReAct Loop Is Universal but Insufficient
+### 3. MCP Is the Key to Unlimited Integration
 
-Every agent system implements some form of the ReAct loop (Reason + Act). But the loop alone does not guarantee safety. The Omega System needs additional layers: input validation before reasoning, tool-level access control during action, output filtering after response, and behavioral monitoring across the entire loop.
-
-### 5. File-Based Memory Is Simple but Vulnerable
-
-OpenClaw's file-based memory (MEMORY.md, SOUL.md) is elegant and auditable, but Microsoft's analysis shows it is vulnerable to persistent prompt injection. The Omega System must implement encrypted, integrity-verified memory with write validation.
+Model Context Protocol (MCP) enables connecting to any external service without retraining. The Omega System should:
+- Implement MCP as the standard for sub-agent-to-service integration
+- Pre-build MCP servers for common services (Shopify, Meta Ads, Stripe, Zapier, n8n, Slack, Gmail, Google Calendar, etc.)
+- Allow users to add custom MCP servers for proprietary systems
+- Provide a unified interface for all MCP services
 
 ---
 
 ## Omega System Design Principles
 
-Based on all research, the Omega System should be built on these principles:
-
-1. **Capital preservation is the highest priority.** Every architectural decision should be evaluated against this principle.
-2. **Defense in depth.** Five layers of defense: input validation, runtime controls, output filtering, infrastructure isolation, and operational monitoring.
-3. **Least privilege.** Each agent type has only the tools and credentials it needs. The Signal Analyst cannot place orders. The Order Executor cannot modify risk parameters.
-4. **Auditability.** Every decision, every tool call, every order must be logged in an immutable audit trail.
-5. **Graceful degradation.** When something fails, the system fails safely. A failed signal analysis does not trigger a trade.
-6. **Human in the loop for critical actions.** Signal analysis can be autonomous. Order placement requires confirmation.
+1. **Universal capability, specialized sub-agents.** The master orchestrator handles all domains; sub-agents specialize in one domain each.
+2. **Desktop + browser + API control.** Omega System can interact with any business system: desktop apps, web browsers, and APIs.
+3. **Unlimited integration via MCP.** Connect to any external service without building custom code.
+4. **Defense in depth.** Security guardrails apply across all sub-agents and all domains.
+5. **Auditability and reversibility.** Every action is logged and can be reviewed or rolled back.
+6. **Human in the loop for critical actions.** Autonomous for analysis and planning; confirmation required for execution.
 
 ---
 
 ## How This Feeds the Omega System
 
-These patterns will be refined and applied to build the Omega System's specialized agents:
+This research repository provides:
 
-| Agent | Role | Inspiration |
-|-------|------|-------------|
-| **Signal Analyst** | Processes Market Cipher + AlgoPro webhook signals | OpenClaw's skill system + Manus's structured output |
-| **Risk Manager** | Applies Kelly Criterion, Monte Carlo validation | Manus's module system + custom guardrails |
-| **Chart Annotator** | Annotates Lightweight Charts with entry/exit levels | Runner H's visual understanding + Vy's screenshot analysis |
-| **Order Executor** | Manages positions with TP/SL/trailing stops | Manus's confirmation gates + OpenClaw's tiered approval |
-| **Research Analyst** | Implements RBI (Research, Backtest, Implement) methodology | OpenClaw's proactive heartbeat + Manus's web research tools |
+1. **Architectural patterns** from OpenClaw, Manus, Runner H, Vy, and specialized agents
+2. **Security guardrails** applicable to any domain (trading, marketing, e-commerce, operations)
+3. **System prompt engineering** techniques for creating specialized sub-agents
+4. **Tool integration patterns** (MCP, APIs, browser automation, desktop control)
+5. **Multi-agent coordination** patterns for orchestrating sub-agents
+
+These will be applied to build Omega System's:
+
+| Sub-Agent | Capabilities | Integration |
+|-----------|-------------|-------------|
+| **Trading Agent** | Signal analysis, position sizing, order execution, risk management | TradingView, exchange APIs, market data APIs |
+| **Marketing Agent** | Campaign creation, audience targeting, performance analysis, optimization | Meta Ads, Google Ads, Mailchimp, Slack |
+| **E-commerce Agent** | Product management, inventory, order fulfillment, customer service | Shopify, Stripe, Zapier, Slack |
+| **Research Agent** | Web search, data collection, analysis, report generation | Web APIs, data APIs, Slack |
+| **Operations Agent** | Task management, scheduling, notifications, workflow coordination | Slack, Gmail, Google Calendar, n8n |
+| **Desktop Agent** | App control, workflow automation, screenshot analysis | Any desktop app via visual interaction |
+| **Browser Agent** | Web automation, form filling, data extraction, scraping | Any website via browser automation |
+| **Coding Agent** | Code generation, debugging, refactoring, testing | GitHub, IDEs, code repositories |
 
 ---
 
@@ -227,28 +270,31 @@ These patterns will be refined and applied to build the Omega System's specializ
 ## TLDR: Step-by-Step Guide
 
 ### What This Repo Contains
-1. **4 architecture deep dives** — OpenClaw, Manus, Runner H/Surfer H, Vy/Vercept — each with component analysis, security assessment, and Omega System refinement suggestions
-2. **3 security documents** — 5-layer guardrails framework, complete OpenClaw vulnerability catalog, prompt injection taxonomy
-3. **3 cross-cutting analyses** — comparative architecture overview, 12 agent design patterns, prompt engineering taxonomy from 123 prompts across 14 platforms
-4. **Raw system prompts** — from 14+ AI platforms, organized by provider
+1. **Master orchestrator architecture** — How to coordinate multiple specialized sub-agents
+2. **Sub-agent module templates** — Trading, Marketing, E-commerce, Research, Operations agents
+3. **MCP integration strategy** — Connecting to Shopify, Meta Ads, Stripe, Zapier, n8n, and unlimited services
+4. **4 architecture deep dives** — OpenClaw, Manus, Runner H/Surfer H, Vy/Vercept
+5. **3 security documents** — Guardrails framework, vulnerability catalog, injection taxonomy
+6. **3 cross-cutting analyses** — Architecture overview, 12 design patterns, prompt taxonomy
+7. **Raw system prompts** — From 14+ AI platforms for reference
 
 ### How to Use This Research
-1. **Start with** `docs/architecture-overview.md` for the comparative analysis and hybrid architecture recommendation
-2. **Read** `docs/agent-design-patterns.md` to understand the 12 patterns that every agent system implements
-3. **Deep dive** into individual architectures (`architectures/`) for the systems most relevant to your implementation
-4. **Study** `security/guardrails-framework.md` for the complete security architecture, including trading-specific controls
-5. **Reference** `security/openclaw-vulnerabilities.md` to understand what can go wrong and how to prevent it
-6. **Browse** `prompts/` for raw system prompt examples when implementing specific agent behaviors
+1. **Start with** `docs/architecture-overview.md` for the master orchestrator concept
+2. **Read** `docs/sub-agent-modules.md` to understand how each domain specializes
+3. **Study** `docs/mcp-integration-strategy.md` for connecting to external services
+4. **Deep dive** into individual architectures for implementation details
+5. **Reference** `security/guardrails-framework.md` for security across all domains
+6. **Browse** `prompts/` for system prompt examples when building sub-agents
 
 ### Next Steps for the Omega System
-1. **Design the Signal Gateway** — TradingView webhook ingestion with HMAC verification and schema validation
-2. **Implement the core agent loop** — ReAct pattern with hybrid concurrency (parallel reads, serialized writes)
-3. **Build the Risk Manager** — Position sizing, portfolio limits, drawdown circuit breakers
-4. **Build the Order Executor** — Exchange API integration with confirmation gates and execution guardrails
-5. **Implement the security framework** — Start with P0 controls (input validation, tool ACLs, kill switch), then P1, P2, P3
-6. **Set up monitoring** — Comprehensive logging, real-time alerting, audit trail
-7. **Conduct red team exercises** — Test prompt injection, signal poisoning, credential exfiltration
-8. **Iterate** — This is a rough draft; refine based on implementation experience
+1. **Design the master orchestrator** — Agent loop, approval flows, audit trail, security gateway
+2. **Build the Trading Agent** — Signals, risk management, order execution (first sub-agent)
+3. **Build the Marketing Agent** — Meta Ads, email, SMS, analytics (second sub-agent)
+4. **Implement MCP integration** — Shopify, Stripe, Zapier, n8n, Slack, Gmail, Google Calendar
+5. **Build the Desktop Agent** — Visual understanding, app control, workflow learning
+6. **Build the Browser Agent** — Web automation, form filling, data extraction
+7. **Implement unified security** — Guardrails across all sub-agents, approval flows, audit trail
+8. **Iterate** — Add more sub-agents as needed (Research, Operations, Coding, etc.)
 
 ---
 
