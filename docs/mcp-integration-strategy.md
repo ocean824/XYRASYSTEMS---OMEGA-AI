@@ -1,14 +1,14 @@
 # MCP Integration Strategy: Connecting to Any External Service
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — ØMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
 
 ## Executive Summary
 
-Model Context Protocol (MCP) is the standard for connecting AI agents to external services. The Omega System uses MCP as the primary integration mechanism, enabling unlimited connections to external services without retraining or code changes. This document describes the MCP integration strategy, pre-built MCP servers, and patterns for adding custom integrations.
+Model Context Protocol (MCP) is the standard for connecting AI agents to external services. The ØMEGA AI uses MCP as the primary integration mechanism, enabling unlimited connections to external services without retraining or code changes. This document describes the MCP integration strategy, pre-built MCP servers, and patterns for adding custom integrations.
 
 ---
 
@@ -26,7 +26,7 @@ Model Context Protocol is an open standard developed by Anthropic for connecting
 
 ---
 
-## Pre-Built MCP Servers for Omega System
+## Pre-Built MCP Servers for ØMEGA AI
 
 ### 1. E-commerce Integration
 

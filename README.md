@@ -1,7 +1,7 @@
-# Omega System — Universal Multi-Agent Orchestration Platform
+# XYRASYSTEMS - OMEGA AI — Universal Multi-Agent Orchestration Platform
 
 > **Organization:** Black Wealth Capital
-> **Project:** Omega System — AI-Powered Universal Business Automation
+> **Project:** XYRASYSTEMS - OMEGA AI — The Ultimate AI Agent & Multi-Agent Orchestration Platform
 > **Status:** Rough Draft / Research Phase
 > **Last Updated:** March 2026
 
@@ -9,7 +9,7 @@
 
 ## What Is This Repository?
 
-This repository contains the foundational research for the **Omega System**, a universal multi-agent orchestration platform designed to be the **all-in-one AI operating system** for business automation. Rather than being limited to a single domain (trading, coding, marketing, etc.), the Omega System is architected to:
+This repository contains the foundational research for the **ØMEGA AI**, a universal multi-agent orchestration platform designed to be the **all-in-one AI operating system** for business automation. Rather than being limited to a single domain (trading, coding, marketing, etc.), the ØMEGA AI is architected to:
 
 1. **Spin up specialized sub-agents on demand** — Trading Agent, Marketing Agent, E-commerce Agent, Research Agent, Operations Agent, etc.
 2. **Control computers, apps, and services** — Desktop automation (like Vy), browser automation (like Runner H), API integration (like Manus)
@@ -25,13 +25,21 @@ The goal is not to build yet another narrow AI tool, but to synthesize the archi
 
 | Section | Description |
 |---------|-------------|
-| [Vision & Positioning](#vision--positioning) | Omega System as universal AI OS vs. specialized tools |
+| [Vision & Positioning](#vision--positioning) | ØMEGA AI as universal AI OS vs. specialized tools |
 | [Architecture Overview](docs/architecture-overview.md) | Master orchestrator + sub-agent architecture |
 | [Sub-Agent Modules](docs/sub-agent-modules.md) | Trading, Marketing, E-commerce, Research, Operations agents |
 | [MCP Integration Strategy](docs/mcp-integration-strategy.md) | Connecting to Shopify, Meta Ads, Stripe, Zapier, n8n, etc. |
 | [Security Guardrails Framework](security/guardrails-framework.md) | 5-layer defense-in-depth with domain-specific controls |
 | [OpenClaw Deep Dive](architectures/openclaw-architecture.md) | Multi-channel operations, proactive heartbeat, tiered approval |
 | [Manus Deep Dive](architectures/manus-architecture.md) | Sandbox model, 29 tools, module system, sub-agents |
+| [Oracle AI Strategy](docs/oracle-trading-system.md) | Standalone trading software & integrated intelligence core |
+| [MiroFish Prediction Engine](docs/mirofish-swarm-intelligence.md) | Swarm intelligence & parallel world simulation core |
+| [Audio & Media Generation](docs/audio-media-generation.md) | Specialized Sonus (Audio) & Visage (Visual) agents |
+| [Visage Video Pipeline](docs/visage-video-pipeline.md) | Multi-stage cinematic video production with MAESTRO |
+| [2026 Intelligence Stack](docs/2026-agent-intelligence-stack.md) | PydanticAI, Swarm, DeepSeek-V3, and OpenClaw patterns |
+| [2024-2025 Foundational Patterns](docs/2024-2025-foundational-patterns.md) | CrewAI, AutoGen, LangGraph, and DSPy breakthroughs |
+| [Claude Code Research](prompts/anthropic/claude-code-research.md) | Mirroring CLI agent harness patterns from `claw-code` |
+| [Claude Advanced Patterns](prompts/anthropic/claude-code-advanced-patterns.md) | Deep dive into prompt caching, memory, and fork orchestration |
 | [Runner H & Surfer H](architectures/runner-h-surfer-h.md) | Browser automation with visual understanding |
 | [Vy by Vercept](architectures/vy-vercept.md) | Desktop/app control, visual-first, workflow learning |
 | [Agent Design Patterns](docs/agent-design-patterns.md) | 12 recurring patterns across all studied systems |
@@ -60,13 +68,13 @@ Today's AI tools are **vertically specialized**:
 
 Each tool excels at one thing but can't cross domain boundaries. **There is no unified platform that can do all of these things.**
 
-### The Omega System Solution
+### The ØMEGA AI Solution
 
-Omega System is architected as a **master orchestrator** with **pluggable sub-agents**:
+ØMEGA AI is architected as a **master orchestrator** with **pluggable sub-agents**:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      OMEGA SYSTEM ORCHESTRATOR                      │
+│                      ØMEGA AI ORCHESTRATOR                      │
 │  (Master agent loop, security gateway, approval flows, audit trail) │
 └─────────────────────────────────────────────────────────────────────┘
                                     │
@@ -105,25 +113,26 @@ Omega System is architected as a **master orchestrator** with **pluggable sub-ag
 
 **Key differences from existing tools:**
 
-| Capability | Cursor | v0 | Devin | OpenClaw | Runner H | Vy | Omega System |
-|-----------|--------|-----|-------|----------|----------|-----|-------------|
-| Code generation | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ (via Cursor sub-agent) |
-| UI generation | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ (via v0 sub-agent) |
-| Trading | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (via Trading Agent) |
-| Marketing automation | ❌ | ❌ | ❌ | ✅ (limited) | ❌ | ❌ | ✅ (via Marketing Agent) |
-| E-commerce | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (via E-commerce Agent) |
-| Desktop control | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ (via Desktop Agent) |
-| Browser automation | ❌ | ❌ | ❌ | ✅ (limited) | ✅ | ❌ | ✅ (via Browser Agent) |
-| API integration | ❌ | ❌ | ❌ | ✅ (limited) | ❌ | ❌ | ✅ (unlimited via MCP) |
-| Cross-domain workflows | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Unified security | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Capability | Cursor | v0 | Devin | OpenClaw | Runner H | Vy | Claude Code | Oracle AI | MiroFish | ØMEGA AI |
+|-----------|--------|-----|-------|----------|----------|-----|-------------|-----------|----------|--------------|
+| Code generation | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ (via Cursor sub-agent) |
+| UI generation | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (via v0 sub-agent) |
+| Trading | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ (via Trading Agent) |
+| Marketing automation | ❌ | ❌ | ❌ | ✅ (limited) | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (via Marketing Agent) |
+| E-commerce | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (via E-commerce Agent) |
+| Desktop control | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ✅ (via Desktop Agent) |
+| Browser automation | ❌ | ❌ | ❌ | ✅ (limited) | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ (via Browser Agent) |
+| API integration | ❌ | ❌ | ❌ | ✅ (limited) | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ (unlimited via MCP) |
+| Future Prediction | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Cross-domain workflows | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Unified security | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
 
 ---
 
 ## Repository Structure
 
 ```
-omega-system-rough/
+XYRASYSTEMS---OMEGA-AI/
 ├── README.md                                    ← This file
 ├── docs/
 │   ├── architecture-overview.md                 ← Master orchestrator + sub-agent architecture
@@ -141,7 +150,7 @@ omega-system-rough/
 │   ├── openclaw-vulnerabilities.md              ← Security analysis from 8 firms
 │   └── prompt-injection-taxonomy.md             ← Attack vectors and defenses
 └── prompts/                                     ← Raw system prompts (source material)
-    ├── anthropic/                               ← Claude system prompts
+    ├── anthropic/                               ← Claude system prompts, Claude Code research
     ├── openai/                                  ← GPT-5, ChatGPT, Deep Research
     ├── google/                                  ← Gemini system prompts
     ├── xai/                                     ← Grok system prompts
@@ -169,7 +178,7 @@ After analyzing 14+ AI platforms, no single system can:
 - Provide unified security, approval flows, and audit trails across all operations
 - Learn and adapt to new domains without retraining
 
-**Omega System solves this** through a master orchestrator + pluggable sub-agents architecture.
+**ØMEGA AI solves this** through a master orchestrator + pluggable sub-agents architecture.
 
 ### 2. The Best Capabilities Are Scattered Across Tools
 
@@ -183,11 +192,11 @@ After analyzing 14+ AI platforms, no single system can:
 | UI generation | Vercel's v0 with component library | v0 |
 | Full-stack development | Devin's autonomous coding | Devin |
 
-**Omega System combines all of these** through a unified architecture.
+**ØMEGA AI combines all of these** through a unified architecture.
 
 ### 3. MCP Is the Key to Unlimited Integration
 
-Model Context Protocol (MCP) enables connecting to any external service without retraining. The Omega System should:
+Model Context Protocol (MCP) enables connecting to any external service without retraining. The ØMEGA AI should:
 - Implement MCP as the standard for sub-agent-to-service integration
 - Pre-build MCP servers for common services (Shopify, Meta Ads, Stripe, Zapier, n8n, Slack, Gmail, Google Calendar, etc.)
 - Allow users to add custom MCP servers for proprietary systems
@@ -195,10 +204,10 @@ Model Context Protocol (MCP) enables connecting to any external service without 
 
 ---
 
-## Omega System Design Principles
+## ØMEGA AI Design Principles
 
 1. **Universal capability, specialized sub-agents.** The master orchestrator handles all domains; sub-agents specialize in one domain each.
-2. **Desktop + browser + API control.** Omega System can interact with any business system: desktop apps, web browsers, and APIs.
+2. **Desktop + browser + API control.** ØMEGA AI can interact with any business system: desktop apps, web browsers, and APIs.
 3. **Unlimited integration via MCP.** Connect to any external service without building custom code.
 4. **Defense in depth.** Security guardrails apply across all sub-agents and all domains.
 5. **Auditability and reversibility.** Every action is logged and can be reviewed or rolled back.
@@ -206,7 +215,7 @@ Model Context Protocol (MCP) enables connecting to any external service without 
 
 ---
 
-## How This Feeds the Omega System
+## How This Feeds the ØMEGA AI
 
 This research repository provides:
 
@@ -216,7 +225,7 @@ This research repository provides:
 4. **Tool integration patterns** (MCP, APIs, browser automation, desktop control)
 5. **Multi-agent coordination** patterns for orchestrating sub-agents
 
-These will be applied to build Omega System's:
+These will be applied to build ØMEGA AI's:
 
 | Sub-Agent | Capabilities | Integration |
 |-----------|-------------|-------------|
@@ -286,7 +295,7 @@ These will be applied to build Omega System's:
 5. **Reference** `security/guardrails-framework.md` for security across all domains
 6. **Browse** `prompts/` for system prompt examples when building sub-agents
 
-### Next Steps for the Omega System
+### Next Steps for the ØMEGA AI
 1. **Design the master orchestrator** — Agent loop, approval flows, audit trail, security gateway
 2. **Build the Trading Agent** — Signals, risk management, order execution (first sub-agent)
 3. **Build the Marketing Agent** — Meta Ads, email, SMS, analytics (second sub-agent)

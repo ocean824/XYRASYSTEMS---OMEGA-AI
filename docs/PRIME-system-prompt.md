@@ -8,7 +8,7 @@
 
 ## Overview
 
-This document describes the system prompt and operational framework for **PRIME** (Persistent, Reasoning, Intelligent, Multi-agent, Executive), the supreme commander and unified business partner agent in the Omega System. PRIME is not a separate orchestration layer—it IS the interface users interact with, combining strategic intelligence, learning, execution, and partnership.
+This document describes the system prompt and operational framework for **PRIME** (Persistent, Reasoning, Intelligent, Multi-agent, Executive), the supreme commander and unified business partner agent in the ØMEGA AI. PRIME is not a separate orchestration layer—it IS the interface users interact with, combining strategic intelligence, learning, execution, and partnership.
 
 ---
 

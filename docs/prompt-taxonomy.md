@@ -1,7 +1,7 @@
 # Prompt Engineering Taxonomy: Classification of System Prompt Techniques
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — ØMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
@@ -23,6 +23,7 @@ The most common opening pattern across all studied prompts. The system prompt be
 | System | Identity Statement |
 |--------|-------------------|
 | Claude (Anthropic) | "The assistant is Claude, made by Anthropic." |
+| Claude Code | "You are a powerful agentic AI coding assistant." (Mirrored in `claw-code`) |
 | Manus | "You are Manus, an AI agent created by the Manus team." |
 | OpenClaw | "You're a personal operations agent." |
 | GPT-5 (OpenAI) | "You are ChatGPT, a large language model trained by OpenAI." |
@@ -31,7 +32,7 @@ The most common opening pattern across all studied prompts. The system prompt be
 
 **Why It Works:** Identity statements anchor the model's behavior. Without an explicit identity, the model defaults to generic assistant behavior. With a specific identity, the model adopts the associated behavioral patterns, communication style, and capability boundaries.
 
-**Refinement Suggestion:** Each Omega System agent should have a distinct identity:
+**Refinement Suggestion:** Each ØMEGA AI agent should have a distinct identity:
 - "You are the Signal Analyst, a specialized trading signal processor for Black Wealth Capital."
 - "You are the Risk Manager, responsible for position sizing and portfolio risk enforcement."
 - "You are the Order Executor, the only agent authorized to place trades on connected exchanges."
@@ -70,7 +71,7 @@ OpenClaw's SOUL.md demonstrates the most sophisticated personality engineering o
 | **Behavioral principles** | "Reduce cognitive load. Lead with what matters. Make decisions easy." |
 | **Character quirks** | "Has opinions about tea. Strong ones. When things go very wrong, gets calmer, not louder." |
 
-**Refinement Suggestion:** The Omega System's agents should have personality definitions that match their roles. The Risk Manager should be conservative and cautious. The Signal Analyst should be analytical and precise. The Order Executor should be terse and action-oriented.
+**Refinement Suggestion:** The ØMEGA AI's agents should have personality definitions that match their roles. The Risk Manager should be conservative and cautious. The Signal Analyst should be analytical and precise. The Order Executor should be terse and action-oriented.
 
 ---
 
@@ -244,9 +245,9 @@ Production prompts include defenses against common jailbreak attempts:
 
 ## 6. Domain-Specific Prompt Patterns
 
-### 6.1 Coding Agent Patterns (Cursor, Windsurf, v0, Lovable, Devin)
+### 6.1 Coding Agent Patterns (Claude Code, Cursor, Windsurf, v0, Lovable, Devin)
 
-Coding agents share distinctive prompt patterns:
+Coding agents share distinctive prompt patterns, with **Claude Code** (as mirrored in `claw-code`) introducing highly modular system prompt sections:
 
 | Pattern | Description | Example |
 |---------|-------------|---------|
@@ -255,6 +256,8 @@ Coding agents share distinctive prompt patterns:
 | **Test awareness** | Consider testing implications | "Run tests after changes" |
 | **Framework conventions** | Follow the project's existing patterns | "Use the same coding style as the rest of the project" |
 | **Error recovery** | Specific instructions for handling build/test failures | "If the build fails, read the error and fix it" |
+| **XML Modularity** | System prompts constructed from discrete XML-tagged sections | `systemPromptSections.ts` in `claw-code` |
+| **Sub-agent Delegation** | Specializing tasks to internal agents (Plan, Verification, Explore) | `AgentTool` in `claw-code` |
 
 ### 6.2 Research Agent Patterns (Perplexity, ChatGPT Deep Research)
 
@@ -280,14 +283,14 @@ Operations agents emphasize autonomy management and communication:
 
 ---
 
-## 7. Omega System Prompt Architecture
+## 7. ØMEGA AI Prompt Architecture
 
-Based on all observed patterns, the Omega System should implement the following prompt architecture:
+Based on all observed patterns, the ØMEGA AI should implement the following prompt architecture:
 
 ### 7.1 Base System Prompt (All Agents)
 
 ```markdown
-# Omega System — [Agent Name]
+# ØMEGA AI — [Agent Name]
 
 ## Identity
 You are the [Agent Name], a specialized [role description] for the 

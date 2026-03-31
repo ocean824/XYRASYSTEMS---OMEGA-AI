@@ -1,16 +1,16 @@
-# Architecture Overview: Comparative Analysis of AI Agent Systems
+# XYRASYSTEMS - OMEGA AI — Architecture Overview & Comparative Analysis
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — XYRASYSTEMS - OMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
 
 ## Executive Summary
 
-This document provides a unified comparative analysis of four major AI agent architectures — OpenClaw, Manus, Runner H/Surfer H (H Company), and Vy (Vercept/Anthropic) — along with supplementary analysis of coding agents (Cursor, Windsurf, v0, Lovable, Devin) and foundation models (Claude, GPT-5, Gemini, Grok). The goal is to identify which architectural patterns, security models, and design decisions should be adopted, adapted, or avoided in the **Omega System**.
+This document provides a unified comparative analysis of four major AI agent architectures — OpenClaw, Manus, Runner H/Surfer H (H Company), and Vy (Vercept/Anthropic) — along with supplementary analysis of coding agents (Cursor, Windsurf, v0, Lovable, Devin) and foundation models (Claude, GPT-5, Gemini, Grok). The goal is to identify which architectural patterns, security models, and design decisions should be adopted, adapted, or avoided in the **ØMEGA AI**.
 
-The Omega System is a **hierarchical multi-agent platform** consisting of 25 specialized agents organized into three tiers: one supreme commander (PRIME), five meta agents (LOOM, WARDEN, MAESTRO, PHANTOM, SIGMA), ten core operations agents (ARCANE through MODULUS), and nine specialist agents (RELIC through SYNTH). This document synthesizes the best practices from studied systems to inform Omega's architecture, security model, and agent coordination patterns.
+The ØMEGA AI is a **hierarchical multi-agent platform** consisting of 25 specialized agents organized into three tiers: one supreme commander (PRIME), five meta agents (LOOM, WARDEN, MAESTRO, PHANTOM, SIGMA), ten core operations agents (ARCANE through MODULUS), and nine specialist agents (RELIC through SYNTH). This document synthesizes the best practices from studied systems to inform Omega's architecture, security model, and agent coordination patterns.
 
 ---
 
@@ -20,14 +20,27 @@ The Omega System is a **hierarchical multi-agent platform** consisting of 25 spe
 |--------|----------|----------------------|-------------------|-----------|-------------|
 | **OpenClaw** | General-purpose agent | Local machine | Multi-channel (WhatsApp, Telegram, etc.) | User-configured (Anthropic, OpenAI, Google, Ollama) | Yes |
 | **Manus** | General-purpose agent | Cloud sandbox (Ubuntu VM) | Web interface | Platform-managed | No |
+| **Claude Code** | Coding agent | Local machine | CLI | Claude 3.5 Sonnet | No (but mirrored in `claw-code`) |
 | **Runner H** | Browser-use agent | Cloud headless browser | API | Hollow One (proprietary VLM) | No |
 | **Surfer H** | Browser-use agent | Local browser (Chrome extension) | Chrome extension | Hollow One (proprietary VLM) | No |
 | **Vy (Vercept)** | Computer-use agent | Local desktop (macOS/Windows) | Desktop app | Proprietary VLM | No |
+| **Oracle AI** | Standalone trading software | Multi-layer data/vision | Decision engine | Specialized trading LLM | No (proprietary) |
+| **MiroFish** | Swarm intelligence engine | Parallel world simulation | ReportAgent | Multi-agent swarm | Yes |
+| **Sonus** | Audio Agent | Immersive audiobooks | Audio pipeline | Murf AI / Specialized | No |
+| **Visage** | Visual Agent | High-fidelity video generation | Multi-stage pipeline | Open-Sora/Wan/Mochi/SVD | Yes |
+| **YuE / DiffRhythm** | Music generation engine | Full-song & Fast generation | Audio pipeline | Diffusion/Transformer | Yes |
 | **Cursor** | Coding agent | Local IDE | VS Code extension | Claude/GPT (user-selected) | No |
 | **Windsurf** | Coding agent | Local IDE | Custom IDE | Cascade (proprietary) | No |
 | **Devin** | Coding agent | Cloud sandbox | Web interface | Proprietary | No |
 | **v0** | UI generation agent | Cloud | Web interface | Proprietary | No |
 | **Lovable** | Full-stack generation agent | Cloud | Web interface | Proprietary | No |
+| **DeepSeek-V3** | Reasoning model | MoE architecture | API / Web | 671B MoE | Yes |
+| **PydanticAI** | Orchestration framework | Type-safe validation | Python SDK | Model-agnostic | Yes |
+| **OpenAI Swarm** | Orchestration framework | Lightweight hand-offs | Python SDK | Model-agnostic | Yes |
+| **OpenClaw** | Browser-use agent | Real-time web monitoring | Multi-channel | User-configured | Yes |
+| **CrewAI** | Multi-agent framework | Role-playing & backstories | Python SDK | Model-agnostic | Yes |
+| **LangGraph** | Multi-agent framework | Cyclic & stateful graphs | Python SDK | Model-agnostic | Yes |
+| **DSPy** | Prompting framework | Programmatic signatures | Python SDK | Model-agnostic | Yes |
 
 ---
 
@@ -44,7 +57,7 @@ The Omega System is a **hierarchical multi-agent platform** consisting of 25 spe
 | **Local file access** | Full | None (sandbox only) | None (browser only) | Full (visual only) |
 | **Tool execution** | Shell, browser, MCP, skills | Shell, browser, MCP, file tools | Browser actions only | Mouse, keyboard, visual |
 
-**Analysis:** The execution model is the single most important architectural decision. It determines the security boundary, the capability scope, and the user experience. For the Omega System, a **cloud sandbox model** (like Manus) provides the best security for financial operations, while a **local extension model** (like Surfer H) provides the lowest latency for time-sensitive trading.
+**Analysis:** The execution model is the single most important architectural decision. It determines the security boundary, the capability scope, and the user experience. For the ØMEGA AI, a **cloud sandbox model** (like Manus) provides the best security for financial operations, while a **local extension model** (like Surfer H) provides the lowest latency for time-sensitive trading.
 
 ### 2.2 Tool Architecture
 
@@ -97,6 +110,14 @@ Manus's strength is its sandboxed execution environment combined with a comprehe
 
 **What to avoid:** Cloud-only execution (adds latency), platform lock-in, limited extensibility compared to skill systems.
 
+### 3.3 Claude Code (via `claw-code`): Best Command-Line Agent Harness
+
+Claude Code's strength is its CLI-native architecture that manages complex developer workflows through a rich set of 200+ commands and 180+ tools. The `claw-code` project demonstrates how to mirror this architecture in Python.
+
+**What to adopt:** Command-graph segmentation, tool-pool assembly, session-transcript management, and modular system prompt sections.
+
+**What to avoid:** High token consumption (documented at 25B tokens/year for power users), complexity of maintaining 200+ commands.
+
 ### 3.3 Runner H: Best Browser Automation Agent
 
 Runner H's strength is its purpose-built VLM (Hollow One) that understands web pages visually. The Policy → Localizer → Validator pipeline separates decision-making from execution from verification, producing more reliable browser automation than any general-purpose agent.
@@ -115,9 +136,9 @@ Vy's strength is its visual-first architecture that works with any GUI applicati
 
 ---
 
-## 4. Omega System Architecture Recommendation
+## 4. ØMEGA AI Architecture Recommendation
 
-Based on the comparative analysis, the Omega System should implement a **hybrid architecture** that combines the best patterns from each system:
+Based on the comparative analysis, the ØMEGA AI should implement a **hybrid architecture** that combines the best patterns from each system:
 
 ### 4.1 Core Architecture
 
@@ -129,8 +150,11 @@ Based on the comparative analysis, the Omega System should implement a **hybrid 
 | **Memory** | OpenClaw (file-based) + Manus (structured) | Encrypted file-based memory with integrity verification |
 | **Communication** | OpenClaw (multi-channel) | TradingView webhooks, Telegram alerts, web dashboard |
 | **Proactive behavior** | OpenClaw (heartbeat) | Multi-frequency heartbeats for different monitoring needs |
-| **Security** | Manus (sandbox) + custom guardrails | Defense-in-depth with trading-specific controls |
-| **Visual analysis** | Runner H (VLM) + Vy (visual-first) | Chart screenshot analysis with specialized model |
+| **Security** | Manus (sandbox) + Oracle Validation | Defense-in-depth with trading-specific controls |
+| **Visual analysis** | Oracle Layer 2 (Vision) + Runner H | Chart screenshot analysis with specialized model |
+| **Intelligence** | Oracle Standalone Engine | Communicates biases/confidence to Omega PRIME |
+| **Simulation** | MiroFish Swarm Engine | Rehearses future trajectories for Research/Trading |
+| **Creative** | Media Generation Stack | High-fidelity music, cinematic video, virtual humans, and spatial audio |
 
 ### 4.2 Agent Specialization
 
@@ -197,3 +221,4 @@ Based on the comparative analysis, the Omega System should implement a **hybrid 
 [6]: https://bibek-poudel.medium.com/how-openclaw-works-understanding-ai-agents-through-a-real-architecture-5d59cc7a4764 "How OpenClaw Works — Bibek Poudel"
 [7]: https://medium.com/@kram254/runner-h-surfer-h-a-masterclass-in-modern-browser-use-agents-fb68cb666b29 "Runner H & Surfer H — Masterclass"
 [8]: https://aiadoptionagency.com/vercept-and-vy-redefining-human-computer-interaction-through-ai/ "Vercept and Vy — AI Adoption Agency"
+[9]: https://github.com/instructkr/claw-code "Rewriting Project Claw Code — instructkr"

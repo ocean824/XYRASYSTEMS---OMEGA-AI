@@ -8,13 +8,13 @@
 
 ## Executive Summary
 
-The Omega System's 25 agents coordinate through well-defined patterns that ensure reliability, auditability, and consistency. This document describes the primary coordination patterns, communication protocols, and workflow orchestration strategies used across the system.
+The ØMEGA AI's 25 agents coordinate through well-defined patterns that ensure reliability, auditability, and consistency. This document describes the primary coordination patterns, communication protocols, and workflow orchestration strategies used across the system.
 
 ---
 
 ## Core Coordination Principles
 
-The Omega System is built on five core principles for agent coordination:
+The ØMEGA AI is built on five core principles for agent coordination:
 
 **1. Hierarchical Routing** — PRIME routes requests to appropriate agents based on domain and urgency, ensuring clear ownership and accountability.
 
@@ -481,7 +481,7 @@ All agent-to-agent communication follows a standardized protocol:
 
 ## Approval Flow Tiers
 
-The Omega System implements three approval tiers to balance autonomy with control:
+The ØMEGA AI implements three approval tiers to balance autonomy with control:
 
 ### Tier 1: Autonomous (No Approval Required)
 
@@ -567,7 +567,7 @@ LOOM/
 
 ## Error Handling & Recovery
 
-The Omega System implements comprehensive error handling:
+The ØMEGA AI implements comprehensive error handling:
 
 ### Error Detection
 
@@ -602,7 +602,7 @@ When an error is detected:
 
 ## Performance Metrics
 
-The Omega System tracks performance across multiple dimensions:
+The ØMEGA AI tracks performance across multiple dimensions:
 
 ### Agent Performance
 

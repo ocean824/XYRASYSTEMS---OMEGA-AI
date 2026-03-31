@@ -10,7 +10,7 @@
 
 The Persistent Business Partner's effectiveness depends on deep understanding of the user and their business. The User Profiling System continuously learns across multiple dimensions—personal, business, operational, and contextual—to build a comprehensive model that enables accurate recommendations, proactive opportunity identification, and aligned autonomous action.
 
-This document outlines the profiling architecture, learning mechanisms, data structures, and algorithms that enable the Omega System to know the user's business as well as they do.
+This document outlines the profiling architecture, learning mechanisms, data structures, and algorithms that enable the ØMEGA AI to know the user's business as well as they do.
 
 ---
 

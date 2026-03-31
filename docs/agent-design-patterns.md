@@ -1,14 +1,14 @@
 # Agent Design Patterns: Cross-System Analysis
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — ØMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
 
 ## Executive Summary
 
-After analyzing the architectures of OpenClaw, Manus, Runner H/Surfer H, Vy/Vercept, Cursor, Windsurf, v0, Lovable, Devin, and Emergent — along with their leaked system prompts — a set of recurring design patterns emerges. These patterns are not coincidental; they represent convergent evolution toward solutions that work at scale. This document catalogs these patterns, explains why they exist, and provides implementation guidance for the Omega System.
+After analyzing the architectures of OpenClaw, Manus, Runner H/Surfer H, Vy/Vercept, Cursor, Windsurf, v0, Lovable, Devin, and Emergent — along with their leaked system prompts — a set of recurring design patterns emerges. These patterns are not coincidental; they represent convergent evolution toward solutions that work at scale. This document catalogs these patterns, explains why they exist, and provides implementation guidance for the ØMEGA AI.
 
 ---
 
@@ -41,7 +41,7 @@ while task_not_complete:
 | Runner H | Policy → Localizer → Validator pipeline | Separates decision from execution from verification |
 | Devin | Long-running autonomous loops | Complex multi-step development tasks |
 
-**Refinement Suggestion for Omega System:** Implement a **hybrid loop** — strict single-tool-per-iteration for write operations (order placement, position modification) but allow parallel read operations (multiple market data fetches) for performance.
+**Refinement Suggestion for ØMEGA AI:** Implement a **hybrid loop** — strict single-tool-per-iteration for write operations (order placement, position modification) but allow parallel read operations (multiple market data fetches) for performance.
 
 ---
 
@@ -60,7 +60,7 @@ User ← Gateway ← [Response Formatting]    ← Runtime ← [Results]
 
 **Why It Works:** Separation of concerns enables independent scaling, security policy enforcement at the gateway level, and graceful degradation (the gateway can serve cached responses or error messages if the runtime fails).
 
-**Omega System Implementation:**
+**ØMEGA AI Implementation:**
 
 | Component | Gateway Responsibilities | Runtime Responsibilities |
 |-----------|------------------------|------------------------|
@@ -92,7 +92,7 @@ Before every model inference, the system assembles a context package from multip
 
 **The Critical Insight:** Context assembly is the most important engineering decision in any agentic system. Everything the model knows, believes, and can do flows through this stage. A vulnerability in context assembly (e.g., injected content) compromises the entire system.
 
-**Refinement Suggestion:** The Omega System should implement a **context firewall** between assembly and inference:
+**Refinement Suggestion:** The ØMEGA AI should implement a **context firewall** between assembly and inference:
 
 ```
 [Base Prompt] + [Trading Rules] + [Active Strategy] + [Market State] + [History]
@@ -120,7 +120,7 @@ Rather than injecting all possible instructions into the system prompt, the agen
 
 **Why It Works:** Context windows are finite. A system with 100 skills cannot inject all 100 SKILL.md files into every prompt. Lazy loading keeps the base context lean while allowing unlimited capability expansion.
 
-**Refinement Suggestion:** The Omega System should implement lazy loading for trading strategies:
+**Refinement Suggestion:** The ØMEGA AI should implement lazy loading for trading strategies:
 
 ```
 Base context: "Available strategies: [market-cipher-scalp, algopro-swing, 
@@ -142,7 +142,7 @@ Agent actions are categorized into tiers based on their impact. Low-impact actio
 
 **Cross-System Comparison:**
 
-| Tier | OpenClaw | Manus | Omega System (Proposed) |
+| Tier | OpenClaw | Manus | ØMEGA AI (Proposed) |
 |------|----------|-------|------------------------|
 | **Autonomous** | Read data, summarize, draft, research | Read files, search web, analyze | Fetch data, calculate indicators, score signals |
 | **Requires Approval** | Send messages, schedule meetings, publish | Sensitive browser operations, deployments | Place orders, modify positions, change stops |
@@ -175,7 +175,7 @@ Agent memory is stored as plain-text files (typically Markdown) rather than in d
 
 **Security Concern:** File-based memory is vulnerable to tampering. Anyone with filesystem access can read or modify memory files, and prompt injection can cause the agent to write malicious content to persistent memory.
 
-**Refinement Suggestion:** The Omega System should implement **encrypted, integrity-verified memory**:
+**Refinement Suggestion:** The ØMEGA AI should implement **encrypted, integrity-verified memory**:
 
 ```
 Trade Journal (encrypted at rest):
@@ -206,7 +206,7 @@ Timer fires (every 30 minutes)
 
 **Why It Works:** Heartbeats transform agents from reactive (only responds to user messages) to proactive (monitors conditions and takes initiative). This is essential for any monitoring or operations use case.
 
-**Refinement Suggestion:** The Omega System should implement **multi-frequency heartbeats**:
+**Refinement Suggestion:** The ØMEGA AI should implement **multi-frequency heartbeats**:
 
 | Frequency | Purpose | Actions |
 |-----------|---------|---------|
@@ -228,7 +228,7 @@ The model is constrained to produce output conforming to a strict JSON schema. T
 
 **Why It Works:** Free-form text output is ambiguous and error-prone. When an agent needs to produce a trading signal, a structured schema ensures that every required field is present, every value is within expected ranges, and the output can be programmatically processed without parsing heuristics.
 
-**Omega System Signal Schema:**
+**ØMEGA AI Signal Schema:**
 ```json
 {
   "type": "object",
@@ -262,7 +262,7 @@ Complex tasks are decomposed and delegated to specialized sub-agents, each with 
 
 **Why It Works:** No single prompt can make a model expert at everything. Specialized sub-agents can have focused system prompts, limited tool sets, and domain-specific knowledge, producing better results than a generalist agent.
 
-**Omega System Sub-Agent Architecture:**
+**ØMEGA AI Sub-Agent Architecture:**
 
 | Agent | Specialization | Tools | Model |
 |-------|---------------|-------|-------|
@@ -284,7 +284,7 @@ All code, configurations, and executable content must be saved to files before e
 
 **Why It Works:** This pattern provides auditability (every executed piece of code exists as a reviewable file), reproducibility (code can be re-run), debugging (errors reference specific files and lines), and version control (file modifications are tracked).
 
-**Refinement Suggestion:** Every trading strategy, risk calculation, and order construction in the Omega System should exist as a versioned file. This creates a complete audit trail for regulatory compliance and performance analysis.
+**Refinement Suggestion:** Every trading strategy, risk calculation, and order construction in the ØMEGA AI should exist as a versioned file. This creates a complete audit trail for regulatory compliance and performance analysis.
 
 ---
 
@@ -297,7 +297,7 @@ During research, browsing, or data processing, the agent actively saves key find
 
 **Why It Works:** Context windows are finite, and information can be lost during context compaction. By explicitly persisting important findings, the agent creates a durable knowledge base that survives context limits.
 
-**Refinement Suggestion:** When the Omega System analyzes a chart or processes market data, key findings should be persisted to structured files:
+**Refinement Suggestion:** When the ØMEGA AI analyzes a chart or processes market data, key findings should be persisted to structured files:
 
 ```
 analysis/2026-03-11/

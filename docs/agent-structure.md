@@ -1,14 +1,14 @@
-# The Omega System — Agent Structure & Roman Index
+# The ØMEGA AI — Agent Structure & Roman Index
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Definitive Architecture — Omega System Agent Hierarchy
+> **Status:** Definitive Architecture — ØMEGA AI Agent Hierarchy
 > **Last Updated:** March 2026
 
 ---
 
 ## Executive Summary
 
-The Omega System is built on a **hierarchical agent architecture** consisting of **25 specialized agents** organized into three tiers. Each agent is identified by a Roman numeral and a symbolic name, representing its functional domain and operational role. This document provides the definitive structure, capabilities, and coordination patterns for all agents in the system.
+The ØMEGA AI is built on a **hierarchical agent architecture** consisting of **25 specialized agents** organized into three tiers. Each agent is identified by a Roman numeral and a symbolic name, representing its functional domain and operational role. This document provides the definitive structure, capabilities, and coordination patterns for all agents in the system.
 
 ---
 
@@ -47,7 +47,7 @@ The Omega System is built on a **hierarchical agent architecture** consisting of
 
 **Role:** Supreme Commander & Persistent Business Partner
 
-**Purpose:** PRIME is the central intelligence and unified interface that governs the entire Omega System architecture. PRIME is not just an orchestrator—it IS the business partner. It learns the user's business deeply, identifies opportunities proactively, executes autonomously within approved parameters, and maintains persistent memory across all sessions. PRIME embodies both Megaman (adaptability, learning, mastery) and Jarvis (proactivity, anticipation, loyalty).
+**Purpose:** PRIME is the central intelligence and unified interface that governs the entire ØMEGA AI architecture. PRIME is not just an orchestrator—it IS the business partner. It learns the user's business deeply, identifies opportunities proactively, executes autonomously within approved parameters, and maintains persistent memory across all sessions. PRIME embodies both Megaman (adaptability, learning, mastery) and Jarvis (proactivity, anticipation, loyalty).
 
 **Business Partner Capabilities:**
 - Deep user learning and profiling (7 dimensions: personal, business, operational, market, historical, financial, contextual)
@@ -1245,7 +1245,7 @@ All agent-to-agent communication follows this protocol:
 | **Meta Agents (Tier I)** | 5 | Memory, security, strategy, intelligence, optimization |
 | **Core Operations (Tier II)** | 10 | Coding, leads, profiling, sales, content, distribution, payments, analytics, reasoning |
 | **Specialists (Tier III)** | 9 | Affiliate, simulation, testing, scheduling, trading, collaboration, reflection, compliance, ingestion |
-| **Total Agents** | **25** | Complete Omega System |
+| **Total Agents** | **25** | Complete ØMEGA AI |
 
 ---
 

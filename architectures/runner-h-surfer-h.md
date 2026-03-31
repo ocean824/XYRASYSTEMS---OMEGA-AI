@@ -1,7 +1,7 @@
 # Runner H & Surfer H Architecture: Deep Dive
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — ØMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
@@ -103,7 +103,7 @@ Task Description + Page Screenshot
 
 This pipeline is a significant architectural innovation. Most browser-use agents combine all these functions into a single model call, which leads to errors when the model correctly identifies what to do but incorrectly localizes the target element, or when it successfully executes an action but fails to verify the result [3].
 
-**Refinement Suggestion for Omega System:** The Policy → Localizer → Validator pipeline maps directly to trading:
+**Refinement Suggestion for ØMEGA AI:** The Policy → Localizer → Validator pipeline maps directly to trading:
 - **Policy Model:** "What trading action should I take?" (analyze signal, place order, adjust stop)
 - **Localizer:** "Which specific instrument, exchange, and order parameters?" (BTC/USDT on Binance, limit order at $X)
 - **Validator:** "Did the order execute correctly?" (check order status, verify fill price, confirm position)
@@ -140,7 +140,7 @@ OSWorld tests agents on operating system-level tasks (not just browser). While R
 
 The benchmark results illustrate a broader architectural lesson: **specialized models outperform general-purpose models on domain-specific tasks**. A VLM trained specifically on web page interaction understands browser UI patterns that general-purpose models must learn from context or tool descriptions [3].
 
-**Refinement Suggestion:** The Omega System should consider training or fine-tuning specialized models for chart analysis. A model trained specifically on TradingView chart screenshots would outperform a general-purpose VLM at identifying patterns, support/resistance levels, and indicator signals.
+**Refinement Suggestion:** The ØMEGA AI should consider training or fine-tuning specialized models for chart analysis. A model trained specifically on TradingView chart screenshots would outperform a general-purpose VLM at identifying patterns, support/resistance levels, and indicator signals.
 
 ---
 
@@ -170,7 +170,7 @@ Surfer H's local deployment introduces more significant security concerns:
 
 ---
 
-## 5. Architectural Lessons for the Omega System
+## 5. Architectural Lessons for the ØMEGA AI
 
 1. **Purpose-built models outperform general-purpose models** on domain-specific tasks. Consider fine-tuning models specifically for chart analysis and trading signal interpretation.
 
@@ -178,7 +178,7 @@ Surfer H's local deployment introduces more significant security concerns:
 
 3. **Visual understanding** captures information that text extraction misses. Chart analysis should process screenshots, not just numerical data, to capture patterns that humans see visually.
 
-4. **Structured memory** (task context + action history + error log) enables within-session learning. The Omega System should maintain similar structured memory for each trading session.
+4. **Structured memory** (task context + action history + error log) enables within-session learning. The ØMEGA AI should maintain similar structured memory for each trading session.
 
 5. **Specialization at the model level** is more effective than tool-level adaptation. If possible, fine-tune models on trading-specific data rather than relying entirely on prompt engineering.
 

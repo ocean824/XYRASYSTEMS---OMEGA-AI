@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-The Omega System continuously identifies and automates productivity opportunities across the user's business. By analyzing workflows, identifying bottlenecks, and implementing automation, the system helps users reclaim 10-20 hours per week of productive time. This document outlines the productivity optimization framework, automation strategies, and implementation workflows.
+The ØMEGA AI continuously identifies and automates productivity opportunities across the user's business. By analyzing workflows, identifying bottlenecks, and implementing automation, the system helps users reclaim 10-20 hours per week of productive time. This document outlines the productivity optimization framework, automation strategies, and implementation workflows.
 
 ---
 

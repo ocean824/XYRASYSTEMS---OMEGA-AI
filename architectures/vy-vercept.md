@@ -1,7 +1,7 @@
 # Vy by Vercept Architecture: Deep Dive
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — ØMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
@@ -12,7 +12,7 @@ Vy is a computer-use AI agent developed by **Vercept**, a startup that was acqui
 
 Vy represents a fundamentally different approach from both OpenClaw (which operates through APIs and shell commands) and Runner H (which operates through a dedicated browser). Vy interacts with **any application** on the user's computer by understanding the visual interface, making it application-agnostic and API-independent [2].
 
-The acquisition by Anthropic signals that visual-first computer use is considered a strategically important capability for the next generation of AI agents. This document analyzes Vy's architecture and extracts patterns applicable to the Omega System.
+The acquisition by Anthropic signals that visual-first computer use is considered a strategically important capability for the next generation of AI agents. This document analyzes Vy's architecture and extracts patterns applicable to the ØMEGA AI.
 
 ---
 
@@ -69,7 +69,7 @@ One of Vy's most distinctive capabilities is **workflow learning** — the abili
 
 This is architecturally significant because it means Vy can learn new capabilities without any programming or configuration. The user simply demonstrates the workflow, and Vy records the sequence of visual states and actions, creating a replayable automation [2].
 
-**Refinement Suggestion for Omega System:** Workflow learning could be applied to chart analysis. A trader could demonstrate their analysis process on a TradingView chart — identifying support/resistance, checking indicators, marking entry/exit points — and the agent could learn to replicate this process on new charts.
+**Refinement Suggestion for ØMEGA AI:** Workflow learning could be applied to chart analysis. A trader could demonstrate their analysis process on a TradingView chart — identifying support/resistance, checking indicators, marking entry/exit points — and the agent could learn to replicate this process on new charts.
 
 ---
 
@@ -97,7 +97,7 @@ Vy does not request or store login credentials for any application. It operates 
 | **Explicit consent** | User initiates every task | No autonomous surveillance |
 | **Transparent execution** | User watches agent work | Full visibility into agent actions |
 
-**Refinement Suggestion:** The Omega System should adopt Vy's privacy principles for sensitive financial data. Trading account credentials should never be stored in agent memory. Instead, agents should operate within pre-authenticated API sessions with scoped permissions.
+**Refinement Suggestion:** The ØMEGA AI should adopt Vy's privacy principles for sensitive financial data. Trading account credentials should never be stored in agent memory. Instead, agents should operate within pre-authenticated API sessions with scoped permissions.
 
 ---
 
@@ -137,7 +137,7 @@ Vy supports scheduled task execution, enabling workflows that run automatically 
 
 This is functionally similar to OpenClaw's heartbeat system but with a key difference: Vy's scheduled tasks operate through the visual interface, meaning they can automate applications that don't support cron-style automation [2].
 
-**Refinement Suggestion:** The Omega System should implement visual-based monitoring for platforms that lack API access. For example, if a trading platform only provides a web interface without API, a Vy-style visual agent could monitor the platform's UI for position changes, alert conditions, or execution confirmations.
+**Refinement Suggestion:** The ØMEGA AI should implement visual-based monitoring for platforms that lack API access. For example, if a trading platform only provides a web interface without API, a Vy-style visual agent could monitor the platform's UI for position changes, alert conditions, or execution confirmations.
 
 ---
 
@@ -169,7 +169,7 @@ Vercept's acquisition by Anthropic in 2026 [1] signals several strategic directi
 
 ---
 
-## 7. Key Architectural Lessons for the Omega System
+## 7. Key Architectural Lessons for the ØMEGA AI
 
 1. **Visual-first interaction** enables automation of applications without APIs. This is valuable for monitoring trading platforms, chart analysis tools, and market data dashboards that may not offer programmatic access.
 
@@ -181,7 +181,7 @@ Vercept's acquisition by Anthropic in 2026 [1] signals several strategic directi
 
 5. **Scheduled automation** enables proactive monitoring without requiring always-on human attention. Market monitoring, position health checks, and signal aggregation can all be scheduled.
 
-6. **The acquisition signal** — Anthropic's acquisition of Vercept validates visual-first computer use as a strategically important capability. The Omega System should invest in visual chart analysis capabilities.
+6. **The acquisition signal** — Anthropic's acquisition of Vercept validates visual-first computer use as a strategically important capability. The ØMEGA AI should invest in visual chart analysis capabilities.
 
 ---
 

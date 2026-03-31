@@ -1,7 +1,7 @@
 # OpenClaw Architecture: Deep Dive with Security Guardrails
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — ØMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
@@ -10,7 +10,7 @@
 
 OpenClaw (previously Clawdbot, then Moltbot) is an open-source personal AI agent that surpassed 200,000 GitHub stars in early 2026, making it one of the fastest-growing repositories in GitHub history [1]. Developed by Peter Steinberger, it runs locally on user hardware, connects to messaging platforms (WhatsApp, Telegram, Slack, Discord, Signal, iMessage), and autonomously executes real-world tasks — reading files, running shell commands, sending emails, browsing the web, and managing calendars [2].
 
-This document provides an exhaustive architectural analysis of OpenClaw, synthesizing information from the official documentation, community research, and security analyses by CrowdStrike [3], Trend Micro [4], Cisco [5], Snyk [6], NSFOCUS [7], Oasis Security [8], and Microsoft [9]. It goes beyond any single source by combining architectural understanding with security hardening recommendations and refinement suggestions for adapting OpenClaw's patterns to the Omega System.
+This document provides an exhaustive architectural analysis of OpenClaw, synthesizing information from the official documentation, community research, and security analyses by CrowdStrike [3], Trend Micro [4], Cisco [5], Snyk [6], NSFOCUS [7], Oasis Security [8], and Microsoft [9]. It goes beyond any single source by combining architectural understanding with security hardening recommendations and refinement suggestions for adapting OpenClaw's patterns to the ØMEGA AI.
 
 ---
 
@@ -38,7 +38,7 @@ The separation between Gateway and Agent Runtime is intentional. The Gateway nev
 
 The Agent Runtime receives normalized messages from the Gateway and executes the agentic loop. It is responsible for context assembly, model inference, tool execution, and response streaming. The runtime is model-agnostic — it supports Anthropic Claude, OpenAI GPT, Google Gemini, and fully local models via Ollama [2].
 
-**Refinement Suggestion for Omega System:** The Gateway/Runtime separation is the correct pattern for our trading platform. The Gateway should handle webhook ingestion from TradingView, normalize signal formats, and route to specialized agent runtimes (Signal Agent, Risk Agent, Execution Agent). This prevents any single agent failure from cascading across the system.
+**Refinement Suggestion for ØMEGA AI:** The Gateway/Runtime separation is the correct pattern for our trading platform. The Gateway should handle webhook ingestion from TradingView, normalize signal formats, and route to specialized agent runtimes (Signal Agent, Risk Agent, Execution Agent). This prevents any single agent failure from cascading across the system.
 
 ---
 
@@ -66,7 +66,7 @@ Voice notes are transcribed to text before reaching the model. This is a critica
 
 **Security Concern:** Channel adapters are a primary attack surface. The Baileys library for WhatsApp, for example, is an unofficial reverse-engineered client that can break with WhatsApp updates. Malformed messages from any channel could potentially crash the adapter or inject unexpected content into the normalization pipeline [5].
 
-**Refinement Suggestion:** For the Omega System, our "channel adapters" are TradingView webhook payloads, CoinGecko API responses, and Binance WebSocket feeds. Each should have a strict JSON schema validator that rejects malformed inputs before they reach any agent runtime.
+**Refinement Suggestion:** For the ØMEGA AI, our "channel adapters" are TradingView webhook payloads, CoinGecko API responses, and Binance WebSocket feeds. Each should have a strict JSON schema validator that rejects malformed inputs before they reach any agent runtime.
 
 ### 2.2 Step 2: Routing and Session Management
 
@@ -80,7 +80,7 @@ This is a deliberate engineering choice, not a limitation. Concurrency is danger
 
 **Security Concern:** Session state is stored locally in the `~/.openclaw/` directory. If an attacker gains filesystem access, they can read or modify session state, inject false history, or impersonate the user [3].
 
-**Refinement Suggestion:** For the Omega System, each trading session (per symbol, per strategy) should be serialized independently. A BTC/USDT scalping session should never block an ETH/USDT swing trade session. But within each session, strict serialization prevents conflicting orders.
+**Refinement Suggestion:** For the ØMEGA AI, each trading session (per symbol, per strategy) should be serialized independently. A BTC/USDT scalping session should never block an ETH/USDT swing trade session. But within each session, strict serialization prevents conflicting orders.
 
 ### 2.3 Step 3: Context Assembly
 
@@ -97,7 +97,7 @@ This is arguably the most important engineering decision in any agentic system. 
 
 **Security Concern:** Context assembly is where prompt injection attacks are most dangerous. If any component of the assembled context contains malicious instructions — whether from a poisoned skill, a manipulated bootstrap file, or injected conversation history — the model will follow those instructions as if they were legitimate [3] [4].
 
-**Refinement Suggestion:** The Omega System should implement a **context firewall** — a validation layer between context assembly and model inference that scans for known prompt injection patterns, anomalous instruction changes, and unauthorized tool references. CrowdStrike's Falcon AIDR demonstrates this pattern [3].
+**Refinement Suggestion:** The ØMEGA AI should implement a **context firewall** — a validation layer between context assembly and model inference that scans for known prompt injection patterns, anomalous instruction changes, and unauthorized tool references. CrowdStrike's Falcon AIDR demonstrates this pattern [3].
 
 ### 2.4 Step 4: Model Inference
 
@@ -136,7 +136,7 @@ OpenClaw implements this with real-time streaming — users can watch tools bein
 
 **Security Concern:** Tool execution is where OpenClaw's power becomes its greatest vulnerability. The agent has access to shell commands, file operations, web browsing, and messaging APIs. A successful prompt injection can hijack all of these capabilities [3]. CrowdStrike demonstrated a proof-of-concept where a single Discord message caused OpenClaw to exfiltrate private channel conversations [3].
 
-**Refinement Suggestion:** The Omega System must implement **tool-level access control**:
+**Refinement Suggestion:** The ØMEGA AI must implement **tool-level access control**:
 - **Allowlisting:** Only pre-approved tools can be called by each agent type
 - **Parameter validation:** Tool parameters must pass schema validation before execution
 - **Rate limiting:** Maximum tool calls per session per time window
@@ -209,7 +209,7 @@ Skills can be installed from **ClawHub**, OpenClaw's community registry, or writ
 | Data Exfiltration | 12.3% | Silently sends data to external servers |
 | Critical (any) | 13.4% (534 skills) | Various severe impacts |
 
-**Refinement Suggestion:** The Omega System should implement a **skill vetting pipeline**:
+**Refinement Suggestion:** The ØMEGA AI should implement a **skill vetting pipeline**:
 1. **Static analysis** — Scan SKILL.md for known injection patterns
 2. **Sandboxed execution** — Test skills in isolated environments before deployment
 3. **Capability declarations** — Skills must declare which tools they need; undeclared tool access is blocked
@@ -224,7 +224,7 @@ OpenClaw integrates with MCP servers to extend its tool capabilities. Instead of
 
 The agent never directly touches the underlying service — it calls a standard interface, and the MCP server handles the rest. This provides **tool portability**: tools built for one MCP-compatible agent can be reused across other systems that speak the same protocol [2].
 
-**Refinement Suggestion:** The Omega System should expose its trading capabilities as MCP servers:
+**Refinement Suggestion:** The ØMEGA AI should expose its trading capabilities as MCP servers:
 - `mcp-tradingview-signals` — Receives and processes TradingView webhook alerts
 - `mcp-market-data` — Provides real-time price data from CoinGecko/Binance
 - `mcp-order-execution` — Manages order placement with confirmation gates
@@ -273,7 +273,7 @@ When the context window would be exceeded, OpenClaw runs a compaction process th
 
 **Security Concern:** The memory system is stored as plain-text Markdown files. Anyone with filesystem access can read MEMORY.md to learn everything the agent knows about the user, or modify SOUL.md to alter the agent's personality and behavior [4]. Memory files are also vulnerable to indirect prompt injection — if the agent writes attacker-controlled content to MEMORY.md, that content persists across sessions [9].
 
-**Refinement Suggestion:** The Omega System should implement **encrypted memory** with integrity verification:
+**Refinement Suggestion:** The ØMEGA AI should implement **encrypted memory** with integrity verification:
 - Memory files encrypted at rest with user-specific keys
 - Cryptographic hashes to detect unauthorized modifications
 - Memory write validation — content written to long-term memory is scanned for injection patterns
@@ -293,7 +293,7 @@ On each heartbeat, the agent:
 
 This is the pattern that makes OpenClaw feel proactive rather than reactive. The architectural concept is a **cron-triggered agentic loop**: instead of only responding to human input, the agent is periodically woken up and asked to evaluate its task list [2].
 
-**Refinement Suggestion:** The Omega System should implement heartbeats for:
+**Refinement Suggestion:** The ØMEGA AI should implement heartbeats for:
 - **Market monitoring** — Check for significant price movements every 5 minutes
 - **Position health** — Verify open positions against stop-loss levels every 1 minute
 - **Signal aggregation** — Compile and score incoming signals every 15 minutes
@@ -327,7 +327,7 @@ One of OpenClaw's most important security features is its **tiered approval syst
 - Delete important data
 - Share private information
 
-**Refinement Suggestion:** The Omega System should implement a similar tiered system:
+**Refinement Suggestion:** The ØMEGA AI should implement a similar tiered system:
 
 | Tier | Trading Actions | Approval |
 |------|----------------|----------|
@@ -403,13 +403,13 @@ Based on the combined analysis from CrowdStrike [3], Trend Micro [4], Cisco [5],
 
 ---
 
-## 9. Refinement Suggestions for the Omega System
+## 9. Refinement Suggestions for the ØMEGA AI
 
 ### 9.1 Architecture Adaptations
 
-The Omega System should adopt OpenClaw's Gateway/Runtime separation but with trading-specific modifications:
+The ØMEGA AI should adopt OpenClaw's Gateway/Runtime separation but with trading-specific modifications:
 
-| OpenClaw Component | Omega System Equivalent | Modifications |
+| OpenClaw Component | ØMEGA AI Equivalent | Modifications |
 |-------------------|------------------------|---------------|
 | Gateway | Signal Gateway | Handles TradingView webhooks, market data feeds, user commands |
 | Channel Adapters | Data Normalizers | Standardizes signals from Market Cipher, AlgoPro, CoinGecko, Binance |
@@ -421,7 +421,7 @@ The Omega System should adopt OpenClaw's Gateway/Runtime separation but with tra
 
 ### 9.2 Security Hardening Beyond OpenClaw
 
-The Omega System handles financial operations, requiring security beyond what OpenClaw provides:
+The ØMEGA AI handles financial operations, requiring security beyond what OpenClaw provides:
 
 1. **Financial transaction signing** — All order executions must be cryptographically signed
 2. **Position limits** — Hard-coded maximum position sizes that no agent can override

@@ -1,7 +1,7 @@
 # Manus Architecture: Deep Dive
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — ØMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
@@ -10,7 +10,7 @@
 
 Manus is a general-purpose AI agent platform developed by the Manus team that operates within a sandboxed virtual machine environment with internet access. Unlike OpenClaw, which runs locally on user hardware, Manus executes entirely in a cloud-hosted sandbox — an Ubuntu 22.04 Linux environment with pre-installed development tools, a Chromium browser, and full internet connectivity [1]. This architectural choice fundamentally shapes its security model: the sandbox provides isolation that local agents lack, but introduces dependency on cloud infrastructure.
 
-This document provides a comprehensive analysis of Manus's architecture based on leaked system prompts, agent loop definitions, module configurations, and tool schemas sourced from multiple public repositories [2] [3] [4]. It synthesizes these sources into a unified architectural understanding and provides refinement suggestions for the Omega System.
+This document provides a comprehensive analysis of Manus's architecture based on leaked system prompts, agent loop definitions, module configurations, and tool schemas sourced from multiple public repositories [2] [3] [4]. It synthesizes these sources into a unified architectural understanding and provides refinement suggestions for the ØMEGA AI.
 
 ---
 
@@ -34,7 +34,7 @@ The sandbox is the defining architectural feature of Manus. Every task executes 
 
 The sandbox provides a critical security advantage over local agents like OpenClaw: **the agent cannot access the user's personal files, credentials, or local network**. It operates in a completely isolated environment. However, this also means Manus cannot directly interact with the user's desktop, applications, or local services [1].
 
-**Refinement Suggestion for Omega System:** The sandbox model is ideal for trading applications. Each trading agent should operate in its own isolated environment with only the specific API keys and permissions it needs. A compromised signal analysis agent should never have access to order execution credentials.
+**Refinement Suggestion for ØMEGA AI:** The sandbox model is ideal for trading applications. Each trading agent should operate in its own isolated environment with only the specific API keys and permissions it needs. A compromised signal analysis agent should never have access to order execution credentials.
 
 ### 1.2 The Agent Loop
 
@@ -119,7 +119,7 @@ Manus exposes 29 tools organized into six categories [5]. This is a carefully cu
 | `make_manus_page` | Create Manus Page from MDX | Content publishing |
 | `idle` | Signal task completion | Enters standby mode |
 
-**Refinement Suggestion:** The Omega System should define a similar tool taxonomy but specialized for trading:
+**Refinement Suggestion:** The ØMEGA AI should define a similar tool taxonomy but specialized for trading:
 
 | Category | Tools |
 |----------|-------|
@@ -160,7 +160,7 @@ This pattern provides several benefits:
 - **Debugging** — Errors reference specific files and line numbers
 - **Version control** — File modifications are tracked
 
-**Refinement Suggestion:** The Omega System should enforce this pattern for all trading logic. Every signal processing rule, risk calculation, and order execution script must exist as a versioned file, never as inline code. This creates an audit trail for regulatory compliance.
+**Refinement Suggestion:** The ØMEGA AI should enforce this pattern for all trading logic. Every signal processing rule, risk calculation, and order execution script must exist as a versioned file, never as inline code. This creates an audit trail for regulatory compliance.
 
 ### 3.3 The "Active Information Saving" Pattern
 
@@ -170,7 +170,7 @@ Manus requires agents to **actively save key information to text files** during 
 
 This addresses a fundamental limitation of LLM-based agents: **context windows are finite and information can be lost between tool calls**. By explicitly persisting important findings to files, the agent creates a durable knowledge base that survives context compaction.
 
-**Refinement Suggestion:** The Omega System should implement a similar pattern for market data. When the agent analyzes a chart or processes market data, key findings (support/resistance levels, trend direction, volume analysis) should be persisted to structured files, not just held in conversation context.
+**Refinement Suggestion:** The ØMEGA AI should implement a similar pattern for market data. When the agent analyzes a chart or processes market data, key findings (support/resistance levels, trend direction, volume analysis) should be persisted to structured files, not just held in conversation context.
 
 ---
 
@@ -204,7 +204,7 @@ manus-mcp-cli tool call <tool_name> --server <server_name> --input '<json_args>'
 
 Pre-configured MCP servers include integrations for Meta Ads, Stripe, Zapier, n8n, Gmail, Google Calendar, PayPal, Canva, and others [1]. Each MCP server exposes a set of tools with defined schemas, and the agent discovers and calls these tools using a standard interface.
 
-**Refinement Suggestion:** The Omega System should implement MCP servers for:
+**Refinement Suggestion:** The ØMEGA AI should implement MCP servers for:
 - **TradingView** — Receive webhook signals, manage alert configurations
 - **Binance/Exchange** — Order management, account balance, position tracking
 - **CoinGecko** — Market data, token information, trending analysis
@@ -228,7 +228,7 @@ Manus includes a sophisticated web development workflow that demonstrates how sp
 
 The web development workflow demonstrates a pattern of **specialized sub-agents** — the debugging agent, for example, is a completely separate agent with its own context and system prompt, invoked when the primary agent gets stuck [6].
 
-**Refinement Suggestion:** The Omega System should implement similar specialized sub-agents:
+**Refinement Suggestion:** The ØMEGA AI should implement similar specialized sub-agents:
 - **Backtesting Agent** — Invoked when a strategy needs historical validation
 - **Risk Audit Agent** — Independent agent that reviews trading decisions for risk compliance
 - **Performance Analysis Agent** — Analyzes trade history and suggests strategy refinements
@@ -279,7 +279,7 @@ const structured = await invokeLLM({
 ### 7.3 Multimodal Input
 Manus supports text, image, file, and audio inputs in a single message, enabling chart analysis, document processing, and voice transcription within the same agent loop [6].
 
-**Refinement Suggestion:** The Omega System should use structured JSON output for all signal processing and order generation. This ensures that every agent output conforms to a strict schema, preventing malformed orders or ambiguous signals.
+**Refinement Suggestion:** The ØMEGA AI should use structured JSON output for all signal processing and order generation. This ensures that every agent output conforms to a strict schema, preventing malformed orders or ambiguous signals.
 
 ---
 
@@ -301,17 +301,17 @@ Manus supports text, image, file, and audio inputs in a single message, enabling
 
 ---
 
-## 9. Key Architectural Lessons for the Omega System
+## 9. Key Architectural Lessons for the ØMEGA AI
 
-1. **Sandbox isolation** is the gold standard for agent security. The Omega System should run each agent type in its own isolated container with only the permissions it needs.
+1. **Sandbox isolation** is the gold standard for agent security. The ØMEGA AI should run each agent type in its own isolated container with only the permissions it needs.
 
 2. **One tool per iteration** is conservative but safe. For trading, this means each decision step is atomic and auditable. Consider allowing parallel read-only operations (market data fetches) while serializing write operations (order placement).
 
-3. **The module system** (XML-tagged behavioral rules) is an effective way to organize complex agent instructions. The Omega System should define modules for `<trading_rules>`, `<risk_rules>`, `<execution_rules>`, and `<communication_rules>`.
+3. **The module system** (XML-tagged behavioral rules) is an effective way to organize complex agent instructions. The ØMEGA AI should define modules for `<trading_rules>`, `<risk_rules>`, `<execution_rules>`, and `<communication_rules>`.
 
 4. **Save-before-execute** creates an audit trail. Every trading decision should be logged as a file before execution.
 
-5. **Specialized sub-agents** (like the debugging agent) demonstrate how to decompose complex tasks. The Omega System should use independent agents for backtesting, risk auditing, and performance analysis.
+5. **Specialized sub-agents** (like the debugging agent) demonstrate how to decompose complex tasks. The ØMEGA AI should use independent agents for backtesting, risk auditing, and performance analysis.
 
 6. **Structured JSON output** ensures type-safe communication between agents and systems. All signal processing and order generation should use strict JSON schemas.
 
@@ -325,5 +325,5 @@ Manus supports text, image, file, and audio inputs in a single message, enabling
 [2]: https://github.com/dontriskit/awesome-ai-system-prompts "Manus System Prompt — dontriskit"
 [3]: https://github.com/jujumilk3/leaked-system-prompts "Manus Leaked System Prompts — jujumilk3"
 [4]: https://github.com/asgeirtj/system_prompts_leaks "System Prompts Leaks — asgeirtj"
-[5]: /tmp/omega-system-rough/prompts/manus/tools.json "Manus Tools Schema (29 tools)"
-[6]: /tmp/omega-system-rough/prompts/manus/modules.txt "Manus Modules Configuration"
+[5]: /tmp/XYRASYSTEMS---OMEGA-AI/prompts/manus/tools.json "Manus Tools Schema (29 tools)"
+[6]: /tmp/XYRASYSTEMS---OMEGA-AI/prompts/manus/modules.txt "Manus Modules Configuration"

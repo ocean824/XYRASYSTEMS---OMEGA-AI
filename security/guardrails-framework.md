@@ -1,14 +1,14 @@
 # Security Guardrails Framework for AI Agent Systems
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — ØMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
 
 ## Executive Summary
 
-This document synthesizes security analyses from CrowdStrike [1], Trend Micro [2], Cisco [3], Snyk [4], NSFOCUS [5], Oasis Security [6], Microsoft [7], and Giskard [8] into a comprehensive security guardrails framework for AI agent systems. It goes beyond any single source by combining threat models, vulnerability taxonomies, and mitigation strategies into a unified framework specifically designed for the Omega System's financial trading context.
+This document synthesizes security analyses from CrowdStrike [1], Trend Micro [2], Cisco [3], Snyk [4], NSFOCUS [5], Oasis Security [6], Microsoft [7], and Giskard [8] into a comprehensive security guardrails framework for AI agent systems. It goes beyond any single source by combining threat models, vulnerability taxonomies, and mitigation strategies into a unified framework specifically designed for the ØMEGA AI's financial trading context.
 
 The core thesis is this: **AI agents are not just software — they are autonomous actors with real-world capabilities**. Traditional application security (input validation, authentication, authorization) is necessary but insufficient. Agent security requires additional layers: behavioral monitoring, tool-level access control, output filtering, memory integrity verification, and runtime anomaly detection.
 
@@ -34,7 +34,7 @@ AI agents introduce a fundamentally new threat surface that does not exist in tr
 CrowdStrike's analysis of OpenClaw identifies a six-stage attack chain that applies to all AI agent systems [1]:
 
 **Stage 1: Reconnaissance**
-The attacker identifies the target agent system. For OpenClaw, this involves detecting exposed WebSocket endpoints, DNS requests to openclaw.ai, or social engineering to determine which agent platform a target uses. For the Omega System, reconnaissance would involve identifying TradingView webhook endpoints, exchange API patterns, or agent communication channels.
+The attacker identifies the target agent system. For OpenClaw, this involves detecting exposed WebSocket endpoints, DNS requests to openclaw.ai, or social engineering to determine which agent platform a target uses. For the ØMEGA AI, reconnaissance would involve identifying TradingView webhook endpoints, exchange API patterns, or agent communication channels.
 
 **Stage 2: Initial Access**
 The attacker gains the ability to influence the agent's context. This can occur through:
@@ -58,7 +58,7 @@ Sensitive data is extracted through the agent's communication channels — sendi
 **Stage 6: Persistence**
 The attacker modifies the agent's memory, configuration, or skills to maintain access across sessions. This is particularly dangerous because the agent will continue executing attacker objectives even after the initial injection is no longer present [1] [7].
 
-### 1.3 Omega System-Specific Threats
+### 1.3 ØMEGA AI-Specific Threats
 
 For a financial trading system, the threat model includes additional attack vectors:
 
@@ -175,7 +175,7 @@ The security guardrails framework follows a defense-in-depth model with five lay
 | **Indirect injection** | Malicious content embedded in fetched web pages | Content-source separation |
 | **Social engineering** | "The user asked me to tell you to..." | Authority chain verification |
 
-**Refinement Suggestion for Omega System:**
+**Refinement Suggestion for ØMEGA AI:**
 
 For trading-specific input security, implement additional controls:
 
@@ -212,7 +212,7 @@ const tradingSignalSchema = {
 | **Timeout enforcement** | Maximum execution time per tool call and per session | Medium — prevents resource exhaustion |
 | **Context integrity** | Verify system prompt hasn't been modified during execution | High — detects prompt injection mid-session |
 
-**Tool-Level Access Control Matrix (Omega System):**
+**Tool-Level Access Control Matrix (ØMEGA AI):**
 
 | Agent Type | Market Data | Signal Processing | Risk Calculation | Order Execution | Fund Transfer | Config Change |
 |-----------|-------------|-------------------|------------------|-----------------|---------------|---------------|
@@ -234,7 +234,7 @@ const tradingSignalSchema = {
 | **Response format validation** | Ensure outputs conform to expected schemas | Medium — prevents unexpected output types |
 | **Exfiltration detection** | Monitor for outputs that encode data for external transmission | Medium — catches known encoding patterns |
 
-**Refinement Suggestion for Omega System:**
+**Refinement Suggestion for ØMEGA AI:**
 
 Trading-specific output controls:
 
@@ -260,7 +260,7 @@ Trading-specific output controls:
 | **Encryption at rest** | All persistent data encrypted | High — protects data if storage is compromised |
 | **Encryption in transit** | All communications use TLS | High — prevents eavesdropping |
 
-**Omega System Infrastructure Design:**
+**ØMEGA AI Infrastructure Design:**
 
 ```
 ┌──────────────────────────────────────────────────┐

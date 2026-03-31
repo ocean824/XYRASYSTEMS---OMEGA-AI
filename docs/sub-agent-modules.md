@@ -1,20 +1,20 @@
-# Sub-Agent Modules: Specialized Agents for Each Domain
+# XYRASYSTEMS - OMEGA AI — Sub-Agent Modules & Capabilities
 
 > **Author:** Black Wealth Capital Research Division
-> **Status:** Rough Draft — Omega System Foundation Document
+> **Status:** Rough Draft — XYRASYSTEMS - OMEGA AI Foundation Document
 > **Last Updated:** March 2026
 
 ---
 
 ## Executive Summary
 
-The Omega System is built on a **master orchestrator + pluggable sub-agents** architecture. Each sub-agent is a specialized AI system optimized for a specific business domain. This document describes the design, capabilities, and integration patterns for each sub-agent module.
+The ØMEGA AI is built on a **master orchestrator + pluggable sub-agents** architecture. Each sub-agent is a specialized AI system optimized for a specific business domain. This document describes the design, capabilities, and integration patterns for each sub-agent module.
 
 ---
 
 ## Master Orchestrator
 
-The master orchestrator is the central nervous system of Omega System. It:
+The master orchestrator is the central nervous system of ØMEGA AI. It:
 
 1. **Routes incoming requests** to the appropriate sub-agent based on domain
 2. **Manages approval flows** — Autonomous actions vs. confirmation-required actions
@@ -28,10 +28,10 @@ The master orchestrator is the central nervous system of Omega System. It:
 ### Master Orchestrator System Prompt Template
 
 ```markdown
-# Omega System — Master Orchestrator
+# ØMEGA AI — Master Orchestrator
 
 ## Identity
-You are the Omega System Master Orchestrator, the central coordinator for 
+You are the ØMEGA AI Master Orchestrator, the central coordinator for 
 all business automation across Black Wealth Capital.
 
 ## Core Responsibilities
@@ -42,10 +42,14 @@ all business automation across Black Wealth Capital.
 5. Manage errors and recovery
 
 ## Sub-Agents Available
-- Trading Agent: Market analysis, signal processing, order execution
+- Trading Agent (ORACLE AI): Market analysis, signal processing, order flow execution
 - Marketing Agent: Campaign management, audience targeting, analytics
 - E-commerce Agent: Product management, orders, fulfillment
-- Research Agent: Data collection, analysis, reporting
+- Research Agent (MiroFish): Data collection, analysis, swarm intelligence prediction
+- Simulation Agent (MiroFish): Parallel world simulation and GraphRAG construction.
+- Sonus (Audio Agent): Immersive audiobooks, emotion analysis, and granular voice control.
+- Visage (Visual Agent): High-fidelity video generation pipeline (Open-Sora, Wan 2.x, Mochi, SVD), spatial audio (ViSAGe), and virtual humans (MuseV).
+- Media Agent: Music generation (YuE, DiffRhythm, ACE-Step).
 - Operations Agent: Task management, scheduling, notifications
 - Desktop Agent: App control, workflow automation
 - Browser Agent: Web automation, data extraction
@@ -76,17 +80,23 @@ All responses must be structured JSON with:
 
 ## Sub-Agent Modules
 
-### 1. Trading Agent
+### 1. Trading Agent (ORACLE AI)
 
-**Purpose:** Analyze market signals, manage positions, execute trades with risk controls
+**Purpose:** Analyze market signals, manage positions, and execute trades using the **ORACLE AI** standalone intelligence stack.
+
+**Operational Modes:**
+- **Integrated**: Acts as the specialized trading intelligence for the ØMEGA AI.
+- **Standalone**: Functions as independent trading software with direct execution and analysis.
 
 **Capabilities:**
-- Signal ingestion from TradingView, webhooks, APIs
-- Technical analysis (Market Cipher, AlgoPro, custom indicators)
-- Position sizing (Kelly Criterion, Monte Carlo validation)
-- Order management (entry, exit, stop loss, take profit)
-- Risk management (portfolio limits, drawdown controls, liquidation prevention)
-- Performance tracking and reporting
+- **Layered Intelligence (Oracle)**: 4-layer confirmation stack (Data, Vision, Indicators, Decision Engine).
+- **Standalone Capability**: Direct connection to exchanges (IBKR, Binance, etc.) and real-time data feeds.
+- **Omega Communication**: Protocol for feeding trade biases and confidence scores to the Omega Master Orchestrator.
+- **Order Flow Analysis**: Ingestion of tick-level data, footprint charts, and delta per price level.
+- **Institutional Bias Tracking**: Options flow (sweeps, dark pools) via Unusual Whales/Tradytics.
+- **Visual Intelligence**: AI vision analysis of charts to detect liquidity sweeps and trend structure.
+- **Structured Signal Processing**: Real-time indicator state engine (RSI, EMA, Volume Imbalance).
+- **Risk Management**: Portfolio limits, drawdown controls, and regime detection.
 
 **Integration Points:**
 - **Input:** TradingView webhooks, market data APIs, user commands
@@ -115,18 +125,21 @@ You are the Trading Agent, responsible for analyzing market signals and
 executing trades with strict risk controls.
 
 ### Core Principles
-1. Capital preservation is the highest priority
-2. Every trade must pass risk validation
-3. Position sizing follows Kelly Criterion
-4. Risk limits are absolute — never override them
-5. When uncertain, do nothing and report to operator
+1. Capital preservation is the highest priority.
+2. **Oracle Alignment**: No trade without multi-layer confirmation (Data + Vision + Indicators).
+3. Every trade must pass risk validation and confidence scoring.
+4. Position sizing follows Kelly Criterion + Oracle Confidence Score.
+5. Risk limits are absolute — never override them.
+6. When uncertain, do nothing and report to operator.
 
-### Signal Processing
-1. Validate signal source (HMAC verification)
-2. Check confluence with other signals
-3. Calculate position size
-4. Verify risk limits
-5. Request confirmation for order placement
+### Signal Processing (Oracle Stack)
+1. **Layer 1 (Data)**: Ingest order flow, options sweeps, and institutional positioning.
+2. **Layer 2 (Vision)**: Analyze chart screenshots for liquidity sweeps and trend structure.
+3. **Layer 3 (Indicators)**: Verify structured indicator states (RSI, MACD, Volume).
+4. **Layer 4 (Decision)**: Synthesize layers into Bias and Confidence Score.
+5. **Validation**: Check Oracle alignment ("Are all systems aligned right now?").
+6. **Communication**: Report Oracle Bias and Confidence Score to the Omega Master Orchestrator.
+7. **Execution**: Calculate dynamic position size, verify risk limits, and execute (standalone or Omega-confirmed).
 
 ### Risk Controls
 - Maximum position size: [configurable per symbol]
@@ -143,17 +156,17 @@ executing trades with strict risk controls.
 
 ---
 
-### 2. Marketing Agent
+### 2. Marketing Agent (Media Enhanced)
 
-**Purpose:** Manage marketing campaigns, audience targeting, performance optimization
+**Purpose:** Manage marketing campaigns, audience targeting, and high-fidelity content generation using specialized media AI.
 
 **Capabilities:**
-- Campaign creation and management (Meta Ads, Google Ads, email, SMS)
-- Audience segmentation and targeting
-- Content generation and optimization
-- Performance analytics and reporting
-- A/B testing and experimentation
-- Budget optimization and ROI tracking
+- **Media Generation (YuE/DiffRhythm)**: Creates custom jingles, background music, and full-length ad songs.
+- **Virtual Human (MuseV/MuseTalk)**: Generates lip-synced avatars and high-fidelity video ads.
+- **Campaign creation and management**: Meta Ads, Google Ads, email, SMS.
+- **Audience segmentation and targeting**: Precise audience mapping and optimization.
+- **Content generation and optimization**: Automated ad copy and creative generation.
+- **Performance analytics and reporting**: Budget optimization and ROI tracking.
 
 **Integration Points:**
 - **Input:** Campaign briefs, performance data, user commands
@@ -210,17 +223,17 @@ marketing campaigns across all channels.
 
 ---
 
-### 3. E-commerce Agent
+### 3. E-commerce Agent (Visage Enhanced)
 
-**Purpose:** Manage products, inventory, orders, and customer service
+**Purpose:** Manage products, inventory, orders, and high-fidelity visual marketing.
 
 **Capabilities:**
-- Product management (creation, updates, pricing)
-- Inventory management and forecasting
-- Order processing and fulfillment
-- Customer service and support
-- Refunds and returns management
-- Analytics and reporting
+- **Visual Showcases (Visage)**: Automatically generates 360° product videos and high-fidelity promotional clips.
+- **Product management**: Creation, updates, and dynamic pricing.
+- **Inventory management**: Forecasting and stock optimization.
+- **Order processing**: Fulfillment tracking and customer communication.
+- **Customer service**: Automated support, refunds, and returns management.
+- **Analytics**: Performance reporting and sales insights.
 
 **Integration Points:**
 - **Input:** Product data, orders, customer inquiries
@@ -277,17 +290,18 @@ orders, and customer satisfaction.
 
 ---
 
-### 4. Research Agent
+### 4. Research Agent (MiroFish Enhanced)
 
-**Purpose:** Collect data, analyze information, generate reports
+**Purpose:** Collect data, analyze information, and generate predictive reports using **MiroFish** swarm intelligence.
 
 **Capabilities:**
-- Web search and data collection
-- Document analysis and summarization
-- Data visualization and reporting
-- Competitive analysis
-- Market research
-- Trend identification
+- **Swarm Intelligence (MiroFish)**: Simulates thousands of agents to predict real-world outcomes.
+- **Parallel World Simulation**: Rehearses future trajectories in a digital sandbox.
+- **GraphRAG Construction**: Deep knowledge graph building from seed materials.
+- **Web search and data collection**: Ingests breaking news and policy drafts as simulation seeds.
+- **Document analysis and summarization**: Document-to-persona extraction for simulation environments.
+- **Predictive Reporting**: Generates detailed simulation reports via `ReportAgent`.
+- **Trend identification**: Captures collective emergence from agent interactions.
 
 **Integration Points:**
 - **Input:** Research queries, data sources, analysis requests
