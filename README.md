@@ -26,6 +26,7 @@ The goal is not to build yet another narrow AI tool, but to synthesize the archi
 | Section | Description |
 |---------|-------------|
 | [Vision & Positioning](#vision--positioning) | ØMEGA AI as universal AI OS vs. specialized tools |
+| [**CodeSpring Master Instructions**](CODESPRING-MASTER-INSTRUCTIONS.md) | **3,500+ line definitive implementation guide & capability matrix** |
 | [Architecture Overview](docs/architecture-overview.md) | Master orchestrator + sub-agent architecture |
 | [Sub-Agent Modules](docs/sub-agent-modules.md) | Trading, Marketing, E-commerce, Research, Operations agents |
 | [MCP Integration Strategy](docs/mcp-integration-strategy.md) | Connecting to Shopify, Meta Ads, Stripe, Zapier, n8n, etc. |
@@ -134,6 +135,8 @@ Each tool excels at one thing but can't cross domain boundaries. **There is no u
 ```
 XYRASYSTEMS---OMEGA-AI/
 ├── README.md                                    ← This file
+├── CODESPRING-MASTER-INSTRUCTIONS.md            ← Definitive 3,500+ line implementation guide
+├── CODESPRING-INTEGRATION-MANIFEST.md           ← Integration checklist
 ├── docs/
 │   ├── architecture-overview.md                 ← Master orchestrator + sub-agent architecture
 │   ├── sub-agent-modules.md                     ← Trading, Marketing, E-commerce, Research, Operations
@@ -279,21 +282,23 @@ These will be applied to build ØMEGA AI's:
 ## TLDR: Step-by-Step Guide
 
 ### What This Repo Contains
-1. **Master orchestrator architecture** — How to coordinate multiple specialized sub-agents
-2. **Sub-agent module templates** — Trading, Marketing, E-commerce, Research, Operations agents
-3. **MCP integration strategy** — Connecting to Shopify, Meta Ads, Stripe, Zapier, n8n, and unlimited services
-4. **4 architecture deep dives** — OpenClaw, Manus, Runner H/Surfer H, Vy/Vercept
-5. **3 security documents** — Guardrails framework, vulnerability catalog, injection taxonomy
-6. **3 cross-cutting analyses** — Architecture overview, 12 design patterns, prompt taxonomy
-7. **Raw system prompts** — From 14+ AI platforms for reference
+1. **CODESPRING-MASTER-INSTRUCTIONS.md** — The definitive 3,500+ line implementation guide mapping 350+ tools from 22 systems to the 25 ØMEGA AI agents
+2. **Master orchestrator architecture** — How to coordinate multiple specialized sub-agents
+3. **Sub-agent module templates** — Trading, Marketing, E-commerce, Research, Operations agents
+4. **MCP integration strategy** — Connecting to Shopify, Meta Ads, Stripe, Zapier, n8n, and unlimited services
+5. **4 architecture deep dives** — OpenClaw, Manus, Runner H/Surfer H, Vy/Vercept
+6. **3 security documents** — Guardrails framework, vulnerability catalog, injection taxonomy
+7. **3 cross-cutting analyses** — Architecture overview, 12 design patterns, prompt taxonomy
+8. **Raw system prompts** — From 14+ AI platforms for reference
 
 ### How to Use This Research
-1. **Start with** `docs/architecture-overview.md` for the master orchestrator concept
-2. **Read** `docs/sub-agent-modules.md` to understand how each domain specializes
-3. **Study** `docs/mcp-integration-strategy.md` for connecting to external services
-4. **Deep dive** into individual architectures for implementation details
-5. **Reference** `security/guardrails-framework.md` for security across all domains
-6. **Browse** `prompts/` for system prompt examples when building sub-agents
+1. **Start with** `CODESPRING-MASTER-INSTRUCTIONS.md` — This is the primary output of the research phase and the blueprint for development.
+2. **Read** `docs/architecture-overview.md` for the master orchestrator concept
+3. **Read** `docs/sub-agent-modules.md` to understand how each domain specializes
+4. **Study** `docs/mcp-integration-strategy.md` for connecting to external services
+5. **Deep dive** into individual architectures for implementation details
+6. **Reference** `security/guardrails-framework.md` for security across all domains
+7. **Browse** `prompts/` for system prompt examples when building sub-agents
 
 ### Next Steps for the ØMEGA AI
 1. **Design the master orchestrator** — Agent loop, approval flows, audit trail, security gateway
