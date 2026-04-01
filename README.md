@@ -38,6 +38,7 @@ The goal is not to build yet another narrow AI tool, but to synthesize the archi
 | [Sources & Attribution](#sources--attribution) | All research sources and prompt repositories |
 | [Repository Structure](#repository-structure) | File and directory layout |
 | [TLDR: Step-by-Step Guide](#tldr-step-by-step-guide) | Quick-start guide |
+| [Deep Dive Documents](#deep-dive-documents) | Direct links to all 30+ internal research and architecture files |
 
 ---
 
@@ -902,3 +903,48 @@ XYRASYSTEMS---OMEGA-AI/
 ## License
 
 This repository is for **educational and research purposes only**. System prompts are sourced from publicly available repositories. All original analysis and documentation is copyright Black Wealth Capital.
+
+---
+
+## Deep Dive Documents
+
+This repository contains over 30 detailed research, architecture, and specification documents. Use the links below to navigate directly to the specific areas of the ØMEGA AI platform.
+
+### 🌟 The Master Blueprint
+* [**CODESPRING-MASTER-INSTRUCTIONS.md**](./CODESPRING-MASTER-INSTRUCTIONS.md) — The definitive 3,500+ line implementation guide. Start here.
+* [**CODESPRING-INTEGRATION-MANIFEST.md**](./CODESPRING-INTEGRATION-MANIFEST.md) — Integration checklist for all capabilities.
+
+### 🏛️ Core Architecture & Design
+* [architecture-overview.md](./docs/architecture-overview.md) — Master orchestrator and sub-agent architecture.
+* [agent-structure.md](./docs/agent-structure.md) — Detailed agent hierarchy with workflow examples.
+* [master-agent-index.md](./docs/master-agent-index.md) — The canonical 25-agent roster.
+* [agent-integration-patterns.md](./docs/agent-integration-patterns.md) — Cross-agent workflow patterns and communication protocols.
+* [agent-design-patterns.md](./docs/agent-design-patterns.md) — 12 recurring patterns across all studied systems.
+* [platform-doctrine.md](./docs/platform-doctrine.md) — MVP to enterprise migration strategy.
+* [2026-agent-intelligence-stack.md](./docs/2026-agent-intelligence-stack.md) — PydanticAI, Swarm, and DeepSeek-V3 patterns.
+* [2024-2025-foundational-patterns.md](./docs/2024-2025-foundational-patterns.md) — CrewAI, AutoGen, LangGraph, and DSPy history.
+
+### ⚙️ Specialized Sub-Systems
+* [sub-agent-modules.md](./docs/sub-agent-modules.md) — Trading, Marketing, E-commerce, Research, and Operations specs.
+* [mcp-integration-strategy.md](./docs/mcp-integration-strategy.md) — Connecting to external services (full MCP spec).
+* [oracle-trading-system.md](./docs/oracle-trading-system.md) — ORACLE AI trading system specification.
+* [mirofish-swarm-intelligence.md](./docs/mirofish-swarm-intelligence.md) — Swarm intelligence and prediction engine.
+* [audio-media-generation.md](./docs/audio-media-generation.md) — Sonus (Audio) and Visage (Visual) creative agents.
+* [visage-video-pipeline.md](./docs/visage-video-pipeline.md) — Multi-stage cinematic video production.
+* [revenue-generation-workflows.md](./docs/revenue-generation-workflows.md) — E-commerce and sales automation.
+* [capital-raising-playbook.md](./docs/capital-raising-playbook.md) — Pitch deck and investor outreach automation.
+* [user-profiling-system.md](./docs/user-profiling-system.md) — User behavior tracking and personalization.
+* [persistent-business-partner.md](./docs/persistent-business-partner.md) — Long-term memory and continuity engine.
+* [productivity-optimization.md](./docs/productivity-optimization.md) — Self-improvement and task efficiency.
+
+### 🔍 System Deep Dives
+* [manus-architecture.md](./architectures/manus-architecture.md) — Sandbox model, 29 tools, module system.
+* [openclaw-architecture.md](./architectures/openclaw-architecture.md) — Multi-channel operations, proactive heartbeat.
+* [runner-h-surfer-h.md](./architectures/runner-h-surfer-h.md) — Browser automation with VLMs.
+* [vy-vercept.md](./architectures/vy-vercept.md) — Desktop control, visual-first interaction.
+
+### 🛡️ Security & Prompt Engineering
+* [guardrails-framework.md](./security/guardrails-framework.md) — 5-layer defense-in-depth.
+* [openclaw-vulnerabilities.md](./security/openclaw-vulnerabilities.md) — Security analysis from 8 cybersecurity firms.
+* [prompt-injection-taxonomy.md](./security/prompt-injection-taxonomy.md) — Attack vectors and defenses.
+* [prompt-taxonomy.md](./docs/prompt-taxonomy.md) — System prompt engineering techniques.
