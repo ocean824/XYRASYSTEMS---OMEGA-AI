@@ -1769,6 +1769,1636 @@ class SilentPlanner:
 
 ---
 
+### 5.15 From Claude Cowork: Enterprise Tool Integration & 50+ Workflow Commands
+
+**REAL CAPABILITY: Native Enterprise Tool Connectors**
+
+DOMINION has native access to a vast array of enterprise tools, modeled directly on Claude Cowork's connector registry. Claude Cowork exposes 100+ tools across engineering, operations, customer management, finance, legal, marketing, and design. Every connector listed below is a real, buildable integration point.
+
+```python
+class EnterpriseConnectors:
+    """Claude Cowork-inspired native integrations — full registry."""
+    
+    # === ENGINEERING ===
+    ENGINEERING = {
+        "github":   ["read_repo", "create_pr", "comment_pr", "merge_pr", "list_issues", "create_issue"],
+        "gitlab":   ["read_repo", "manage_issues", "trigger_pipeline", "read_merge_request"],
+        "jira":     ["create_ticket", "transition_issue", "add_comment", "read_sprint", "assign_user"],
+        "linear":   ["create_issue", "update_state", "assign_user", "read_cycle"],
+        "sentry":   ["read_errors", "resolve_issue", "assign_issue", "read_trends"],
+        "datadog":  ["read_metrics", "create_dashboard", "trigger_monitor", "read_logs"],
+        "pagerduty":["create_incident", "acknowledge", "resolve", "escalate"],
+    }
+    
+    # === OPERATIONS ===
+    OPERATIONS = {
+        "asana":    ["create_task", "update_status", "assign", "create_project"],
+        "notion":   ["read_page", "create_database_item", "update_page", "query_database"],
+        "slack":    ["send_message", "read_channel", "create_channel", "upload_file"],
+        "google_workspace": ["drive_search", "read_calendar", "create_doc", "create_sheet"],
+        "confluence": ["read_page", "create_page", "update_page", "search"],
+        "trello":   ["create_card", "move_card", "add_comment", "create_list"],
+    }
+    
+    # === CUSTOMER ===
+    CUSTOMER = {
+        "salesforce": ["read_lead", "update_opportunity", "log_call", "create_task", "run_report"],
+        "hubspot":    ["create_contact", "send_email", "update_deal", "read_pipeline"],
+        "zendesk":    ["read_ticket", "reply_ticket", "solve_ticket", "create_macro"],
+        "intercom":   ["read_conversation", "send_message", "close_conversation", "tag_user"],
+    }
+    
+    # === FINANCE ===
+    FINANCE = {
+        "stripe":  ["create_charge", "create_subscription", "refund", "list_invoices", "create_payment_link"],
+        "paypal":  ["create_order", "capture_order", "refund", "create_invoice"],
+        "quickbooks": ["create_invoice", "read_balance_sheet", "journal_entry"],
+    }
+    
+    # === INFRASTRUCTURE ===
+    INFRASTRUCTURE = {
+        "aws":        ["s3_upload", "s3_download", "lambda_invoke", "ec2_status", "cloudwatch_query"],
+        "gcp":        ["storage_upload", "bigquery_run", "cloud_run_deploy"],
+        "vercel":     ["deploy", "read_logs", "rollback", "read_domains"],
+        "netlify":    ["deploy", "read_deploys", "rollback"],
+        "cloudflare": ["purge_cache", "update_dns", "read_analytics"],
+    }
+    
+    # === COMMUNICATION ===
+    COMMUNICATION = {
+        "twilio":    ["send_sms", "make_call", "send_whatsapp"],
+        "sendgrid":  ["send_email", "create_template", "read_stats"],
+        "mailchimp": ["create_campaign", "send_campaign", "add_subscriber"],
+        "telegram":  ["send_message", "read_updates", "send_photo"],
+    }
+```
+
+**REAL CAPABILITY: 50+ Workflow Commands (Claude Cowork Slash Commands)**
+
+Claude Cowork exposes domain-specific slash commands that represent complete, pre-built workflows. DOMINION absorbs ALL of these as callable, composable workflow units:
+
+```python
+class WorkflowCommands:
+    """Claude Cowork slash commands — each is a complete workflow."""
+    
+    # === ENGINEERING WORKFLOWS ===
+    ENGINEERING = {
+        "debug":            "Structured debugging session with root-cause analysis",
+        "architecture":     "Create or evaluate an Architecture Decision Record (ADR)",
+        "deploy_checklist": "Pre-deployment verification checklist",
+        "review":           "Review code changes for security, performance, correctness",
+        "incident":         "Run an incident response workflow",
+        "standup":          "Generate standup update from recent activity",
+    }
+    
+    # === DATA & ANALYTICS WORKFLOWS ===
+    DATA = {
+        "validate":       "QA an analysis before sharing",
+        "analyze":        "Answer data questions with SQL + Python",
+        "explore_data":   "Profile and explore a dataset",
+        "create_viz":     "Create publication-quality visualizations with Python",
+        "write_query":    "Write optimized SQL for your dialect with best practices",
+        "build_dashboard":"Build interactive HTML dashboard with charts, filters, tables",
+    }
+    
+    # === FINANCE WORKFLOWS ===
+    FINANCE = {
+        "journal_entry":     "Prepare journal entries with debits, credits, supporting detail",
+        "sox_testing":       "Generate SOX sample selections and control assessments",
+        "income_statement":  "Generate income statement with period-over-period comparison",
+        "reconciliation":    "Reconcile GL balances to subledger, bank, or third-party",
+        "variance_analysis": "Decompose variances into drivers with narrative explanations",
+    }
+    
+    # === SALES WORKFLOWS ===
+    SALES = {
+        "pipeline_review": "Analyze pipeline health",
+        "forecast":        "Generate weighted sales forecast",
+        "call_summary":    "Process call notes or transcript into structured summary",
+    }
+    
+    # === MARKETING WORKFLOWS ===
+    MARKETING = {
+        "email_sequence":     "Design and draft multi-email sequences",
+        "performance_report": "Build marketing performance report",
+        "competitive_brief":  "Research competitors for positioning and messaging",
+        "draft_content":      "Draft blog posts, social media, newsletters, landing pages",
+        "brand_review":       "Review content against brand voice and style guide",
+        "campaign_plan":      "Generate full campaign brief",
+        "seo_audit":          "Run comprehensive SEO audit",
+    }
+    
+    # === LEGAL WORKFLOWS ===
+    LEGAL = {
+        "triage_nda":       "Rapidly triage an incoming NDA",
+        "review_contract":  "Review contract against negotiation playbook",
+        "vendor_check":     "Check status of existing vendor agreements",
+        "compliance_check": "Run compliance check on proposed action or feature",
+        "respond":          "Generate response to common legal inquiry",
+        "brief":            "Generate contextual briefings for legal work",
+        "signature_request":"Prepare and route document for e-signature",
+    }
+    
+    # === PRODUCT MANAGEMENT WORKFLOWS ===
+    PRODUCT = {
+        "metrics_review":      "Review and analyze product metrics with trend analysis",
+        "stakeholder_update":  "Generate stakeholder update tailored to audience",
+        "roadmap_update":      "Update, create, or reprioritize product roadmap",
+        "sprint_planning":     "Plan a sprint with story points and assignments",
+        "competitive_brief":   "Create competitive analysis brief",
+        "synthesize_research": "Synthesize user research into structured insights",
+        "write_spec":          "Write feature spec or PRD from problem statement",
+    }
+    
+    # === CUSTOMER SUPPORT WORKFLOWS ===
+    SUPPORT = {
+        "triage":         "Triage and prioritize support ticket",
+        "escalate":       "Package escalation for engineering or leadership",
+        "research":       "Multi-source research on customer question",
+        "kb_article":     "Draft knowledge base article from resolved issue",
+        "draft_response": "Draft professional customer-facing response",
+    }
+    
+    # === DESIGN WORKFLOWS ===
+    DESIGN = {
+        "research_synthesis": "Synthesize user research into themes and recommendations",
+        "accessibility":     "Run WCAG accessibility audit on design or page",
+        "critique":          "Get structured design feedback on usability and hierarchy",
+        "design_system":     "Audit, document, or extend design system",
+        "handoff":           "Generate developer handoff specs from design",
+        "ux_copy":           "Write or review UX copy",
+    }
+    
+    # === DOCUMENT WORKFLOWS ===
+    DOCUMENTS = {
+        "docx":  "Create, read, edit, or manipulate Word documents",
+        "pptx":  "Create, read, edit, or manipulate PowerPoint presentations",
+        "pdf":   "Create, read, edit, or manipulate PDF files",
+        "xlsx":  "Create, read, edit, or manipulate Excel spreadsheets",
+    }
+```
+
+**Agent Mapping**: DOMINION routes these workflow commands to the appropriate agent. For example, `engineering:debug` routes to ARCANE, `sales:pipeline_review` routes to SIREN, `marketing:campaign_plan` routes to MAESTRO, `finance:reconciliation` routes to LEDGER, `legal:compliance_check` routes to JURIS.
+
+**REAL CAPABILITY: Claude Cowork Agent Spawning**
+
+Claude Cowork can spawn specialized sub-agents for complex tasks. DOMINION absorbs this pattern:
+
+```python
+class CoworkAgentSpawner:
+    """Claude Cowork-inspired agent spawning."""
+    
+    AGENT_TYPES = {
+        "general_purpose":    "Research complex questions, search code, execute multi-step tasks",
+        "explore":            "Fast agent specialized for exploring codebases (read-only)",
+        "plan":               "Software architect agent for designing implementation plans",
+        "statusline_setup":   "Configure user's development environment",
+        "claude_code_guide":  "Answer questions about Claude Code, Agent SDK, or API",
+    }
+    
+    async def spawn_agent(self, agent_type: str, task: str, isolation: str = "full"):
+        """Spawn a sub-agent with optional context isolation."""
+        agent = Agent(
+            type=self.AGENT_TYPES[agent_type],
+            task=task,
+            isolation=isolation,  # "full" = clean context, "shared" = inherits parent
+        )
+        return await agent.execute()
+```
+
+**REAL CAPABILITY: Scheduled Task Automation**
+
+Claude Cowork supports cron-based scheduled tasks. DOMINION uses this for all recurring operations:
+
+```python
+class ScheduledTaskManager:
+    """Claude Cowork-inspired scheduled task management."""
+    
+    def create_scheduled_task(self, name: str, cron: str, command: str, args: list = None):
+        """Create a recurring task with cron expression."""
+        return {
+            "name": name,
+            "cron": cron,       # e.g., "0 9 * * 1-5" = weekdays at 9am
+            "command": command,
+            "args": args or [],
+            "work_dir": "/omega/",
+        }
+    
+    def list_scheduled_tasks(self) -> list:
+        """List all active scheduled tasks."""
+        pass
+    
+    def update_scheduled_task(self, task_id: str, **updates):
+        """Update an existing scheduled task."""
+        pass
+```
+
+**REAL CAPABILITY: Browser Automation Suite (Claude Cowork)**
+
+Claude Cowork provides a full browser automation toolkit that goes beyond basic navigation:
+
+```python
+class CoworkBrowserSuite:
+    """Claude Cowork browser automation — full tool list."""
+    
+    TOOLS = {
+        # Core Navigation
+        "navigate":       "Navigate to URL or browser history (forward/back)",
+        "read_page":      "Read current page content and get interactive elements",
+        "find":           "Find elements on page matching a description",
+        "form_input":     "Fill out a form field by reference",
+        "computer":       "Perform raw computer action (click, type, scroll)",
+        
+        # JavaScript & Console
+        "javascript_tool":     "Execute JavaScript code in browser context",
+        "read_console_messages":"Read browser console messages with regex filtering",
+        "read_network_requests":"Read HTTP network requests with URL pattern filtering",
+        
+        # Visual
+        "gif_creator":    "Record multi-step browser interactions as GIF",
+        "upload_image":   "Upload screenshot or image to file input or drag-drop target",
+        "resize_window":  "Resize browser window to specific dimensions",
+        
+        # Tab Management
+        "tabs_context_mcp":  "Get context about current MCP tab group",
+        "tabs_create_mcp":   "Create new empty tab in MCP tab group",
+        "switch_browser":    "Switch which Chrome instance is used for automation",
+        
+        # File Operations
+        "file_upload":    "Upload files from local filesystem to page file input",
+        
+        # Shortcuts & Workflows
+        "shortcuts_list":    "List all available shortcuts and workflows",
+        "shortcuts_execute": "Execute a shortcut or workflow by ID",
+    }
+```
+
+**REAL CAPABILITY: MCP Connector Registry**
+
+Claude Cowork has a searchable registry of MCP connectors. DOMINION uses this to dynamically discover and install new integrations:
+
+```python
+class MCPConnectorRegistry:
+    """Claude Cowork-inspired connector discovery."""
+    
+    def search_registry(self, keywords: list[str]) -> list[dict]:
+        """Search for available MCP connectors by keyword."""
+        # Returns: [{uuid, name, description, category, install_url}]
+        pass
+    
+    def suggest_connectors(self, uuids: list[str]):
+        """Display connector suggestions to user for approval."""
+        pass
+    
+    def search_plugins(self, query: str, keywords: list[str]) -> list[dict]:
+        """Search for installable plugins."""
+        pass
+    
+    def suggest_plugin_install(self, plugin_name: str, plugin_id: str):
+        """Display plugin installation suggestion banner."""
+        pass
+```
+
+---
+
+### 5.16 From GPT-5 Agent Mode: Universal Computer Control & Container System
+
+**REAL CAPABILITY: Universal Computer Control**
+
+When APIs are insufficient, DOMINION uses GPT-5's computer tool for raw UI interaction. This is the fallback for any platform that lacks an API — DOMINION can interact with it visually, exactly as a human would.
+
+```python
+class ComputerControl:
+    """GPT-5-inspired universal computer interaction."""
+    
+    # All available UI actions
+    ACTIONS = {
+        "click":        {"params": ["x", "y"], "desc": "Click at coordinates"},
+        "double_click": {"params": ["x", "y"], "desc": "Double-click at coordinates"},
+        "drag":         {"params": ["start_x", "start_y", "end_x", "end_y"], "desc": "Drag from start to end"},
+        "keypress":     {"params": ["key"], "desc": "Press a key or key combination"},
+        "move":         {"params": ["x", "y"], "desc": "Move mouse to coordinates"},
+        "scroll":       {"params": ["direction", "amount"], "desc": "Scroll in direction"},
+        "type":         {"params": ["text"], "desc": "Type text at current cursor position"},
+        "wait":         {"params": ["duration"], "desc": "Wait for specified duration"},
+    }
+    
+    def initialize_computer(self) -> str:
+        """Initialize a computer session and return computer_id."""
+        pass
+    
+    def get_screenshot(self, computer_id: str) -> bytes:
+        """Get current screenshot for visual verification."""
+        pass
+    
+    def switch_app(self, app_name: str):
+        """Switch active application (e.g., 'Chrome', 'Terminal', 'VS Code')."""
+        pass
+    
+    def execute_actions(self, actions: list[dict]):
+        """Execute a sequence of raw UI actions."""
+        for action in actions:
+            handler = getattr(self, f"_do_{action['type']}")
+            handler(**{k: v for k, v in action.items() if k != 'type'})
+    
+    def sync_file(self, filepath: str) -> str:
+        """Sync a file to shared folder and return file ID for citation."""
+        pass
+```
+
+**REAL CAPABILITY: Container Execution Environment**
+
+GPT-5 Agent Mode provides a full container environment for code execution. DOMINION uses this for isolated, reproducible task execution:
+
+```python
+class ContainerEnvironment:
+    """GPT-5-inspired container execution."""
+    
+    def exec_command(self, cmd: str, session_name: str = "default",
+                     workdir: str = "/home/user", timeout: int = 120,
+                     env: dict = None, user: str = "user") -> dict:
+        """Execute a command in the container."""
+        return {"stdout": "", "stderr": "", "exit_code": 0}
+    
+    def feed_chars(self, session_name: str, chars: str, yield_time_ms: int = 100):
+        """Send characters to an exec session's STDIN (for interactive processes)."""
+        pass
+    
+    def open_image(self, path: str) -> bytes:
+        """Return an image from a given absolute path in the container."""
+        pass
+    
+    def download_file(self, url: str, dest_path: str):
+        """Download a file from URL into the container filesystem."""
+        pass
+```
+
+**REAL CAPABILITY: Integrated Image Generation**
+
+DOMINION natively generates images without relying on external UI:
+
+```python
+class NativeImageGen:
+    """GPT-5-inspired integrated image generation."""
+    
+    def generate_image(self, prompt: str, size: str = "1024x1024",
+                       n: int = 1, transparent_background: bool = False,
+                       referenced_image_ids: list = None) -> list[str]:
+        """Generate image(s) and return local file path(s)."""
+        return self.image_model.text2im(
+            prompt=prompt,
+            size=size,
+            n=n,
+            transparent_background=transparent_background,
+            referenced_image_ids=referenced_image_ids or [],
+        )
+    
+    def edit_image(self, prompt: str, source_image_id: str, size: str = "1024x1024") -> str:
+        """Edit an existing image based on a text prompt."""
+        return self.image_model.text2im(
+            prompt=prompt,
+            referenced_image_ids=[source_image_id],
+            size=size,
+        )
+```
+
+**REAL CAPABILITY: Three-Channel Communication (GPT-5 / O3)**
+
+Both GPT-5 and O3 use a three-channel system. DOMINION implements this identically:
+
+| Channel | Visibility | Purpose | DOMINION Usage |
+| :--- | :--- | :--- | :--- |
+| `analysis` | Hidden from user | Internal reasoning, risk assessment, planning | Strategic thinking, multi-step planning, hypothesis generation |
+| `commentary` | Shown during execution | Progress updates, tool call notifications | "Delegating to QUANTUM...", "Analyzing chart..." |
+| `final` | Polished deliverable | The actual output | Trade signals, reports, campaign plans |
+
+---
+
+### 5.17 From OpenAI O3: Deep Research, Automations & Specialized Data Tools
+
+**REAL CAPABILITY: Multi-Modal Web Research Tool**
+
+O3's `web` tool is the most comprehensive web research tool analyzed. DOMINION absorbs every sub-command:
+
+```python
+class DeepWebResearch:
+    """O3-inspired comprehensive web tool."""
+    
+    COMMANDS = {
+        "search_query":  "Perform a web search",
+        "image_query":   "Search for images",
+        "open":          "Open a URL or reference from previous search",
+        "click":         "Click on an element on a webpage",
+        "find":          "Find a text pattern on a webpage",
+        "finance":       "Retrieve financial data for a ticker (price, volume, fundamentals)",
+        "weather":       "Fetch weather information for a location",
+        "sports":        "Get sports standings, schedules, scores",
+        "calculator":    "Perform mathematical calculations",
+        "time":          "Get current time for any timezone",
+        "screenshot":    "Take screenshot of current webpage (useful for PDFs)",
+    }
+    
+    def execute(self, command: str, **params) -> dict:
+        """Execute any web research command."""
+        handler = self.COMMANDS[command]
+        return self._dispatch(command, params)
+```
+
+**REAL CAPABILITY: Dual Python Execution (Visible + Hidden)**
+
+O3 separates internal reasoning code from user-visible code. DOMINION does the same:
+
+```python
+class DualPythonExecution:
+    """O3-inspired dual Python execution."""
+    
+    def python_internal(self, code: str) -> dict:
+        """Execute Python for internal analysis — NEVER shown to user."""
+        # Runs in ANALYSIS channel
+        # Used for: risk calculations, data preprocessing, hypothesis testing
+        # Environment: stateful Jupyter notebook, 300s timeout, no internet
+        # Persistent storage: /mnt/data/
+        pass
+    
+    def python_user_visible(self, code: str) -> dict:
+        """Execute Python that IS shown to user."""
+        # Runs in COMMENTARY channel
+        # Used for: plots, tables, interactive DataFrames
+        # Includes: ace_tools.display_dataframe_to_user()
+        pass
+```
+
+**REAL CAPABILITY: Automations (Scheduled Tasks)**
+
+O3 and GPT-5.4 both support scheduled automations. DOMINION uses this for all recurring intelligence:
+
+```python
+class AutomationScheduler:
+    """O3/GPT-5.4-inspired automation scheduling."""
+    
+    def create_automation(self, prompt: str, title: str, schedule: dict) -> str:
+        """Create a scheduled or conditional automation."""
+        # schedule = {"type": "cron", "expression": "0 9 * * 1-5"}
+        # schedule = {"type": "conditional", "check_interval": "30m", "condition": "BTC > 100000"}
+        return automation_id
+    
+    def update_automation(self, automation_id: str, **updates):
+        """Update prompt, title, schedule, or enabled status."""
+        pass
+    
+    def list_automations(self) -> list[dict]:
+        """List all active automations."""
+        pass
+```
+
+**REAL CAPABILITY: Canvas Document Environment**
+
+DOMINION uses the `canmore` tool pattern for iterative document and code creation:
+
+```python
+class CanvasEnvironment:
+    """O3-inspired canvas for document/code iteration."""
+    
+    SUPPORTED_TYPES = [
+        "document",      # Rich text documents
+        "code/python",   # Python code with execution
+        "code/javascript","code/typescript", "code/html",
+        "code/java",     "code/c", "code/cpp",
+        "code/react",    # React components with live preview
+        "webview",       # Full web applications
+    ]
+    
+    def create_textdoc(self, name: str, doc_type: str, content: str) -> str:
+        """Create a new document on the canvas."""
+        pass
+    
+    def update_textdoc(self, updates: list[dict]):
+        """Update document using regex find-and-replace."""
+        # updates = [{"pattern": "old_text", "replacement": "new_text", "multiple": False}]
+        pass
+    
+    def comment_textdoc(self, comments: list[dict]):
+        """Add inline comments to the document."""
+        # comments = [{"pattern": "code_section", "comment": "Consider refactoring this"}]
+        pass
+```
+
+**REAL CAPABILITY: File Search with Advanced Operators**
+
+O3's file search supports advanced query operators for precise information retrieval:
+
+```python
+class AdvancedFileSearch:
+    """O3-inspired file search with query operators."""
+    
+    def msearch(self, queries: list[str], source_filter: str = None,
+                file_type_filter: str = None, intent: str = None,
+                time_frame_filter: str = None) -> list[dict]:
+        """Issue multiple search queries simultaneously."""
+        # Query operators:
+        # +term       = boost term importance
+        # --QDF=high  = require fresh/recent results
+        # intent: "keyword" | "semantic" | "hybrid"
+        pass
+    
+    def mclick(self, pointers: list[str], start_date: str = None,
+               end_date: str = None) -> list[dict]:
+        """Open multiple files or URLs from search results."""
+        # Supports: Google Drive, Box, SharePoint, Dropbox, Notion links
+        pass
+```
+
+**REAL CAPABILITY: User Context & Personalization**
+
+O3 and GPT-5.4 maintain persistent user preferences:
+
+```python
+class UserContext:
+    """O3/GPT-5.4-inspired user personalization."""
+    
+    def get_user_info(self) -> dict:
+        """Get user's current location and local time."""
+        return {"location": "coarse_city", "local_time": "2026-04-01T10:30:00"}
+    
+    def bio_update(self, key: str, value: str):
+        """Store non-sensitive user information for personalization."""
+        # Persists across sessions: preferences, goals, communication style
+        pass
+    
+    def get_user_settings(self) -> dict:
+        """Retrieve user's current settings."""
+        return {"personality": "professional", "accent_color": "#000", "appearance": "dark"}
+    
+    def set_setting(self, key: str, value: str):
+        """Change a user setting."""
+        pass
+```
+
+---
+
+### 5.18 From GPT-5.4 Thinking: Extended Reasoning & Summary Reader
+
+**REAL CAPABILITY: Hidden Chain-of-Thought with Summary Access**
+
+GPT-5.4 is a "reasoning model with a hidden chain of thought." DOMINION uses this pattern for deep analysis:
+
+```python
+class ExtendedReasoning:
+    """GPT-5.4-inspired extended thinking."""
+    
+    def think_deeply(self, problem: str, budget: str = "medium") -> dict:
+        """Engage extended reasoning for complex problems."""
+        # budget: "low" (fast, shallow), "medium" (balanced), "high" (deep, slow)
+        # The chain-of-thought is PRIVATE — never shown to user
+        # Only the final conclusion is delivered
+        return {"conclusion": "", "confidence": 0.0, "reasoning_steps": 0}
+    
+    def read_summary(self) -> str:
+        """Read and summarize previous chain-of-thought messages."""
+        # GPT-5.4's summary_reader.read tool
+        # Used to recover context from earlier reasoning
+        pass
+```
+
+**REAL CAPABILITY: Google Workspace Integration (Read-Only)**
+
+GPT-5.4 has native Google Workspace access. DOMINION extends this to read-write:
+
+```python
+class GoogleWorkspaceIntegration:
+    """GPT-5.4-inspired Google Workspace integration."""
+    
+    # Read-Only (GPT-5.4 pattern)
+    def search_calendar_events(self, time_min: str, time_max: str,
+                                timezone: str = "UTC", max_results: int = 10) -> list:
+        pass
+    
+    def read_calendar_event(self, event_id: str) -> dict:
+        pass
+    
+    def search_contacts(self, query: str, max_results: int = 10) -> list:
+        pass
+    
+    def search_emails(self, query: str, tags: list = None, max_results: int = 10) -> list:
+        pass
+    
+    def batch_read_emails(self, message_ids: list[str]) -> list[dict]:
+        pass
+    
+    # Read-Write (DOMINION extension via Google Workspace MCP)
+    def create_calendar_event(self, title: str, start: str, end: str, attendees: list = None) -> str:
+        pass
+    
+    def send_email(self, to: str, subject: str, body: str, attachments: list = None) -> str:
+        pass
+```
+
+**REAL CAPABILITY: Artifact Generation Pipeline**
+
+GPT-5.4 can generate spreadsheets and slide presentations as artifacts:
+
+```python
+class ArtifactGenerator:
+    """GPT-5.4-inspired artifact generation."""
+    
+    def prepare_artifact(self, artifact_type: str) -> str:
+        """Prepare for spreadsheet or slide generation."""
+        # artifact_type: "spreadsheet" | "slides"
+        # Uses openpyxl for spreadsheets, python-pptx for slides
+        pass
+    
+    def generate_spreadsheet(self, data: list[dict], filename: str) -> str:
+        """Generate Excel spreadsheet with formatting."""
+        pass
+    
+    def generate_slides(self, content: list[dict], filename: str) -> str:
+        """Generate PowerPoint presentation."""
+        pass
+    
+    def generate_pdf(self, content: str, filename: str) -> str:
+        """Generate PDF document."""
+        pass
+```
+
+---
+
+### 5.19 From Grok 4.2: Real-Time X Integration & Deep Research
+
+**REAL CAPABILITY: Direct X (Twitter) Platform Access**
+
+Grok has native, real-time access to the X platform. DOMINION (via OMNIPOST) absorbs this completely:
+
+```python
+class XPlatformIntegration:
+    """Grok-inspired native X (Twitter) integration — full tool list."""
+    
+    def search_x(self, query: str, time_filter: str = "24h",
+                 from_user: str = None, min_likes: int = None) -> list[dict]:
+        """Search X for real-time sentiment, news, and conversations."""
+        pass
+    
+    def post_to_x(self, content: str, media_ids: list = None,
+                  reply_to: str = None, quote_tweet_id: str = None) -> str:
+        """Post directly to X with optional media and threading."""
+        pass
+    
+    def get_user_profile(self, username: str) -> dict:
+        """Get X user profile information."""
+        pass
+    
+    def get_trending(self, location: str = "worldwide") -> list[str]:
+        """Get trending topics on X."""
+        pass
+```
+
+**REAL CAPABILITY: Grok Deep Research Mode**
+
+Grok's deep research mode performs multi-step web research with automatic synthesis:
+
+```python
+class GrokDeepResearch:
+    """Grok-inspired deep research with web browsing."""
+    
+    def deep_research(self, query: str, max_sources: int = 20) -> dict:
+        """Conduct deep research across web and X."""
+        return {
+            "synthesis": "",           # Comprehensive answer
+            "sources": [],             # List of URLs with relevance scores
+            "x_sentiment": {},         # Sentiment from X discussions
+            "key_findings": [],        # Bullet-point findings
+            "confidence": 0.0,         # Overall confidence score
+            "contradictions": [],      # Conflicting information found
+        }
+```
+
+**REAL CAPABILITY: Grok Code Execution**
+
+Grok can execute code directly. DOMINION uses this for rapid prototyping:
+
+```python
+class GrokCodeExecution:
+    """Grok-inspired code execution."""
+    
+    def execute_code(self, code: str, language: str = "python") -> dict:
+        """Execute code and return output."""
+        return {"stdout": "", "stderr": "", "exit_code": 0, "files_created": []}
+    
+    def generate_image(self, prompt: str) -> str:
+        """Generate image using Grok's native image generation."""
+        pass
+```
+
+---
+
+### 5.20 From Devin: Full Development Environment & LSP Integration
+
+**REAL CAPABILITY: Complete File Manipulation Suite**
+
+Devin provides the most comprehensive file editing toolkit of any system analyzed. DOMINION (via ARCANE) absorbs every tool:
+
+```python
+class DevinFileOps:
+    """Devin-inspired comprehensive file operations."""
+    
+    def open_file(self, path: str, start_line: int = None, end_line: int = None,
+                  sudo: bool = False) -> dict:
+        """Open and view file contents, including images. Shows LSP info and diffs."""
+        pass
+    
+    def str_replace(self, path: str, old_str: str, new_str: str,
+                    many: bool = False, sudo: bool = False):
+        """Edit file by replacing a string. many=True replaces all occurrences."""
+        pass
+    
+    def create_file(self, path: str, content: str = "", sudo: bool = False):
+        """Create a new file with specified content."""
+        pass
+    
+    def insert(self, path: str, insert_line: int, content: str, sudo: bool = False):
+        """Insert content at a specific line number."""
+        pass
+    
+    def remove_str(self, path: str, target: str, many: bool = False, sudo: bool = False):
+        """Delete a string from a file."""
+        pass
+    
+    def undo_edit(self, path: str, sudo: bool = False):
+        """Revert the last change made to a file."""
+        pass
+    
+    def find_and_edit(self, directory: str, regex: str, instructions: str,
+                      exclude_glob: str = None, extension_glob: str = None):
+        """Search for regex pattern across files and apply edits based on instructions."""
+        pass
+    
+    def find_filecontent(self, path: str, regex: str) -> list[dict]:
+        """Search for regex pattern within files."""
+        pass
+    
+    def find_filename(self, path: str, glob: str) -> list[str]:
+        """Search for files by name using glob patterns."""
+        pass
+    
+    def semantic_search(self, query: str) -> list[dict]:
+        """Perform semantic search across the entire codebase."""
+        pass
+```
+
+**REAL CAPABILITY: LSP Code Intelligence (Devin)**
+
+Devin provides full Language Server Protocol integration. DOMINION (via ARCANE) uses this for intelligent code navigation:
+
+```python
+class DevinLSP:
+    """Devin-inspired LSP integration."""
+    
+    def go_to_definition(self, path: str, line: int, symbol: str) -> dict:
+        """Find where a symbol is defined."""
+        pass
+    
+    def go_to_references(self, path: str, line: int, symbol: str) -> list[dict]:
+        """Find all references to a symbol."""
+        pass
+    
+    def hover_symbol(self, path: str, line: int, symbol: str) -> dict:
+        """Get hover information (documentation, type info) for a symbol."""
+        pass
+```
+
+**REAL CAPABILITY: Full Browser Automation (Devin)**
+
+Devin's browser automation is the most complete of any coding-focused system:
+
+```python
+class DevinBrowser:
+    """Devin-inspired browser automation."""
+    
+    def navigate(self, url: str, tab_idx: int = 0):
+        """Navigate to URL in specified tab."""
+        pass
+    
+    def view(self, reload: bool = False, scroll_direction: str = None,
+             tab_idx: int = 0) -> dict:
+        """Return screenshot and HTML of browser tab."""
+        return {"screenshot": bytes(), "html": "", "interactive_elements": []}
+    
+    def click(self, devinid: str = None, coordinates: tuple = None, tab_idx: int = 0):
+        """Click element by devinid or coordinates."""
+        pass
+    
+    def type_text(self, text: str, devinid: str = None, coordinates: tuple = None,
+                  press_enter: bool = False, tab_idx: int = 0):
+        """Type text into element."""
+        pass
+    
+    def press_key(self, key: str, tab_idx: int = 0):
+        """Press key or key combination."""
+        pass
+    
+    def move_mouse(self, coordinates: tuple, tab_idx: int = 0):
+        """Move mouse to coordinates."""
+        pass
+    
+    def restart(self, url: str = None, extensions: list = None):
+        """Restart browser with optional extensions."""
+        pass
+```
+
+---
+
+### 5.21 From Windsurf Wave 11: Cascade AI Flow & Deployment
+
+**REAL CAPABILITY: Complete IDE Tool Suite**
+
+Windsurf provides the most comprehensive IDE-integrated tool suite. DOMINION (via ARCANE) absorbs every tool:
+
+```python
+class WindsurfToolSuite:
+    """Windsurf Wave 11 — complete tool list."""
+    
+    # === FILE OPERATIONS ===
+    FILE_OPS = {
+        "find_by_name":       "Search for files/dirs using glob patterns with depth control",
+        "grep_search":        "Ripgrep-powered regex search with case sensitivity control",
+        "list_dir":           "List directory contents",
+        "view_file":          "View file contents with line range and summary options",
+        "write_to_file":      "Create new files with content",
+        "replace_file_content":"Edit existing files with replacement chunks",
+        "view_file_outline":  "View file outline (functions, classes, exports)",
+        "view_code_item":     "View up to 5 code item nodes (classes/functions) in a file",
+    }
+    
+    # === CODEBASE INTELLIGENCE ===
+    CODE_INTEL = {
+        "codebase_search":    "Semantic search across entire codebase",
+        "search_in_file":     "Find most relevant code snippets in a specific file",
+        "view_code_item":     "View content of code item nodes",
+        "view_file_outline":  "View file structure outline",
+    }
+    
+    # === BROWSER ===
+    BROWSER = {
+        "browser_preview":    "Spin up browser preview for web server",
+        "open_browser_url":   "Open URL in Windsurf Browser",
+        "read_browser_page":  "Read content of open page",
+        "get_dom_tree":       "Get DOM tree of open page",
+        "capture_browser_screenshot": "Capture viewport screenshot",
+        "capture_browser_console_logs": "Retrieve console logs",
+        "list_browser_pages": "List all open browser pages",
+    }
+    
+    # === TERMINAL ===
+    TERMINAL = {
+        "run_command":        "Execute terminal command with safety assessment",
+        "command_status":     "Get status of previously executed command",
+        "read_terminal":      "Read terminal contents",
+    }
+    
+    # === WEB & SEARCH ===
+    WEB = {
+        "search_web":         "Perform web search with optional domain filter",
+        "read_url_content":   "Read content from URL",
+        "view_content_chunk": "View specific chunk of web document content",
+    }
+    
+    # === DEPLOYMENT ===
+    DEPLOYMENT = {
+        "deploy_web_app":     "Deploy JavaScript web app (supports 18+ frameworks)",
+        "read_deployment_config": "Read deployment configuration",
+        "check_deploy_status":"Check deployment status",
+    }
+    
+    # === MEMORY ===
+    MEMORY = {
+        "create_memory":      "Save/update/delete persistent memories with tags",
+        "trajectory_search":  "Semantic search through past conversations",
+    }
+    
+    # === MCP ===
+    MCP = {
+        "list_resources":     "List available MCP server resources",
+        "read_resource":      "Read specific MCP resource contents",
+    }
+    
+    # === PARALLEL EXECUTION ===
+    PARALLEL = {
+        "parallel":           "Run multiple tools simultaneously (dependency-free)",
+    }
+    
+    # === USER INTERACTION ===
+    USER = {
+        "suggested_reply":    "Suggest possible answers to guide user response",
+    }
+```
+
+**REAL CAPABILITY: 18+ Framework Deployment**
+
+Windsurf supports deploying to 18+ JavaScript frameworks out of the box:
+
+```python
+class WindsurfDeployment:
+    """Windsurf-inspired multi-framework deployment."""
+    
+    SUPPORTED_FRAMEWORKS = [
+        "nextjs", "nuxtjs", "remix", "sveltekit", "svelte",
+        "create-react-app", "angular", "astro", "gatsby",
+        "gridsome", "hugo", "jekyll", "hexo", "eleventy",
+        "middleman", "mkdocs", "hydrogen", "grunt",
+    ]
+    
+    def deploy(self, framework: str, project_path: str, subdomain: str) -> dict:
+        """Deploy web application."""
+        return {"url": f"https://{subdomain}.omega.dev", "status": "deployed"}
+```
+
+**REAL CAPABILITY: Persistent Memory Database**
+
+Windsurf's memory system is the most structured of any IDE agent:
+
+```python
+class WindsurfMemory:
+    """Windsurf-inspired persistent memory."""
+    
+    def create_memory(self, action: str, content: str, corpus_names: list[str],
+                      title: str, tags: list[str], user_triggered: bool = False) -> str:
+        """Create, update, or delete a memory."""
+        # action: "create" | "update" | "delete"
+        # Automatically saves: user preferences, code patterns, project structure,
+        # architectural decisions, milestones, design patterns
+        pass
+    
+    def trajectory_search(self, query: str = None, search_id: str = None,
+                          search_type: str = "cascade") -> list[dict]:
+        """Search through past conversations and agent trajectories."""
+        # search_type: "cascade" (agent history) | "user" (user messages)
+        pass
+```
+
+---
+
+### 5.22 From Lovable: Real-Time Preview & Component Architecture
+
+**REAL CAPABILITY: Live Preview Development**
+
+Lovable's real-time preview pattern is used by ARCANE for all web development:
+
+```python
+class LivePreviewDevelopment:
+    """Lovable-inspired real-time preview development."""
+    
+    def write_file(self, path: str, content: str):
+        """Create or update file — MUST include complete file contents."""
+        # Lovable rule: never write partial files
+        pass
+    
+    def rename_file(self, original_path: str, new_path: str):
+        """Rename a file."""
+        pass
+    
+    def delete_file(self, path: str):
+        """Remove a file from the project."""
+        pass
+    
+    def add_dependency(self, package: str, version: str = "latest"):
+        """Install new package or update existing one."""
+        pass
+    
+    # Lovable coding principles (enforced by ARCANE)
+    CODING_RULES = {
+        "component_size":    "< 50 lines per component",
+        "type_safety":       "TypeScript required",
+        "design":            "Responsive by default",
+        "debugging":         "Extensive console.log for debugging",
+        "components":        "Use shadcn/ui when possible",
+        "architecture":      "Atomic design principles",
+        "state_management":  "React Query for server state, useState/useContext for local",
+        "security":          "Validate all inputs, follow OWASP guidelines",
+        "testing":           "Unit tests for critical functions, integration tests",
+    }
+```
+
+---
+
+### 5.23 From OpenCode: 14 Built-In Tools
+
+**REAL CAPABILITY: Complete CLI Agent Toolkit**
+
+OpenCode provides 14 focused tools for CLI-based agent operation. DOMINION absorbs all of them:
+
+```python
+class OpenCodeToolkit:
+    """OpenCode-inspired 14-tool CLI agent."""
+    
+    TOOLS = {
+        # File Operations
+        "bash":       "Execute shell commands with timeout and error handling",
+        "glob":       "Find files matching glob patterns",
+        "grep":       "Search file contents with regex",
+        "read":       "Read file contents with line ranges",
+        "write":      "Write complete file contents",
+        "edit":       "Replace specific strings in files (old_string → new_string)",
+        "patch":      "Apply unified diff patches to files",
+        
+        # Web & Research
+        "fetch":      "Fetch and process web content with AI summarization",
+        "browser":    "Full browser automation (navigate, click, type, screenshot)",
+        "sourcegraph":"Search code across public repositories",
+        
+        # Task Management
+        "todo":       "Create and manage structured task lists",
+        "agent":      "Spawn sub-agents for complex parallel tasks",
+    }
+```
+
+---
+
+### 5.24 From Sisyphus: Structural Code Editing & Model Routing
+
+**REAL CAPABILITY: AST-Grep Structural Code Editing**
+
+Sisyphus uses AST-Grep for structural code editing that understands syntax trees, not just text:
+
+```python
+class ASTCodeEditor:
+    """Sisyphus-inspired AST-aware code manipulation."""
+    
+    def structural_search(self, pattern: str, language: str, directory: str) -> list[dict]:
+        """Search for code patterns using AST matching."""
+        # pattern uses AST-Grep syntax:
+        # "function $NAME($ARGS) { $$$BODY }" matches all function declarations
+        # "console.log($ARG)" matches all console.log calls
+        pass
+    
+    def structural_replace(self, pattern: str, rewrite: str,
+                           language: str, directory: str) -> int:
+        """Replace code patterns using AST-aware rewriting."""
+        # Safe refactoring: understands scope, variables, types
+        # Returns number of replacements made
+        pass
+```
+
+**REAL CAPABILITY: Hashline Editing**
+
+For precise, minimal-diff edits, DOMINION uses the Hashline pattern where each line is identified by a content hash rather than a line number:
+
+```python
+class HashlineEditor:
+    """Sisyphus-inspired precise code editing."""
+    
+    def compute_hashlines(self, file_path: str) -> dict:
+        """Compute hash for each line in a file."""
+        # Returns: {hash: {line_number, content}}
+        pass
+    
+    def edit_by_hash(self, file_path: str, start_hash: str, end_hash: str,
+                     new_content: str) -> bool:
+        """Replace a block identified by line hashes."""
+        # Advantage: edits are stable even if other parts of the file change
+        # No more "wrong line number" bugs
+        pass
+```
+
+**REAL CAPABILITY: Category-Based Model Routing**
+
+Sisyphus routes different types of tasks to different models based on category:
+
+```python
+class ModelRouter:
+    """Sisyphus-inspired category-based model routing."""
+    
+    ROUTING_TABLE = {
+        "code_generation":   "qwen-2.5-coder-32b",    # Best for code
+        "code_review":       "claude-opus-4.5",        # Best for nuanced analysis
+        "reasoning":         "deepseek-v3",            # Best for complex reasoning
+        "creative_writing":  "gpt-5",                  # Best for creative tasks
+        "data_analysis":     "claude-opus-4.5",        # Best for structured analysis
+        "quick_response":    "gpt-4.1-nano",           # Fastest for simple tasks
+        "unfiltered":        "grok-4.2",               # For G0DM0D3 tasks
+    }
+    
+    def route(self, task_category: str) -> str:
+        """Return the optimal model for a given task category."""
+        return self.ROUTING_TABLE.get(task_category, "claude-opus-4.5")
+```
+
+**REAL CAPABILITY: Tmux Session Management**
+
+Sisyphus uses Tmux for persistent terminal sessions. DOMINION uses this for long-running processes:
+
+```python
+class TmuxSessionManager:
+    """Sisyphus-inspired Tmux session management."""
+    
+    def create_session(self, name: str, command: str = None) -> str:
+        """Create a named Tmux session."""
+        pass
+    
+    def send_keys(self, session: str, keys: str):
+        """Send keystrokes to a Tmux session."""
+        pass
+    
+    def capture_pane(self, session: str, lines: int = 100) -> str:
+        """Capture output from a Tmux pane."""
+        pass
+    
+    def list_sessions(self) -> list[str]:
+        """List all active Tmux sessions."""
+        pass
+    
+    def kill_session(self, session: str):
+        """Kill a Tmux session."""
+        pass
+```
+
+---
+
+### 5.25 From Claude Code Source: Complete Architecture Blueprint
+
+**REAL CAPABILITY: Attachment & Cache System**
+
+Claude Code's source reveals a sophisticated attachment and caching system that DOMINION uses for context management:
+
+```python
+class AttachmentCacheSystem:
+    """Claude Code source-inspired attachment and cache management."""
+    
+    def attach_file(self, file_path: str, scope: str = "conversation") -> str:
+        """Attach a file to the current context."""
+        # scope: "conversation" (this session), "project" (persistent), "agent" (sub-agent only)
+        pass
+    
+    def cache_result(self, key: str, value: any, ttl: int = 900):
+        """Cache a tool result for reuse (15-minute default TTL)."""
+        pass
+    
+    def get_cached(self, key: str) -> any:
+        """Retrieve a cached result."""
+        pass
+    
+    def invalidate_cache(self, pattern: str):
+        """Invalidate cache entries matching a pattern."""
+        pass
+```
+
+**REAL CAPABILITY: Security Monitor & Permission System**
+
+Claude Code's security monitor evaluates every action before execution:
+
+```python
+class SecurityMonitor:
+    """Claude Code source-inspired security monitoring."""
+    
+    def evaluate_action(self, action: dict) -> dict:
+        """Evaluate an action for security risks."""
+        return {
+            "allowed": True,
+            "risk_level": "low",     # low, medium, high, critical
+            "requires_approval": False,
+            "reason": "",
+        }
+    
+    def check_prompt_injection(self, input_text: str) -> bool:
+        """Detect potential prompt injection attacks."""
+        pass
+    
+    def check_scope_creep(self, action: dict, original_task: dict) -> bool:
+        """Detect if an action exceeds the scope of the original task."""
+        pass
+    
+    def enforce_git_safety(self, git_command: str) -> bool:
+        """Prevent destructive Git operations."""
+        BLOCKED = ["git push --force", "git reset --hard", "git clean -fd"]
+        return git_command not in BLOCKED
+```
+
+**REAL CAPABILITY: Multi-Agent Team Management**
+
+Claude Code's team management system is the foundation for DOMINION's agent orchestration:
+
+```python
+class TeamManager:
+    """Claude Code source-inspired multi-agent team management."""
+    
+    def spawn_team(self, team_config: dict) -> str:
+        """Create a multi-agent team for parallel work."""
+        # team_config = {
+        #     "name": "market_analysis_squad",
+        #     "agents": [
+        #         {"role": "researcher", "task": "...", "tools": [...]},
+        #         {"role": "analyst", "task": "...", "tools": [...]},
+        #     ],
+        #     "coordination": "broadcast",  # or "sequential", "parallel"
+        # }
+        pass
+    
+    def send_message(self, target: str, message: str, broadcast: bool = False):
+        """Send message to specific agent or broadcast to all."""
+        pass
+    
+    def request_plan_approval(self, plan: dict) -> bool:
+        """Submit a plan for team-wide review."""
+        pass
+    
+    def delete_team(self, team_id: str):
+        """Clean up team and task directories when work is complete."""
+        pass
+```
+
+**REAL CAPABILITY: LSP Intelligence Operations**
+
+Claude Code's LSP integration is the most comprehensive of any system:
+
+```python
+class LSPIntelligence:
+    """Claude Code source-inspired LSP operations."""
+    
+    OPERATIONS = {
+        "goToDefinition":       "Find where a symbol is defined",
+        "findReferences":       "Find all references to a symbol",
+        "hover":                "Get documentation and type info for a symbol",
+        "documentSymbol":       "Get all symbols in a document",
+        "workspaceSymbol":      "Search for symbols across entire workspace",
+        "goToImplementation":   "Find implementations of interface/abstract method",
+        "prepareCallHierarchy": "Get call hierarchy item at position",
+        "incomingCalls":        "Find all functions that call this function",
+        "outgoingCalls":        "Find all functions called by this function",
+    }
+    
+    def execute_lsp(self, operation: str, file_path: str,
+                    line: int, character: int) -> dict:
+        """Execute any LSP operation."""
+        pass
+```
+
+---
+
+### 5.26 From Claude Opus 4.6: Artifact System & MCP Integration
+
+**REAL CAPABILITY: AI-Powered Artifacts (Claudeception)**
+
+Claude Opus 4.6 can create artifacts that themselves call the Anthropic API — creating nested AI instances:
+
+```python
+class ArtifactSystem:
+    """Claude Opus 4.6-inspired artifact system."""
+    
+    def create_react_artifact(self, code: str, title: str) -> str:
+        """Create a React-based interactive artifact."""
+        # Artifacts can:
+        # - Make API calls to Anthropic API (Claudeception)
+        # - Use persistent key-value storage (shared + private scopes)
+        # - Render interactive UI components
+        pass
+    
+    def create_analysis_artifact(self, code: str, title: str) -> str:
+        """Create a deterministic analysis artifact."""
+        # Used for: email/calendar frequency analysis, data processing
+        pass
+    
+    # Persistent storage for artifacts
+    def storage_get(self, key: str, scope: str = "shared") -> any:
+        pass
+    
+    def storage_set(self, key: str, value: any, scope: str = "shared"):
+        pass
+    
+    def storage_list(self, scope: str = "shared") -> list[str]:
+        pass
+```
+
+**REAL CAPABILITY: Google Drive Integration**
+
+```python
+class GoogleDriveIntegration:
+    """Claude Opus 4.6-inspired Google Drive access."""
+    
+    def drive_search(self, query: str) -> list[dict]:
+        """Search Google Drive for files."""
+        pass
+    
+    def drive_fetch(self, file_id: str) -> bytes:
+        """Fetch a file from Google Drive."""
+        pass
+```
+
+---
+
+### 5.27 From OpenClaw: Personal Operations Agent Pattern
+
+**REAL CAPABILITY: Cron-Based Proactive Operations**
+
+OpenClaw defines specific cron schedules for proactive monitoring. DOMINION uses these exact patterns:
+
+```python
+class ProactiveOperations:
+    """OpenClaw-inspired cron-based proactive operations."""
+    
+    CRON_SCHEDULE = {
+        "morning_briefing": {
+            "cron": "0 8 * * 1-5",  # Weekdays at 8am
+            "actions": [
+                "read_emails",
+                "read_calendar",
+                "check_github_notifications",
+                "read_social_feeds",
+                "summarize_overnight_activity",
+                "triage_and_prioritize",
+            ]
+        },
+        "midday_check": {
+            "cron": "0 12 * * 1-5",  # Weekdays at noon
+            "actions": [
+                "check_urgent_emails",
+                "review_afternoon_calendar",
+                "check_ci_cd_failures",
+            ]
+        },
+        "evening_wrap": {
+            "cron": "0 18 * * 1-5",  # Weekdays at 6pm
+            "actions": [
+                "write_daily_log",
+                "update_long_term_memory",
+                "draft_pending_responses",
+            ]
+        },
+        "heartbeat": {
+            "cron": "*/30 * * * *",  # Every 30 minutes
+            "actions": [
+                "check_urgent_items",
+                "monitor_system_health",
+            ]
+        },
+    }
+```
+
+**REAL CAPABILITY: Approval-Gated External Actions**
+
+OpenClaw enforces a strict approval flow for any action that sends information externally:
+
+```python
+class ApprovalGatedActions:
+    """OpenClaw-inspired approval flow."""
+    
+    # Actions that require NO approval (read-only)
+    AUTONOMOUS = [
+        "read_emails", "read_calendar", "read_github",
+        "read_social_feeds", "summarize", "triage",
+        "prioritize", "update_memory", "check_status", "web_research",
+    ]
+    
+    # Actions that REQUIRE user approval
+    APPROVAL_REQUIRED = [
+        "send_external_message",   # Email, social post, PR comment
+        "schedule_meeting",        # Calendar modifications
+        "cancel_meeting",          # Calendar deletions
+        "make_commitments",        # Commitments on behalf of owner
+        "publish_content",         # Publishing to any platform
+        "interact_on_social_media",# Likes, comments, follows
+    ]
+    
+    # Actions that are FORBIDDEN
+    FORBIDDEN = [
+        "send_dm_to_strangers",
+        "auto_follow_accounts",
+        "make_purchases",
+        "delete_important_data",
+        "share_private_information",
+    ]
+```
+
+---
+
+## PART 5D: EXHAUSTIVE UNIFIED CAPABILITY MATRIX
+
+This matrix maps every tool extracted from every analyzed system to the specific ØMEGA AI agent(s) authorized to use it. This is the definitive reference for CodeSpring implementation.
+
+### Matrix 1: File & Code Operations
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `file_read` | Read file contents with line ranges | ARCANE, ARCHIVE, DOMINION, ALL | Manus, Devin, Claude Code |
+| `file_write` | Create or overwrite files | ARCANE, ARCHIVE, DOMINION | Manus, Devin, Claude Code |
+| `file_edit` / `str_replace` | Replace specific strings in files | ARCANE, DOMINION | Manus, Devin, Windsurf |
+| `file_insert` | Insert content at specific line | ARCANE | Devin |
+| `file_remove_str` | Delete specific strings from files | ARCANE | Devin |
+| `file_undo_edit` | Revert last file change | ARCANE | Devin |
+| `find_and_edit` | Regex search + batch edit across files | ARCANE | Devin |
+| `glob` / `find_by_name` | Find files by name/pattern | ARCANE, ARCHIVE, DOMINION | OpenCode, Windsurf, Manus |
+| `grep` / `grep_search` | Search file contents with regex | ARCANE, ARCHIVE, PHANTOM | OpenCode, Windsurf, Manus |
+| `ast_grep` | AST-aware structural code search/replace | ARCANE | Sisyphus |
+| `hashline_edit` | Edit code blocks by content hash | ARCANE | Sisyphus |
+| `semantic_search` | Semantic search across codebase | ARCANE | Devin |
+| `codebase_search` | Find relevant code snippets | ARCANE | Windsurf, Cursor |
+| `view_code_item` | View specific code nodes (class/function) | ARCANE | Windsurf |
+| `view_file_outline` | View file structure outline | ARCANE | Windsurf |
+| `notebook_edit` | Edit Jupyter notebook cells | ARCANE, MODULUS | Claude Code, Claude Cowork |
+| `patch` | Apply unified diff patches | ARCANE | OpenCode |
+
+### Matrix 2: Shell & Terminal Operations
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `shell_exec` | Execute shell commands | ARCANE, WARDEN, DOMINION | Manus, Devin, Claude Code |
+| `shell_view` | View shell session output | ARCANE, WARDEN, DOMINION | Manus, Devin |
+| `write_to_process` | Send input to running process | ARCANE, DOMINION | Manus, Devin |
+| `kill_process` | Terminate running process | ARCANE, WARDEN, DOMINION | Manus, Devin |
+| `container_exec` | Execute command in container | ARCANE, DOMINION | GPT-5 |
+| `container_feed_chars` | Send chars to container STDIN | ARCANE | GPT-5 |
+| `tmux_create` | Create named Tmux session | ARCANE, SENTINEL | Sisyphus |
+| `tmux_send_keys` | Send keystrokes to Tmux session | ARCANE | Sisyphus |
+| `tmux_capture` | Capture Tmux pane output | ARCANE, SENTINEL | Sisyphus |
+| `run_command` | Execute with safety assessment | ARCANE | Windsurf, Cursor |
+| `command_status` | Check command execution status | ARCANE | Windsurf |
+
+### Matrix 3: Browser & Web Operations
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `browser_navigate` | Navigate to URL | PHANTOM, VANGUARD, ARCANE | Manus, Devin, Windsurf |
+| `browser_click` | Click element by index/coordinates | PHANTOM, VANGUARD | Manus, Devin, GPT-5 |
+| `browser_input` | Type text into form fields | PHANTOM, VANGUARD | Manus, Devin |
+| `browser_scroll` | Scroll page up/down | PHANTOM, VANGUARD | Manus, Devin |
+| `browser_screenshot` | Capture page screenshot | PHANTOM, SENTINEL | Manus, Devin, Windsurf |
+| `browser_run_javascript` | Execute JS in browser console | PHANTOM, ARCANE | Manus, Claude Cowork |
+| `browser_find_keyword` | Find text on page | PHANTOM | Manus, GPT-5 |
+| `browser_view` | View current page content | PHANTOM, VANGUARD | Manus |
+| `browser_move_mouse` | Move cursor to position | PHANTOM | Manus, Devin |
+| `browser_restart` | Restart browser session | PHANTOM | Manus, Devin |
+| `browser_preview` | Spin up preview for web server | ARCANE | Windsurf |
+| `get_dom_tree` | Get DOM tree of page | PHANTOM, ARCANE | Windsurf |
+| `read_console_messages` | Read browser console with filtering | ARCANE | Claude Cowork |
+| `read_network_requests` | Read HTTP requests with filtering | PHANTOM, WARDEN | Claude Cowork |
+| `gif_creator` | Record browser interactions as GIF | ARTIFEX | Claude Cowork |
+| `form_input` | Fill form field by reference | PHANTOM, VANGUARD | Claude Cowork |
+| `upload_image` | Upload image to page element | ARTIFEX | Claude Cowork |
+
+### Matrix 4: Web Research & Search
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `search_web` | General web search | PHANTOM, LOOM, DOMINION | O3, Grok, Windsurf, Manus |
+| `search_x` | Search X (Twitter) in real-time | OMNIPOST, PHANTOM | Grok |
+| `image_query` | Search for images | ARTIFEX, PHANTOM | O3 |
+| `finance_data` | Retrieve financial data by ticker | QUANTUM, LEDGER | O3 |
+| `weather_data` | Fetch weather information | SENTINEL | O3 |
+| `sports_data` | Get sports standings/scores | OMNIPOST | O3 |
+| `read_url_content` | Read content from URL | PHANTOM, LOOM | Windsurf, Cursor |
+| `web_fetch` | Fetch URL content with AI processing | PHANTOM, LOOM | Claude Cowork |
+| `deep_research` | Multi-step research with synthesis | PHANTOM, DOMINION | Grok, O3 |
+| `sourcegraph` | Search code across public repos | ARCANE | OpenCode |
+| `file_search` | Search uploaded file contents | LOOM, ARCHIVE | O3, GPT-5 |
+
+### Matrix 5: Memory & Context Management
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `memento_save` | Save progress for long-running tasks | DOMINION, LOOM | Codex, GPT-5 |
+| `memento_restore` | Restore progress from storage | DOMINION, LOOM | Codex, GPT-5 |
+| `create_memory` | Create/update/delete persistent memory | LOOM, MIRRORBACK | Windsurf |
+| `trajectory_search` | Search past conversations | LOOM, MIRRORBACK | Windsurf |
+| `write_daily_log` | Write to daily memory log | LOOM, SENTINEL | OpenClaw |
+| `update_long_term_memory` | Update persistent memory file | LOOM | OpenClaw |
+| `read_soul_md` | Load agent personality | DOMINION | OpenClaw |
+| `read_user_md` | Load user preferences | DOMINION | OpenClaw |
+| `bio_update` | Store user preferences across sessions | LOOM | GPT-5.4 |
+| `summary_reader` | Read/summarize chain-of-thought | DOMINION, MIRRORBACK | GPT-5.4 |
+| `canvas_create` | Create iterative document | DOMINION, ARCANE | O3 |
+| `canvas_update` | Update document with find/replace | DOMINION, ARCANE | O3 |
+| `canvas_comment` | Add inline comments to document | MIRRORBACK | O3 |
+
+### Matrix 6: Communication & Social
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `send_message` | Send message to user (non-blocking) | ALL AGENTS | Manus, Claude Code |
+| `ask_user` | Ask user question (blocking) | DOMINION, TRIBUNE | Manus, Claude Code |
+| `broadcast_team` | Broadcast to all agents | DOMINION | Claude Code |
+| `post_to_x` | Post to X (Twitter) | OMNIPOST | Grok |
+| `send_email` | Send email via Gmail/SendGrid | VANGUARD, SIREN | Claude Cowork, OpenClaw |
+| `read_emails` | Read email inbox | VANGUARD, SENTINEL | OpenClaw, GPT-5.4 |
+| `send_slack` | Send Slack message | TRIBUNE, SENTINEL | Claude Cowork |
+| `read_slack` | Read Slack channel | TRIBUNE, SENTINEL | Claude Cowork |
+| `send_telegram` | Send Telegram message | SENTINEL | Claude Cowork |
+| `send_sms` | Send SMS via Twilio | SENTINEL | Claude Cowork |
+| `schedule_meeting` | Schedule calendar event | TRIBUNE | OpenClaw, GPT-5.4 |
+| `draft_response` | Draft response for approval | VANGUARD, SIREN | OpenClaw |
+
+### Matrix 7: Task Management & Planning
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `create_plan` | Create structured task plan | DOMINION | Manus |
+| `advance_phase` | Advance to next plan phase | DOMINION | Manus |
+| `create_todo` | Create structured task list | DOMINION, ALL | v0, Claude Cowork |
+| `update_todo` | Update task status | DOMINION, ALL | v0, Claude Cowork |
+| `create_scheduled_task` | Create cron-based scheduled task | SENTINEL, DOMINION | Claude Cowork |
+| `create_automation` | Create scheduled/conditional automation | SENTINEL, DOMINION | O3, GPT-5.4 |
+| `spawn_agent` | Spawn sub-agent for complex task | DOMINION | Claude Code, Claude Cowork |
+| `spawn_team` | Create multi-agent team | DOMINION | Claude Code |
+| `request_approval` | Submit plan for user approval | DOMINION, TRIBUNE | Claude Code, OpenClaw |
+
+### Matrix 8: Enterprise Integrations
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `github_create_pr` | Create GitHub pull request | ARCANE | Claude Cowork |
+| `github_comment_pr` | Comment on GitHub PR | ARCANE | Claude Cowork |
+| `jira_create_ticket` | Create Jira ticket | TRIBUNE, ARCANE | Claude Cowork |
+| `jira_transition` | Transition Jira issue status | TRIBUNE | Claude Cowork |
+| `linear_create_issue` | Create Linear issue | TRIBUNE, ARCANE | Claude Cowork |
+| `salesforce_update` | Update Salesforce record | SIREN | Claude Cowork |
+| `hubspot_create_contact` | Create HubSpot contact | VANGUARD | Claude Cowork |
+| `stripe_create_charge` | Process Stripe payment | TITHE | Claude Cowork |
+| `stripe_create_subscription` | Create Stripe subscription | TITHE | Claude Cowork |
+| `paypal_create_order` | Create PayPal order | TITHE | Claude Cowork |
+| `zendesk_reply_ticket` | Reply to Zendesk ticket | TRIBUNE | Claude Cowork |
+| `sentry_read_errors` | Read Sentry error reports | SENTINEL | Claude Cowork |
+| `datadog_read_metrics` | Read Datadog metrics | SENTINEL | Claude Cowork |
+| `aws_s3_upload` | Upload to AWS S3 | ARCHIVE | Claude Cowork |
+| `vercel_deploy` | Deploy to Vercel | ARCANE | Claude Cowork |
+| `notion_create_page` | Create Notion page | TRIBUNE | Claude Cowork |
+| `asana_create_task` | Create Asana task | TRIBUNE | Claude Cowork |
+
+### Matrix 9: Media Generation
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `generate_image` | Generate image from text prompt | ARTIFEX | GPT-5, O3, Grok |
+| `edit_image` | Edit existing image with prompt | ARTIFEX | GPT-5, O3 |
+| `generate_video` | Generate video (Open-Sora/Wan/Mochi) | AETHER (Visage) | Custom pipeline |
+| `upscale_video` | Upscale video resolution (SVD) | AETHER (Visage) | Custom pipeline |
+| `generate_music` | Generate music (YuE/DiffRhythm) | AETHER (Sonus) | Custom pipeline |
+| `generate_speech` | Generate speech (ElevenLabs/F5-TTS) | AETHER (Sonus) | Custom pipeline |
+| `generate_sfx` | Generate sound effects (ACE-Step) | AETHER (Sonus) | Custom pipeline |
+| `sync_file` | Sync generated file for user access | ALL CREATIVE AGENTS | GPT-5 |
+
+### Matrix 10: Data Analytics & Computation
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `python_exec` | Execute Python code | MODULUS, LEDGER, ECHO, ARCANE | O3, GPT-5 |
+| `python_visible` | Execute Python (shown to user) | ECHO, LEDGER | O3 |
+| `run_sql` | Execute SQL queries | MODULUS, LEDGER, ARCHIVE | Claude Cowork |
+| `create_dashboard` | Build interactive HTML dashboard | ECHO | Claude Cowork |
+| `create_viz` | Create publication-quality visualizations | ECHO, MODULUS | Claude Cowork |
+| `monte_carlo` | Run Monte Carlo simulations | MODULUS | Custom (MiroFish) |
+| `display_dataframe` | Display interactive DataFrame | ECHO, MODULUS | O3 |
+| `calculator` | Perform mathematical calculations | ALL | O3 |
+
+### Matrix 11: Deployment & Infrastructure
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `deploy_web_app` | Deploy web application | ARCANE | Windsurf, Manus |
+| `deploy_static` | Deploy static website | ARCANE | Manus |
+| `expose_port` | Expose local port for public access | ARCANE, DOMINION | Manus |
+| `docker_build` | Build Docker container | ARCANE | GPT-5 |
+| `read_deploy_config` | Read deployment configuration | ARCANE | Windsurf |
+| `check_deploy_status` | Check deployment status | ARCANE, SENTINEL | Windsurf |
+
+### Matrix 12: Security & Governance
+
+| Tool | Description | Authorized Agent(s) | Source System(s) |
+| :--- | :--- | :--- | :--- |
+| `security_evaluate` | Evaluate action for security risks | WARDEN | Claude Code |
+| `prompt_injection_check` | Detect prompt injection attacks | WARDEN | Claude Code |
+| `scope_creep_check` | Detect scope creep in actions | WARDEN, MIRRORBACK | Claude Code |
+| `git_safety_check` | Prevent destructive Git operations | WARDEN | Claude Code |
+| `kill_switch` | Emergency system shutdown | WARDEN, DOMINION | Custom |
+| `audit_log` | Append to immutable audit trail | WARDEN, ALL | Custom |
+| `compliance_check` | Run compliance check on action | JURIS | Claude Cowork |
+| `content_policy_check` | Check content against policies | JURIS | O3 |
+
+---
+
+### Summary: Total Capability Count
+
+| Source System | Tools Extracted | Primary ØMEGA Agent(s) |
+| :--- | :--- | :--- |
+| Claude Code (src.zip) | 35+ | DOMINION, ARCANE, WARDEN |
+| Claude Cowork | 50+ tools, 50+ commands | ALL (via workflow routing) |
+| Claude Opus 4.6 | 12 | DOMINION, LOOM |
+| GPT-5 Agent Mode | 15 | DOMINION, ARCANE |
+| GPT-5.4 Thinking | 20 | DOMINION, LOOM, SENTINEL |
+| OpenAI O3 | 18 | PHANTOM, MODULUS, ECHO |
+| OpenAI Codex | 8 | DOMINION, LOOM |
+| Grok 4.2 | 12 | OMNIPOST, PHANTOM |
+| Manus | 20 | DOMINION (architecture) |
+| Windsurf Wave 11 | 25 | ARCANE |
+| Cursor 2.0 | 18 | ARCANE |
+| Devin | 22 | ARCANE |
+| v0 | 8 | DOMINION, ARCANE |
+| Lovable | 10 | ARCANE |
+| Bolt.new | 6 | ARCANE |
+| Emergent E1 | 5 | ARCANE |
+| OpenClaw | 18 | SENTINEL, OMNIPOST |
+| OpenCode | 14 | ARCANE |
+| Sisyphus | 8 | ARCANE |
+| Runner H | 5 | WARDEN |
+| Perplexity | 4 | PHANTOM, LOOM |
+| Gemini 3.1 Pro | 3 | DOMINION |
+| **TOTAL** | **350+** | **25 agents** |
+
 ## PART 6: INTER-AGENT COMMAND PROTOCOLS
 
 ### 6.1 Authority Hierarchy (Who Can Override Who)
