@@ -38,6 +38,7 @@ The goal is not to build yet another narrow AI tool, but to synthesize the archi
 | [Sources & Attribution](#sources--attribution) | All research sources and prompt repositories |
 | [Repository Structure](#repository-structure) | File and directory layout |
 | [TLDR: Step-by-Step Guide](#tldr-step-by-step-guide) | Quick-start guide |
+| [DOMINION's Main Brain Architecture](#the-main-brain-architecture) | The 10 foundational patterns from Claude Code Source that define how DOMINION works |
 | [Deep Dive Documents](#deep-dive-documents) | Direct links to all 30+ internal research and architecture files |
 
 ---
@@ -906,13 +907,42 @@ This repository is for **educational and research purposes only**. System prompt
 
 ---
 
+## The Main Brain Architecture
+
+> **Source**: [claude-code-from-source.com](https://claude-code-from-source.com/) — 18 chapters, 7 parts, ~400 pages reverse-engineered from Claude Code's TypeScript source maps.
+> **Full Document**: [`docs/claude-code-source-architecture.md`](./docs/claude-code-source-architecture.md)
+
+DOMINION (Ø), the supreme orchestrator, is built on the architecture documented in [Claude Code from Source](https://claude-code-from-source.com/). This is the single most important capability source in the entire ØMEGA AI system. It defines how the main brain works.
+
+The architecture is built on **10 foundational patterns** extracted from a production AI agent serving millions of users:
+
+| # | Pattern | What It Does | ØMEGA Agent |
+|---|---------|-------------|-------------|
+| 1 | **AsyncGenerator Agent Loop** | Single `query()` function as async generator with 10 typed terminal states and 7 continuation states. Every interaction passes through one function. | DOMINION |
+| 2 | **Speculative Tool Execution** | Start read-only tools while the model is still streaming its response. Results harvested before response completes. | ARCANE, MODULUS |
+| 3 | **Concurrent-Safe Batching** | Partition tool calls by per-input safety classification. `Bash("ls")` runs in parallel; `Bash("rm")` runs serially. Fail-closed. | ALL AGENTS |
+| 4 | **Fork Agents for Cache Sharing** | Parallel children share byte-identical prompt prefixes, saving ~95% input tokens. Makes parallel exploration economically viable. | DOMINION, PHANTOM |
+| 5 | **4-Layer Context Compression** | Snip → Microcompact → Collapse → Auto-compact. Circuit breaker after 3 failures. Manages 200K+ token sessions. | DOMINION |
+| 6 | **File-Based Memory with LLM Recall** | Memories stored as Markdown with YAML frontmatter. Sonnet side-query selects relevant memories — not keyword matching. 4-type taxonomy: user, feedback, project, reference. | ARCHIVE |
+| 7 | **Two-Phase Skill Loading** | Frontmatter loads at startup (cheap). Full content loads on invocation (expensive). 50 skills = 50 short descriptions, not 50 full documents. | ALL AGENTS |
+| 8 | **Sticky Latches for Cache Stability** | Once a config value is set mid-session, never unset it. Stable content first, volatile last. | DOMINION |
+| 9 | **Slot Reservation** | 8K default output cap, escalate to 64K only when cap is hit. Saves context in 99% of requests. | ALL AGENTS |
+| 10 | **Hook Config Snapshot** | Freeze all hook configurations at startup. No runtime modification. Prevents injection attacks. | WARDEN |
+
+The architecture also defines the **14-step tool execution pipeline** (every tool call passes through exactly 14 steps), the **15-step sub-agent spawning lifecycle** (how DOMINION creates all 24 sub-agents), the **7 permission modes** (from `bypassPermissions` to `bubble`), the **8 MCP transport types**, and the **27 hook lifecycle events** across 4 execution types.
+
+For the complete deep-dive with code examples and implementation mapping to all 25 ØMEGA agents, see [`docs/claude-code-source-architecture.md`](./docs/claude-code-source-architecture.md).
+
+---
+
 ## Deep Dive Documents
 
 This repository contains over 30 detailed research, architecture, and specification documents. Use the links below to navigate directly to the specific areas of the ØMEGA AI platform.
 
 ### 🌟 The Master Blueprint
 * [**CODESPRING-MASTER-INSTRUCTIONS.md**](./CODESPRING-MASTER-INSTRUCTIONS.md) — The definitive 3,500+ line implementation guide. Start here.
-* [**CODESPRING-INTEGRATION-MANIFEST.md**](./CODESPRING-INTEGRATION-MANIFEST.md) — Integration checklist for all capabilities.
+* [**docs/claude-code-source-architecture.md**](./docs/claude-code-source-architecture.md) — **DOMINION's Main Brain Architecture** — 500+ line deep-dive into the 10 foundational patterns, agent loop, 4-layer compression, tool system, sub-agent spawning, memory taxonomy, MCP internals, and 5 architectural bets. Sourced from [claude-code-from-source.com](https://claude-code-from-source.com/).
+* [**CODESPRING-INTEGRATION-MANIFEST.md**](./CODESPRING-INTEGRATION-MANIFEST.md) — Integration checklist and implementation priorities for CodeSpring.
 
 ### 🏛️ Core Architecture & Design
 * [architecture-overview.md](./docs/architecture-overview.md) — Master orchestrator and sub-agent architecture.

@@ -2912,44 +2912,280 @@ class TmuxSessionManager:
 
 ---
 
-### 5.25 From Claude Code Source: Complete Architecture Blueprint
+### 5.25 From Claude Code Source: DOMINION's Main Brain Architecture
 
-**REAL CAPABILITY: Attachment & Cache System**
+> **PRIMARY SOURCE**: [claude-code-from-source.com](https://claude-code-from-source.com/) — 18 chapters, 7 parts, ~400 pages reverse-engineered from Claude Code's TypeScript source maps.
+> **DEEP DIVE**: See [`docs/claude-code-source-architecture.md`](docs/claude-code-source-architecture.md) for the full 500+ line architectural blueprint.
+> **This is the single most important capability source in the entire ØMEGA AI system. It defines how DOMINION's brain works.**
 
-Claude Code's source reveals a sophisticated attachment and caching system that DOMINION uses for context management:
+#### 5.25.1 The 10 Foundational Patterns
+
+These are the 10 production-proven patterns that DOMINION inherits:
+
+| # | Pattern | ØMEGA Application |
+|---|---------|-------------------|
+| 1 | AsyncGenerator as Agent Loop | DOMINION's main loop is an async generator with typed terminal states (10 stop reasons, 7 continue reasons) |
+| 2 | Speculative Tool Execution | ARCANE/MODULUS start read-only tools while model is still streaming |
+| 3 | Concurrent-Safe Batching | Per-input safety classification: `Bash("ls")` parallel, `Bash("rm")` serial |
+| 4 | Fork Agents for Cache Sharing | Byte-identical prompt prefixes save ~95% input tokens on parallel children |
+| 5 | 4-Layer Context Compression | Snip → Microcompact → Collapse → Auto-compact (circuit breaker after 3 failures) |
+| 6 | File-Based Memory with LLM Recall | ARCHIVE uses Sonnet side-query to select memories, not keyword matching |
+| 7 | Two-Phase Skill Loading | All 25 agents load frontmatter at startup, full content on invocation |
+| 8 | Sticky Latches for Cache Stability | Stable content first, volatile last in all prompts |
+| 9 | Slot Reservation | 8K default output cap, escalate to 64K on hit (saves context in 99% of requests) |
+| 10 | Hook Config Snapshot | WARDEN freezes hook config at startup to prevent runtime injection |
+
+#### 5.25.2 The Agent Loop (`query.ts`, ~1,730 lines)
+
+The single most important function in the system. An async generator that streams model responses, collects tool calls, executes them, appends results, and loops. Every interaction passes through this one function.
 
 ```python
-class AttachmentCacheSystem:
-    """Claude Code source-inspired attachment and cache management."""
+class DominionAgentLoop:
+    """DOMINION's main loop — adapted from Claude Code's query.ts."""
     
-    def attach_file(self, file_path: str, scope: str = "conversation") -> str:
-        """Attach a file to the current context."""
-        # scope: "conversation" (this session), "project" (persistent), "agent" (sub-agent only)
-        pass
+    async def query(self, context: ToolUseContext) -> AsyncGenerator[Message, None]:
+        """The beating heart. Yields Messages, returns Terminal with stop reason."""
+        while not self.should_terminate(context):
+            # 1. Call model (stream response)
+            response = await self.call_model(context)
+            yield from response.messages
+            
+            # 2. Collect tool calls from response
+            tool_calls = self.extract_tool_calls(response)
+            
+            # 3. Partition into concurrent/serial batches
+            batches = self.partition_tool_calls(tool_calls)
+            
+            # 4. Execute each batch
+            for batch in batches:
+                if batch.parallel:
+                    results = await self.run_concurrent(batch.calls, max_concurrency=10)
+                else:
+                    results = await self.run_serial(batch.calls)
+                
+                # 5. Apply context modifiers in tool-order
+                for result in results:
+                    context = self.apply_modifiers(result, context)
+                    yield result.message
+            
+            # 6. Check compression thresholds
+            context = await self.compress_if_needed(context)
+        
+        return Terminal(reason=self.stop_reason, state=context)
     
-    def cache_result(self, key: str, value: any, ttl: int = 900):
-        """Cache a tool result for reuse (15-minute default TTL)."""
-        pass
-    
-    def get_cached(self, key: str) -> any:
-        """Retrieve a cached result."""
-        pass
-    
-    def invalidate_cache(self, pattern: str):
-        """Invalidate cache entries matching a pattern."""
-        pass
+    # 10 Terminal States
+    TERMINAL_STATES = [
+        "normal_completion", "user_abort", "token_budget_exhausted",
+        "stop_hook_intervention", "max_turns_reached", "unrecoverable_error",
+        "model_refused", "context_window_exceeded", "kill_switch", "timeout"
+    ]
 ```
 
-**REAL CAPABILITY: Security Monitor & Permission System**
+#### 5.25.3 4-Layer Context Compression
 
-Claude Code's security monitor evaluates every action before execution:
+```python
+class ContextCompressor:
+    """4-layer compression system from Claude Code source."""
+    
+    LAYERS = {
+        0: "tool_result_budget",   # Per-tool output size limits
+        1: "snip_compact",         # Remove old tool results, keep structure
+        2: "microcompact",         # Aggressive inline compression
+        3: "context_collapse",     # Collapse entire conversation sections
+        4: "auto_compact",         # Fork Claude conversation to summarize
+    }
+    
+    # Auto-compact thresholds
+    AUTOCOMPACT_BUFFER_TOKENS = 13_000   # Headroom below effective window
+    MANUAL_COMPACT_BUFFER = 3_000         # Reserves space for /compact
+    MAX_AUTOCOMPACT_FAILURES = 3          # Circuit breaker threshold
+    
+    def effective_window(self, context_window: int, max_output: int) -> int:
+        return context_window - min(max_output, 20_000)
+```
+
+#### 5.25.4 The Tool System — 14-Step Pipeline
+
+Every tool call passes through exactly 14 steps: Validation (4) → Preparation (2) → Permission (3) → Execution & Cleanup (5).
+
+```python
+class ToolSystem:
+    """Claude Code source-inspired tool system."""
+    
+    # Permission System — 7 Modes
+    PERMISSION_MODES = {
+        "bypassPermissions": "Everything allowed (internal/testing only)",
+        "dontAsk":           "All allowed, logged, no prompts",
+        "auto":              "LLM transcript classifier decides allow/deny",
+        "acceptEdits":       "File edits auto-approved; other mutations prompt",
+        "default":           "Standard interactive, user approves each action",
+        "plan":              "Read-only, all mutations blocked",
+        "bubble":            "Escalate to parent agent (sub-agent mode)",
+    }
+    
+    # buildTool() Factory — Fail-Closed Defaults
+    DEFAULTS = {
+        "isParallelSafe": False,    # New tools run serially
+        "isReadOnly": False,         # Treated as writes
+        "isDestructive": False,
+    }
+    
+    # LSP Intelligence Operations (9 operations)
+    LSP_OPERATIONS = {
+        "goToDefinition":       "Find where a symbol is defined",
+        "findReferences":       "Find all references to a symbol",
+        "hover":                "Get documentation and type info",
+        "documentSymbol":       "Get all symbols in a document",
+        "workspaceSymbol":      "Search symbols across workspace",
+        "goToImplementation":   "Find implementations of interface/abstract",
+        "prepareCallHierarchy": "Get call hierarchy item at position",
+        "incomingCalls":        "Find all functions that call this function",
+        "outgoingCalls":        "Find all functions called by this function",
+    }
+```
+
+#### 5.25.5 Sub-Agent Spawning — 15-Step Lifecycle
+
+```python
+class SubAgentSpawner:
+    """15-step runAgent lifecycle from Claude Code source."""
+    
+    LIFECYCLE_STEPS = [
+        "model_resolution",        # Override to sonnet/opus/haiku
+        "agent_id_creation",       # Unique identifier
+        "context_preparation",     # Build from parent
+        "claude_md_stripping",     # Remove parent memory (save tokens)
+        "permission_isolation",    # Set to bubble mode
+        "tool_resolution",         # Subset of parent's tools
+        "system_prompt",           # Agent-type-specific
+        "abort_controller_isolation", # Child gets own controller
+        "hook_registration",       # Agent-specific hooks
+        "skill_preloading",        # Load relevant skills
+        "mcp_initialization",      # Connect to MCP servers
+        "context_creation",        # createSubagentContext()
+        "cache_safe_params",       # Prompt cache optimization
+        "query_loop",              # New query() generator
+        "cleanup",                 # Release resources
+    ]
+    
+    # 8 Built-In Agent Types
+    AGENT_TYPES = {
+        "general":      {"model": "parent", "access": "full", "purpose": "Default sub-agent"},
+        "explore":      {"model": "haiku",  "access": "read-only", "purpose": "Cheap codebase search"},
+        "plan":         {"model": "parent", "access": "read-only", "purpose": "Generate plans"},
+        "verification": {"model": "parent", "access": "full", "purpose": "Adversarial testing"},
+        "guide":        {"model": "haiku",  "access": "read-only", "purpose": "Self-documentation"},
+        "statusline":   {"model": "haiku",  "access": "limited", "purpose": "Terminal config"},
+        "worker":       {"model": "parent", "access": "full", "purpose": "Coordinator tasks"},
+        "fork":         {"model": "parent", "access": "full", "purpose": "Cache-sharing parallel"},
+    }
+```
+
+#### 5.25.6 Memory System — 4-Type Taxonomy
+
+```python
+class MemorySystem:
+    """File-based memory with LLM recall from Claude Code source."""
+    
+    # 4-Type Taxonomy (excludes derivable information)
+    MEMORY_TYPES = {
+        "user":      "Person info (role, goals, expertise)",
+        "feedback":  "Corrections and confirmations",
+        "project":   "Ongoing work context (who, what, when)",
+        "reference": "Bookmarks to external systems",
+    }
+    
+    # 3 Memory Tiers
+    TIERS = {
+        "project": "CLAUDE.md files in repo",
+        "user":    "~/.claude/MEMORY.md",
+        "team":    "Shared via symlinks",
+    }
+    
+    # Recall Pipeline (3 steps)
+    async def recall(self, conversation_context: str) -> list:
+        # 1. Scan frontmatter from all memory files (first 30 lines only)
+        manifests = self.scan_memory_files()
+        # 2. Sonnet side-query selects relevant memories
+        selected = await self.llm_select(manifests, conversation_context)
+        # 3. Load full content only for selected memories
+        return [self.load_full(m) for m in selected]
+```
+
+#### 5.25.7 MCP — 8 Transports, 7 Scopes, 4-Stage Wrapping
+
+```python
+class MCPSystem:
+    """MCP implementation from Claude Code source."""
+    
+    TRANSPORTS = ["stdio", "http", "sse", "sdk", "ws-ide", "claudeai-proxy", "in-process", "dynamic"]
+    
+    CONFIG_SCOPES = {
+        "local":      "Requires user approval (.mcp.json)",
+        "user":       "User-managed (~/.claude.json)",
+        "project":    "Shared project settings",
+        "enterprise": "Pre-approved by org",
+        "managed":    "Auto-discovered plugins",
+        "claudeai":   "Pre-authorized via web",
+        "dynamic":    "Runtime injection (SDK)",
+    }
+    
+    # Tool Wrapping — 4 Stages
+    WRAPPING_STAGES = [
+        "name_normalization",      # mcp__{serverName}__{toolName}
+        "description_truncation",  # 2,048 char cap
+        "schema_passthrough",      # No transformation
+        "annotation_mapping",      # readOnlyHint → concurrent, destructiveHint → extra permission
+    ]
+    
+    # Timeout Architecture
+    TIMEOUTS = {
+        "connection": 30,          # seconds
+        "per_request": 60,         # fresh per request
+        "tool_call": 100_000,      # ~27.8 hours
+        "auth": 30,                # per OAuth request
+    }
+```
+
+#### 5.25.8 Extensibility — Skills and Hooks
+
+```python
+class ExtensibilitySystem:
+    """Skills and hooks from Claude Code source."""
+    
+    # 7 Skill Sources (by priority)
+    SKILL_SOURCES = [
+        "managed_policy",    # Enterprise-controlled
+        "user",              # ~/.claude/skills/
+        "project",           # .claude/skills/ (walked up to home)
+        "additional_dirs",   # Via --add-dir flag
+        "legacy_commands",   # .claude/commands/
+        "bundled",           # Compiled into binary
+        "mcp",               # Remote, untrusted (NO shell execution)
+    ]
+    
+    # 4 Hook Types
+    HOOK_TYPES = {
+        "command": "Shell process, exit code protocol (0=pass, 2=block)",
+        "prompt":  "Single LLM call, returns ok/not-ok",
+        "agent":   "Multi-turn agentic loop (max 50 turns)",
+        "webhook": "HTTP POST to external service",
+    }
+    
+    # 5 Key Lifecycle Events
+    LIFECYCLE_EVENTS = ["PreToolUse", "PostToolUse", "PreModelResponse", "PostModelResponse", "SessionStart"]
+    
+    # Security: Config frozen at startup (snapshot model)
+    SNAPSHOT_SECURITY = True
+```
+
+#### 5.25.9 Security Monitor & Permission System
 
 ```python
 class SecurityMonitor:
     """Claude Code source-inspired security monitoring."""
     
     def evaluate_action(self, action: dict) -> dict:
-        """Evaluate an action for security risks."""
         return {
             "allowed": True,
             "risk_level": "low",     # low, medium, high, critical
@@ -2958,75 +3194,32 @@ class SecurityMonitor:
         }
     
     def check_prompt_injection(self, input_text: str) -> bool:
-        """Detect potential prompt injection attacks."""
         pass
     
     def check_scope_creep(self, action: dict, original_task: dict) -> bool:
-        """Detect if an action exceeds the scope of the original task."""
         pass
     
     def enforce_git_safety(self, git_command: str) -> bool:
-        """Prevent destructive Git operations."""
         BLOCKED = ["git push --force", "git reset --hard", "git clean -fd"]
         return git_command not in BLOCKED
 ```
 
-**REAL CAPABILITY: Multi-Agent Team Management**
-
-Claude Code's team management system is the foundation for DOMINION's agent orchestration:
+#### 5.25.10 Multi-Agent Team Management
 
 ```python
 class TeamManager:
     """Claude Code source-inspired multi-agent team management."""
     
     def spawn_team(self, team_config: dict) -> str:
-        """Create a multi-agent team for parallel work."""
-        # team_config = {
-        #     "name": "market_analysis_squad",
-        #     "agents": [
-        #         {"role": "researcher", "task": "...", "tools": [...]},
-        #         {"role": "analyst", "task": "...", "tools": [...]},
-        #     ],
-        #     "coordination": "broadcast",  # or "sequential", "parallel"
-        # }
         pass
     
     def send_message(self, target: str, message: str, broadcast: bool = False):
-        """Send message to specific agent or broadcast to all."""
         pass
     
     def request_plan_approval(self, plan: dict) -> bool:
-        """Submit a plan for team-wide review."""
         pass
     
     def delete_team(self, team_id: str):
-        """Clean up team and task directories when work is complete."""
-        pass
-```
-
-**REAL CAPABILITY: LSP Intelligence Operations**
-
-Claude Code's LSP integration is the most comprehensive of any system:
-
-```python
-class LSPIntelligence:
-    """Claude Code source-inspired LSP operations."""
-    
-    OPERATIONS = {
-        "goToDefinition":       "Find where a symbol is defined",
-        "findReferences":       "Find all references to a symbol",
-        "hover":                "Get documentation and type info for a symbol",
-        "documentSymbol":       "Get all symbols in a document",
-        "workspaceSymbol":      "Search for symbols across entire workspace",
-        "goToImplementation":   "Find implementations of interface/abstract method",
-        "prepareCallHierarchy": "Get call hierarchy item at position",
-        "incomingCalls":        "Find all functions that call this function",
-        "outgoingCalls":        "Find all functions called by this function",
-    }
-    
-    def execute_lsp(self, operation: str, file_path: str,
-                    line: int, character: int) -> dict:
-        """Execute any LSP operation."""
         pass
 ```
 
