@@ -3223,6 +3223,126 @@ class TeamManager:
         pass
 ```
 
+#### 5.25.11 The Bootstrap Pipeline (Ch2) — 300ms Startup Budget
+
+DOMINION boots in under 300ms using a 5-phase pipeline:
+
+| Phase | Name | What Happens | ØMEGA Application |
+|-------|------|-------------|-------------------|
+| 0 | Fast-Path Dispatch | Intercepts narrow-intent commands (`--version`, `--help`) via dynamic import; exits before full system loads | DOMINION CLI intercepts `omega status`, `omega kill` before loading agents |
+| 1 | Module-Level I/O | Fires slow I/O (keychain reads, MDM subprocesses) as side effects *during* import evaluation, overlapping with ~135ms of static imports | All agents fire credential lookups during import |
+| 2 | Parse and Trust | Resolves configuration, establishes Trust Boundary via Commander's `preAction` hook. Safe ops before trust; dangerous ops after consent | WARDEN enforces trust boundary for all agent configs |
+| 3 | Setup | Promise parallelism: socket binding, hook snapshotting, command loading, agent definition loading run concurrently | DOMINION loads all 25 agent definitions in parallel |
+| 4 | Launch | 7 launch paths converge to pick entry point. Post-render deferred prefetches (git status, model capabilities) run after prompt is visible | Post-render prefetch for market data, agent health checks |
+
+#### 5.25.12 Two-Tier State Architecture (Ch3)
+
+DOMINION manages state using two tiers to prevent circular dependencies and unnecessary re-renders:
+
+**Tier 1 — Bootstrap State (Process Singleton)**: A single mutable object (`STATE`) with ~80 fields accessed via ~100 getter/setter functions. Categories: Identity/paths, Cost/metrics, Telemetry, Model config, Session flags, Cache optimization. Every path setter enforces NFC normalization.
+
+**Tier 2 — AppState (Reactive Store)**: A minimal 34-line Zustand-shaped reactive store for UI state (~20 fields). A `onChangeAppState` bridge connects the two tiers.
+
+**The 5 Sticky Latches** (critical for prompt cache preservation):
+
+| Latch | Purpose |
+|-------|--------|
+| `afkModeHeaderLatched` | Prevents auto mode toggling from busting cache |
+| `fastModeHeaderLatched` | Prevents fast mode cooldown from busting cache |
+| `cacheEditingHeaderLatched` | Prevents remote feature flag changes from busting cache |
+| `thinkingClearLatched` | Triggered on confirmed cache miss (>1h idle) |
+| `pendingPostCompaction` | Consume-once flag for telemetry compaction tracking |
+
+#### 5.25.13 The API Layer (Ch4) — Multi-Provider Routing
+
+DOMINION routes all model communication through a single transparent factory:
+
+**Multi-Provider Client Factory**: `getAnthropicClient()` dispatches to Direct API, AWS Bedrock, Google Vertex AI, or Azure Foundry based on environment variables. All providers are cast to `Anthropic` via type erasure — the query loop never branches on the provider. Unused providers are never loaded (dynamic imports).
+
+**The 2^N System Prompt Problem**: A Dynamic Boundary Marker divides the prompt into static (globally cached) and dynamic (per-session) sections. Every conditional before the boundary doubles global cache variants. Runtime checks *must* go after the boundary. Cache-breaking sections use `DANGEROUS_uncachedSystemPromptSection` naming to force justification.
+
+**Streaming & Idle Watchdog**: Uses raw SSE over SDK abstractions to avoid O(n²) partial JSON parsing on large tool inputs. A 90-second idle watchdog resets on each chunk; if no chunks arrive, it aborts and retries non-streaming.
+
+**Prompt Cache Tiers**: Ephemeral (~5min), 1-hour TTL (eligible users), and Global scope (system prompt). Global scope is disabled when MCP tools are present.
+
+#### 5.25.14 Fork Agents Deep Dive (Ch9) — The Byte-Identical Prefix Trick
+
+When DOMINION spawns 24 agents, doing so naively would multiply token costs by 24x. Fork agents solve this:
+
+**The 95% Insight**: 5 parallel children share ~80,000 tokens of prefix, with only ~200 tokens differing per child. This is 99.75% overlap. Anthropic's prompt cache gives a 90% discount on cached input tokens, turning a $4 dispatch into $0.50.
+
+Prompt caching is **byte-exact** — not "similar enough." The bytes must match character-for-character. Fork agents freeze three layers:
+
+1. **System prompt via threading**: The child receives `renderedSystemPrompt` from the parent. It is NOT recomputed — this avoids divergence from GrowthBook feature flags transitioning cold→warm.
+2. **Tool definitions via exact passthrough**: The `useExactTools` flag passes the parent's exact tool array. The Agent tool is kept in the child's pool even though the child cannot use it — removing it would change serialization and bust the cache.
+3. **Message array via `buildForkedMessages()`**: Uses constant `FORK_PLACEHOLDER_RESULT` string (`'Fork started -- processing in background'`) to ensure all tool results are byte-identical across children.
+
+**Recursive Fork Prevention**: Children cannot fork their own children.
+
+**DOMINION Implementation**: This is the key to making 25-agent orchestration economically viable. Every parallel dispatch MUST use the fork agent pattern.
+
+#### 5.25.15 Input & Interaction Pipeline (Ch14) — 6-System Architecture
+
+Between raw terminal bytes and executed actions lies a 6-system pipeline:
+
+| System | Function |
+|--------|----------|
+| Tokenizer | Splits raw byte stream into escape sequences |
+| Parser | Classifies sequences across 5 terminal protocols (Kitty, VT220, xterm modifyOtherKeys, tmux, Windows Terminal) |
+| Keybinding Resolver | Matches parsed keys against context-specific bindings across 16 scopes |
+| Chord State Machine | Manages multi-key sequences (e.g., `Ctrl+X Ctrl+K` = killAgents) with 1000ms timeout |
+| Handler | Executes the matched action |
+| React Batch | Batches resulting state updates into a single render |
+
+**Vim Mode**: Full state machine with pure function transitions, motions, operators, text objects, persistent state, and dot-repeat.
+
+**DOMINION Implementation**: The CLI interface needs the same keybinding system with 16+ contexts for different agent interaction modes.
+
+#### 5.25.16 Remote Control & Cloud Execution (Ch16) — 4 Topologies
+
+DOMINION can be controlled remotely via 4 topologies:
+
+| Topology | Transport | Read Channel | Write Channel | Use Case |
+|----------|-----------|-------------|--------------|----------|
+| Bridge v1 | HTTP Poll | WebSocket | HTTP POST | Legacy web dashboard |
+| Bridge v2 | SSE | SSE stream | CCRClient HTTP | Modern web dashboard |
+| Direct Connect | WebSocket | `cc://` URL | WebSocket | LAN/local dev |
+| Upstream Proxy | WebSocket tunnel | Tunnel | Tunnel | Cloud containers |
+
+**Common Design**: Reads are asymmetric from writes. Reconnection is automatic. Failures degrade gracefully.
+
+**Security (Upstream Proxy)**:
+- `prctl(PR_SET_DUMPABLE, 0)` via Bun FFI blocks same-UID ptrace of process heap
+- Session token file unlinked after read — token exists only on heap
+- CA certificate concatenated with system CA bundle
+- Protobuf hand-encoded in 10 lines (no runtime dependency)
+
+**FlushGate**: Ensures all pending writes complete before session teardown.
+
+**BoundedUUIDSet**: O(1) lookup, O(capacity) memory for echo deduplication.
+
+#### 5.25.17 Performance Engineering (Ch17) — 5 Dimensions, 50+ Checkpoints
+
+Performance optimization in an agentic system is 5 problems, not one:
+
+| Dimension | Key Optimization | Impact |
+|-----------|-----------------|--------|
+| **Startup Latency** | Module-level I/O parallelism, API preconnection, fast-path dispatch, deferred imports | <300ms to first useful output |
+| **Token Efficiency** | Slot Reservation: 8K default, 64K escalation (<1% truncation). Per-tool: 50K chars / 100K tokens. Per-message aggregate: 200K chars | 12-28% more usable context |
+| **API Cost** | 3-tier prompt cache, sticky latches, memoized session date, section memoization | 90% cache discount |
+| **Rendering** | Pool-based memory (CharPool, StylePool, HyperlinkPool), packed Int32Array cells, double-buffer with damage rectangles | 60fps streaming |
+| **Search Speed** | 26-bit bitmap pre-filter (4 bytes/path, ~1MB for 270K paths), score-bound rejection, fused indexOf scan, async indexing | <5ms per keystroke on 270K paths |
+
+**Context Window Sizing**: Default 200K-token window expandable to 1M via `[1m]` suffix. 4-layer compaction fires progressively as usage approaches limit. Token counting anchored on API's actual `usage` field, not client-side estimation.
+
+**Memory Relevance Side-Query**: A lightweight Sonnet model call (256 max tokens) selects which memory files to include. A single irrelevant 2,000-token memory costs more in wasted context than the side query costs in API calls.
+
+**Speculative Tool Execution**: Start read-only tools during model streaming, before the response completes.
+
+**Raw SSE over SDK**: Avoids O(n²) partial JSON parsing on large tool inputs.
+
+**50+ Startup Profiling Checkpoints**: Sampled at 100% of internal users and 0.5% of external users. Every optimization is data-driven, not intuition-driven.
+
 ---
 
 ### 5.26 From Claude Opus 4.6: Artifact System & MCP Integration
