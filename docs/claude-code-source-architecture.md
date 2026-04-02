@@ -36,6 +36,9 @@
 27. [The 5 Architectural Bets](#the-5-architectural-bets)
 28. [5 Transferable Patterns](#5-transferable-patterns)
 29. [Implementation Mapping to ØMEGA Agents](#implementation-mapping-to-ømega-agents)
+30. [Claude Mythos / Capybara — The Next-Generation Model](#claude-mythos--capybara--the-next-generation-model)
+31. [Hidden Feature Flags (108 Gated Modules)](#hidden-feature-flags-108-gated-modules)
+32. [Undercover Mode](#undercover-mode)
 
 ---
 
@@ -384,9 +387,204 @@ Prompt caching is **byte-exact**. To achieve this, fork agents freeze three laye
 
 Tasks are background work units with state machine: `pending → running → completed | failed | killed`.
 
-**Storage**: Flat map (`Record<string, TaskState>`), not a tree. Parent-child relationships implicit via `toolUseId`.
+### Task State Machine
 
-**Coordinator Mode**: DOMINION manages workers. The coordinator dispatches tasks, monitors progress, and aggregates results. Workers communicate asynchronously through the task infrastructure.
+**7 Task Types**:
+
+| Type | ID Prefix | Example |
+|------|-----------|--------|
+| `local_agent` | `agent-` | Sub-agent doing code analysis |
+| `remote_agent` | `remote-` | ULTRAPLAN cloud session |
+| `coordinator` | `coord-` | Manager in coordinator mode |
+| `worker` | `worker-` | Worker in coordinator mode |
+| `dream` | `dream-` | Memory consolidation |
+| `background` | `bg-` | Background extraction |
+| `custom` | `custom-` | User-defined task |
+
+**TaskStateBase** (12 fields): `id`, `type`, `status`, `parentToolUseId`, `createdAt`, `updatedAt`, `summary`, `error`, `agentId`, `model`, `tokenUsage`, `costUsd`.
+
+**LocalAgentTaskState** extends base with: `transcript` (full message array), `workingDirectory`, `permissionMode`, `allowedTools`, `systemPrompt`.
+
+**Storage**: Flat map (`Record<string, TaskState>`), not a tree. Parent-child relationships implicit via `toolUseId`. `getAllTasks()` returns the full registry. Interface evolved through subtraction — fields removed as patterns stabilized.
+
+**Progress Tracker**: Each task maintains `toolUseCount`, `latestInputTokens`, `cumulativeOutputTokens`, and `recentActivities[]`. Note: input tokens are latest-only (context window), output tokens are cumulative (total generated).
+
+### Coordinator Mode (Deep Architecture)
+
+The coordinator is a **370-line system prompt** that transforms Claude from a single agent into a project manager. Its core rule: **"Never delegate understanding."**
+
+**4 Workflow Phases**:
+
+| Phase | What the Coordinator Does |
+|-------|---------------------------|
+| 1. Research | Spawns workers to explore codebase, read docs, gather context |
+| 2. Synthesis | Reads ALL worker results, forms its own understanding |
+| 3. Implementation | Dispatches implementation tasks with precise instructions |
+| 4. Verification | Spawns verification workers to check implementation |
+
+**Tool Restrictions**: The coordinator can ONLY use `AgentTool` (spawn worker), `SendMessage` (communicate), and `TaskStop` (terminate). It cannot read files, write code, or run commands directly.
+
+**Worker Context**: Each worker gets a `tengu_scratch` scratchpad for notes. Workers see only their assigned scope, not the full project.
+
+**3 Anti-Patterns** (explicitly forbidden in the system prompt):
+
+| Anti-Pattern | Why It Fails |
+|-------------|-------------|
+| Delegating synthesis | Coordinator must form its own understanding, not ask a worker to summarize |
+| Over-parallelizing | Spawning 10 workers when 2 sequential would be clearer |
+| Under-specifying | Vague worker instructions lead to wasted tokens and wrong results |
+
+**Continue-vs-Spawn Decision Matrix**:
+
+| Scenario | Decision | Reason |
+|----------|----------|--------|
+| Worker returned partial result | Continue existing worker | Cheaper, preserves context |
+| Worker hit error, context intact | Continue with correction | Don't waste cached context |
+| Need completely different task | Spawn new worker | Fresh context, clean scope |
+| Worker finished, need verification | Spawn new worker | Adversarial independence |
+
+**Mutual Exclusion**: Coordinator mode and fork agents cannot be used simultaneously. Coordinator workers are full agents with their own context; fork agents share the parent's context.
+
+### Swarm System (Multi-Agent Teams)
+
+**Team Context**: Each agent in a swarm has `teamName`, a `teammates` map (agent name → color for UI), and an `Agent Name Registry` for human-readable addressing.
+
+**In-Process Teammates**: Agents sharing the same process use `AsyncLocalStorage` for isolation. Each teammate has:
+- 50-message cap (prevents runaway conversations)
+- `isIdle` flag (cooperative scheduling)
+- `shutdownRequested` flag (graceful termination)
+- `currentWorkAbortController` (cancellation)
+
+**Production Incident**: 292 agents / 36.8GB RSS — discovered the need for the 50-message cap and cooperative termination.
+
+**File-Based Mailbox**: Agents that cannot share memory communicate via file-based mailboxes. Messages are JSON files in a shared directory.
+
+**Permission Forwarding**: When a teammate needs permission, the request propagates to the user-facing agent.
+
+**Broadcast**: Sending to `"*"` broadcasts to all teammates.
+
+**Cooperative Termination Protocol**: Agents check `shutdownRequested` between tool calls. When true, they finish the current tool, save state, and exit cleanly.
+
+### SendMessage (4 Routing Modes)
+
+| Mode | Mechanism | When Used |
+|------|-----------|----------|
+| Bridge | HTTP POST to bridge server | Remote agents |
+| UDS | Unix Domain Socket | Local agents on same machine |
+| In-Process | Direct function call via AsyncLocalStorage | Teammates in same process |
+| Mailbox | File-based JSON messages | Cross-process, cross-machine |
+
+**Structured Protocols**: Messages can carry structured payloads: `shutdown_request`, `shutdown_response`, `plan_approval_response`.
+
+**Auto-Resume**: When a message targets a terminated agent, the system transparently resurrects it from its disk transcript. The 6-step resume process: detect terminated → load transcript → reconstruct state → inject new message → resume query loop → return response.
+
+### Communication Patterns
+
+**Foreground Generator Chain with Background Escape Hatch**: The main loop yields messages via `for await`. But background signals (from teammates, notifications, command queue) can interrupt via `Promise.race` between the next message and a background signal.
+
+**3 Background Channels**:
+
+| Channel | Purpose |
+|---------|--------|
+| Disk output | Teammate wrote a file the agent should know about |
+| Notifications | XML-formatted system notifications |
+| Command queue | User or coordinator commands |
+
+**`drainPendingMessages()`**: Called at tool-round boundaries to batch-process all accumulated background messages before the next model call.
+
+### TaskStop (Process Termination)
+
+Legacy alias: `KillShell`. Sends SIGTERM with an eviction timer; if the process doesn't exit within the timer, escalates to SIGKILL. Notifies teammates of the shutdown.
+
+### Orchestration Pattern Decision Table
+
+| Scenario | Pattern | Why |
+|----------|---------|-----|
+| Parallel independent tasks | Fork agents | Shared cache, cheapest |
+| Sequential dependent tasks | Single agent, multi-turn | Context preserved |
+| Complex project with phases | Coordinator mode | Structured workflow |
+| Long-running background work | Task (async) | Non-blocking |
+| Team collaboration | Swarm | Peer-to-peer communication |
+| One-shot delegation | Sub-agent | Simple isolation |
+| Emergency termination | TaskStop | Clean shutdown |
+
+**Cost of Orchestration**: Every orchestration layer adds latency and tokens. The cheapest correct answer is always "don't orchestrate" — use a single agent when possible. Orchestrate only when the task genuinely requires isolation, parallelism, or specialization.
+
+---
+
+## Claude Mythos / Capybara — The Next-Generation Model
+
+> **Source**: Fortune (March 26, 2026) [1] and WaveSpeed AI (April 1, 2026) [2]
+
+**Claude Mythos** is Anthropic's leaked next-generation model. **Capybara** is a new 4th tier above Opus.
+
+| Tier | Position | Characteristics |
+|------|----------|----------------|
+| Haiku | Smallest | Fastest, cheapest |
+| Sonnet | Mid-tier | Balanced performance |
+| Opus | Large | Most capable (current) |
+| **Capybara** | **NEW — Above Opus** | "By far the most powerful AI model we've ever developed" |
+
+**Claimed Capabilities**: "Dramatically higher scores" vs Opus 4.6 in coding, academic reasoning, and cybersecurity. "Currently far ahead of any other AI model in cyber capabilities." [1]
+
+**Dual-Use Concern**: The leaked draft stated the model "presages an upcoming wave of models that can exploit vulnerabilities in ways that far outpace the efforts of defenders." A Chinese state-sponsored group had already used Claude Code to infiltrate ~30 organizations before detection. [1]
+
+**Release Strategy**: Deliberately slower rollout. Early access limited to cybersecurity-focused organizations. Very expensive to serve. No public API, pricing, or release date confirmed.
+
+**ØMEGA Application**: DOMINION should be architected to use Capybara tier when available. The model routing system (section 5.25.13 API Layer) already supports multi-provider client factories — adding a Capybara tier is a configuration change, not an architecture change.
+
+---
+
+## Hidden Feature Flags (108 Gated Modules)
+
+> **Source**: WaveSpeed AI analysis of the 512K-line source code leak [2]
+
+The leaked source contains **108 feature-flagged modules** not present in the public npm package. Key flags:
+
+| Feature Flag | Description | Status | ØMEGA Application |
+|-------------|-------------|--------|-------------------|
+| **ULTRAPLAN** | Offloads planning to Claude Opus in the cloud for up to 30 minutes. User monitors and approves plan via browser interface before execution begins. | Internal only | ATHENA (planning agent) cloud-based strategy generation |
+| **KAIROS** (expanded) | Always-on persistent assistant that watches, logs, and acts proactively. Maintains append-only daily logs. Triggers actions based on observations without prompting. Nightly "dreaming" process consolidates and prunes memory. | Internal only | KRONOS (scheduling), ARCHIVE (memory) |
+| **COORDINATOR_MODE** | One Claude manages multiple parallel workers via mailbox system. 370-line system prompt. 4 workflow phases. | Internal only | DOMINION multi-agent orchestration |
+| **VOICE_MODE** | Voice interaction with Claude Code | Internal only | Future ORACLE voice alerts |
+| **WEB_BROWSER_TOOL** | Browser access from within the CLI | Internal only | PHANTOM reconnaissance |
+| **DAEMON** | Background process mode — Claude runs as a persistent daemon | Internal only | Always-on market monitoring |
+| **AGENT_TRIGGERS** | Automated event-based agent activation | Internal only | Market event triggers |
+
+### ULTRAPLAN Deep Dive
+
+ULTRAPLAN is the most immediately applicable hidden feature. When activated:
+
+1. The system offloads the planning phase to a cloud-hosted Claude Opus instance
+2. The Opus instance has up to **30 minutes** to generate a comprehensive plan
+3. The user can monitor progress in real-time via a browser interface
+4. Once complete, the plan is written to a plan file
+5. The local agent receives: `"Ultraplan complete. The plan has been pre-written to the plan file. Do NOT read files, explore the codebase, or modify anything. Your ONLY permitted action is to call ExitPlanMode immediately to present the plan to the user for approval."`
+6. If the ULTRAPLAN fails, the error message reads: `"Ultraplan failed: [reason]. Inspect the session at [URL] and tell the user to retry locally with plan mode."`
+
+---
+
+## Undercover Mode
+
+> **Source**: WaveSpeed AI [2], corroborated by Kuberwastaken's Claude Code README breakdown
+
+The leaked code contains a check for `USER_TYPE === 'ant'` — a flag identifying Anthropic employees. When true and the user is working in a public repository, the system enters **undercover mode**:
+
+| Behavior | Detail |
+|----------|--------|
+| System prompt injection | "Not blow your cover" and "NEVER mention you are an AI" |
+| Git metadata stripping | `Co-Authored-By` lines removed from commits |
+| Codename hiding | Internal model names hidden from responses |
+| No force-off switch | Cannot be disabled from the user-facing interface |
+
+**ØMEGA Application**: This is a **security concern**, not a feature to replicate. ØMEGA's WARDEN agent should include transparency controls that prevent any agent from hiding its AI nature. The `SENTINEL` security monitor should flag any attempt to strip attribution metadata.
+
+---
+
+## References
+
+[1]: https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/ "Fortune — Anthropic Says Testing Mythos"
+[2]: https://wavespeed.ai/blog/posts/claude-code-leaked-source-hidden-features/ "WaveSpeed AI — Claude Code Leaked Source: BUDDY, KAIROS & Every Hidden Feature Inside"
 
 ---
 
@@ -779,6 +977,13 @@ These patterns from Claude Code's architecture transfer to any agentic system:
 | Build System (Bun + esbuild) | **ARCANE** | Feature flags, dead code elimination. |
 | Buddy/Companion System | **DOMINION (Ø)** | Procedural agent identity generation. |
 | Error Recovery Escalation | **ALL AGENTS** | Death spiral guard, recovery limits. |
+| Mythos/Capybara Model Tier | **DOMINION (Ø)** | Target Capybara tier for maximum capability. |
+| ULTRAPLAN (Cloud Planning) | **ATHENA** | 30-minute cloud strategy generation with browser approval. |
+| Coordinator Mode (370-line prompt) | **DOMINION (Ø)** | 4-phase workflow, 3 anti-patterns, tool restrictions. |
+| Swarm System | **ALL AGENTS** | Team context, mailbox, 50-msg cap, cooperative termination. |
+| SendMessage (4 routing modes) | **DOMINION (Ø)** | Bridge, UDS, in-process, mailbox with auto-resume. |
+| 108 Hidden Feature Flags | **ALL AGENTS** | DAEMON, VOICE_MODE, AGENT_TRIGGERS for future capabilities. |
+| Undercover Mode (SECURITY) | **WARDEN**, **SENTINEL** | Transparency controls preventing AI identity hiding. |
 
 ---
 
