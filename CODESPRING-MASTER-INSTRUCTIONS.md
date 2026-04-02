@@ -3110,6 +3110,54 @@ class MemorySystem:
         selected = await self.llm_select(manifests, conversation_context)
         # 3. Load full content only for selected memories
         return [self.load_full(m) for m in selected]
+    
+    # Write Path — 2-Step Protocol (uses same tools as code editing)
+    # Step 1: Write .md file with YAML frontmatter (name, description, type)
+    # Step 2: Update MEMORY.md index with one-line pointer (~150 chars max)
+    # No special memory API exists — tool reuse as architectural principle
+    
+    # MEMORY.md Index Caps
+    INDEX_LINE_CAP = 200       # Hard cap on lines
+    INDEX_BYTE_CAP = 25_000    # Hard cap on bytes (catches long-line abuse)
+    
+    # Staleness System
+    def get_staleness_warning(self, memory_age_days: int) -> str:
+        if memory_age_days <= 1:
+            return ""  # Today/yesterday: no warning
+        return f"{memory_age_days} days ago — code claims may be outdated, verify against current code"
+        # Human-readable format triggers staleness reasoning (validated: 3/3 vs 0/3 in evals)
+    
+    # KAIROS Mode — Long-Lived Sessions
+    # Append-only daily logs: <autoMemPath>/logs/YYYY/MM/YYYY-MM-DD.md
+    # Short timestamped bullets, no reorganization during capture
+    # Path described as pattern (not literal date) for cache optimization
+    
+    # /dream Consolidation (4 phases)
+    DREAM_PHASES = ["orient", "gather", "consolidate", "prune"]
+    # .consolidate-lock: content=PID, mtime=lastConsolidatedAt
+    # Auto-dream gates: hours_since_last > 24, sessions_modified > 5, no lock held
+    # Crash recovery: process.kill(pid, 0) with 1-hour staleness timeout
+    
+    # Background Extraction Agent
+    # Forked agent at end of each query loop, shares parent's prompt cache
+    # Constrained: read-only + write only to memory directory
+    # Two-turn strategy: turn 1 reads in parallel, turn 2 writes in parallel
+    # Cooperative: defers when main agent already saved
+    
+    # Team Memory — <autoMemPath>/team/ (feature-flag gated)
+    TEAM_SECURITY_LAYERS = [
+        "input_sanitization",      # Null bytes, URL-encoded traversals, Unicode attacks
+        "string_path_validation",  # path.resolve() + prefix check with trailing separator
+        "symlink_resolution",      # realpathDeepestExisting() catches symlink attacks
+    ]
+    # All failures produce PathTraversalError — fail closed
+    
+    # Path Resolution Priority
+    PATH_PRIORITY = [
+        "CLAUDE_COWORK_MEMORY_PATH_OVERRIDE",  # Full-path override
+        "autoMemoryDirectory in settings.json",  # Trusted sources only (NOT project settings)
+        "~/.claude/projects/<sanitized-git-root>/memory/",  # Default
+    ]
 ```
 
 #### 5.25.7 MCP — 8 Transports, 7 Scopes, 4-Stage Wrapping
@@ -3164,18 +3212,60 @@ class ExtensibilitySystem:
         "mcp",               # Remote, untrusted (NO shell execution)
     ]
     
-    # 4 Hook Types
+    # 6 Hook Types (4 user-configurable, 2 internal)
     HOOK_TYPES = {
-        "command": "Shell process, exit code protocol (0=pass, 2=block)",
-        "prompt":  "Single LLM call, returns ok/not-ok",
-        "agent":   "Multi-turn agentic loop (max 50 turns)",
-        "webhook": "HTTP POST to external service",
+        "command":  "Shell process, stdin=JSON, exit code protocol (0=pass, 2=block)",
+        "prompt":   "Single LLM call, returns {ok: true/false, reason}",
+        "agent":    "Multi-turn agentic loop (max 50 turns, dontAsk, thinking disabled)",
+        "http":     "POST to URL for remote policy servers and audit logging",
+        "callback": "(Internal) Registered programmatically, -70% overhead fast path",
+        "function": "(Internal) Session-scoped TypeScript callbacks",
     }
     
-    # 5 Key Lifecycle Events
-    LIFECYCLE_EVENTS = ["PreToolUse", "PostToolUse", "PreModelResponse", "PostModelResponse", "SessionStart"]
+    # 5 Most Important Lifecycle Events
+    KEY_EVENTS = {
+        "PreToolUse":       "Before every tool execution — block, modify input, auto-approve, inject context",
+        "PostToolUse":      "After successful execution — inject context, replace MCP output",
+        "Stop":             "Before Claude concludes — blocking forces continuation (most powerful hook)",
+        "SessionStart":     "At session beginning — set env vars, override first message, file watches",
+        "UserPromptSubmit": "When user submits prompt — block, validate, filter before model sees it",
+    }
+    
+    # All Remaining Lifecycle Events (27+ total)
+    ALL_EVENTS = {
+        "Tool lifecycle":   ["PostToolUseFailure", "PermissionDenied", "PermissionRequest"],
+        "Session":          ["SessionEnd", "Setup"],  # SessionEnd has 1.5s timeout
+        "Subagent":         ["SubagentStart", "SubagentStop"],
+        "Compaction":       ["PreCompact", "PostCompact"],
+        "Notification":     ["Notification", "Elicitation", "ElicitationResult"],
+        "Configuration":    ["ConfigChange", "InstructionsLoaded", "CwdChanged",
+                             "FileChanged", "TaskCreated", "TaskCompleted", "TeammateIdle"],
+    }
+    
+    # Exit Code Semantics
+    EXIT_CODES = {
+        0: "Success, stdout parsed if JSON (no block)",
+        2: "Blocking error, stderr shown as system message (blocks)",
+        # Other: Non-blocking warning, shown to user only
+    }
+    # Exit 2 chosen deliberately — exit 1 too common (any unhandled exception)
+    
+    # 6 Hook Sources
+    HOOK_SOURCES = {
+        "userSettings":    "~/.claude/settings.json (highest priority)",
+        "projectSettings": ".claude/settings.json (version-controlled)",
+        "localSettings":   ".claude/settings.local.json (gitignored)",
+        "policySettings":  "Enterprise (cannot be overridden)",
+        "pluginHook":      "Plugin (priority 999, lowest)",
+        "sessionHook":     "In-memory only (registered by skills)",
+    }
+    
+    # Permission Behavior Precedence: deny > ask > allow (deny always wins)
     
     # Security: Config frozen at startup (snapshot model)
+    # captureHooksConfigSnapshot() called once at startup
+    # executeHooks() reads from snapshot, never re-reads settings
+    # Policy cascade: disableAllHooks clears all, allowManagedHooksOnly excludes user/project
     SNAPSHOT_SECURITY = True
 ```
 
@@ -3342,6 +3432,46 @@ Performance optimization in an agentic system is 5 problems, not one:
 **Raw SSE over SDK**: Avoids O(n²) partial JSON parsing on large tool inputs.
 
 **50+ Startup Profiling Checkpoints**: Sampled at 100% of internal users and 0.5% of external users. Every optimization is data-driven, not intuition-driven.
+
+#### 5.25.18 The Buddy/Companion System — Procedural Identity Generation
+
+> **Source**: [grayashh/buddy-reroll](https://github.com/grayashh/buddy-reroll) + Claude Code source `types.ts`, `companion.ts`
+
+A deterministic companion generation system that creates unique pixel-art buddies tied to user identity.
+
+```python
+class BuddySystem:
+    """Procedural companion generation from Claude Code source."""
+    
+    # Core Algorithm: Mulberry32 PRNG (seeded from user ID)
+    ORIGINAL_SALT = "claude-code-companion-v1"  # Bun.hash(userId + salt)
+    
+    # Generation Pipeline
+    SPECIES = ["Cat", "Dog", "Bunny", "Fox", "Owl", "Frog", "Penguin", "Bear"]
+    RARITY_WEIGHTS = {
+        "Common": 0.50,      # Floor: 0.0
+        "Uncommon": 0.30,    # Floor: 0.5
+        "Rare": 0.15,        # Floor: 0.8
+        "Legendary": 0.05,   # Floor: 0.95
+    }
+    
+    # Stat Generation (5 stats with peak/dump system)
+    STATS = ["HP", "ATK", "DEF", "SPD", "LCK"]
+    PEAK_BONUS = 3    # Peak stat gets +3
+    DUMP_PENALTY = -2  # Dump stat gets -2
+    
+    # Sprite System: 16x16 pixel grid with indexed color palettes
+    # Binary patching: coordinate-based [x, y, colorIndex] patches
+    # Each eye/hat variant is a patch set applied to base species sprite
+    
+    # Shiny: 1/100 chance — golden palette swap
+    SHINY_CHANCE = 0.01
+    
+    # UI: Ink/React state machine (idle → rolling → reveal → idle)
+    # Binary Patching: salt replacement, backup, macOS codesign, config clear
+```
+
+**ØMEGA Application**: Procedural agent identity generation. Each of the 25 agents gets a deterministic visual identity using the same Mulberry32 PRNG seeded from agent name. The binary patching pattern applies to DOMINION's plugin/skin system.
 
 ---
 
