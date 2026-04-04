@@ -941,7 +941,7 @@ This repository contains over 30 detailed research, architecture, and specificat
 
 ### 🌟 The Master Blueprint
 * [**CODESPRING-MASTER-INSTRUCTIONS.md**](./CODESPRING-MASTER-INSTRUCTIONS.md) — The definitive 3,500+ line implementation guide. Start here.
-* [**docs/claude-code-source-architecture.md**](./docs/claude-code-source-architecture.md) — **DOMINION's Main Brain Architecture** — 500+ line deep-dive into the 10 foundational patterns, agent loop, 4-layer compression, tool system, sub-agent spawning, memory taxonomy, MCP internals, and 5 architectural bets. Sourced from [claude-code-from-source.com](https://claude-code-from-source.com/).
+* [**docs/claude-code-source-architecture.md**](./docs/claude-code-source-architecture.md) — **DOMINION's Main Brain Architecture** — 1,000+ line deep-dive into 34 sections covering all 18 chapters, the model-agnostic harness, Composio Tool Router, Mythos/Capybara, ULTRAPLAN, KAIROS, 108 hidden feature flags, and the buddy system. Sourced from [claude-code-from-source.com](https://claude-code-from-source.com/) and [ComposioHQ/open-claude-cowork](https://github.com/ComposioHQ/open-claude-cowork).
 * [**CODESPRING-INTEGRATION-MANIFEST.md**](./CODESPRING-INTEGRATION-MANIFEST.md) — Integration checklist and implementation priorities for CodeSpring.
 
 ### 🏛️ Core Architecture & Design

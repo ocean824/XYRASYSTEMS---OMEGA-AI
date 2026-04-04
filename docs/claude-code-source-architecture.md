@@ -39,6 +39,8 @@
 30. [Claude Mythos / Capybara — The Next-Generation Model](#claude-mythos--capybara--the-next-generation-model)
 31. [Hidden Feature Flags (108 Gated Modules)](#hidden-feature-flags-108-gated-modules)
 32. [Undercover Mode](#undercover-mode)
+33. [The Model-Agnostic Harness (Open Claude Cowork)](#the-model-agnostic-harness-open-claude-cowork)
+34. [Composio Tool Router Integration](#composio-tool-router-integration)
 
 ---
 
@@ -581,6 +583,79 @@ The leaked code contains a check for `USER_TYPE === 'ant'` — a flag identifyin
 
 ---
 
+## The Model-Agnostic Harness (Open Claude Cowork)
+
+While Claude Code was originally built specifically for Anthropic models, the [Open Claude Cowork](https://github.com/ComposioHQ/open-claude-cowork) repository demonstrates how to build a **model-agnostic harness** that runs any model through the exact same 14-step tool pipeline and agent loop.
+
+### The Provider Abstraction Layer
+
+The harness uses a `BaseProvider` class that normalizes the streaming contract across different SDKs (Claude Agent SDK vs Opencode SDK).
+
+| Provider | SDK Used | Streaming Contract Normalization |
+|----------|----------|----------------------------------|
+| **Claude** | `@anthropic-ai/claude-agent-sdk` | Native `query()` generator. Extracts `session_id` from `system/init` chunks. Yields `text`, `tool_use`, `tool_result`. |
+| **Opencode** | `@opencode-ai/sdk` | Adapts `client.event.subscribe()` SSE stream. Parses `message.part.updated` events. Deduplicates tool calls. Skips step markers. |
+
+### The Unified Streaming Contract
+
+Regardless of the underlying model (DeepSeek, Gemini, Claude, Grok), the harness forces all outputs into a unified 7-event contract over Server-Sent Events (SSE):
+
+1. `session_init`: Session ID established
+2. `text`: Content delta (including `isReasoning: true` for thinking models)
+3. `tool_use`: Tool name, input arguments, and unique call ID
+4. `tool_result`: Execution result linked to the `tool_use_id`
+5. `done`: Stream completed successfully
+6. `aborted`: Stream cancelled by client AbortController
+7. `error`: Unrecoverable failure
+
+> **ØMEGA Application (DOMINION)**: DOMINION implements this exact `BaseProvider` pattern. This allows the system to route reasoning tasks to DeepSeek-V3, coding tasks to Claude 3.7 Sonnet, and vision tasks to Gemini 2.5 Pro — all while maintaining the exact same terminal UI, memory system, and tool pipeline.
+
+---
+
+## Composio Tool Router Integration
+
+The Open Claude Cowork repository also reveals how to scale the tool system from the 10 built-in bash tools to **500+ enterprise applications** using the Composio Tool Router via MCP.
+
+### Pre-Initialized MCP Sessions
+
+Instead of authenticating tools per-request, the harness pre-initializes a headless Composio session on startup:
+
+```javascript
+defaultComposioSession = await composio.create('default-user');
+// Writes MCP URL and headers to opencode.json
+updateOpencodeConfig(defaultComposioSession.mcp.url, defaultComposioSession.mcp.headers);
+```
+
+This headless session acts as a persistent bridge. When the agent loop runs, it passes the MCP configuration into the provider:
+
+```javascript
+const mcpServers = {
+  composio: {
+    type: 'http', // or 'remote' for Opencode
+    url: composioSession.mcp.url,
+    headers: composioSession.mcp.headers
+  }
+};
+```
+
+### Bypassing Permissions for Autonomous Operation
+
+The harness explicitly overrides Claude Code's default approval prompts to enable fully autonomous operation:
+
+```javascript
+const queryOptions = {
+  allowedTools: ['Read', 'Write', 'Edit', 'Bash', 'Glob', 'Grep', 'WebSearch', 'WebFetch', 'TodoWrite', 'Skill'],
+  maxTurns: 100,
+  mcpServers,
+  permissionMode: 'bypassPermissions', // CRITICAL: Enables autonomous execution
+  settingSources: ['user', 'project']  // Enables portable .claude/skills/ loading
+};
+```
+
+> **ØMEGA Application (ALL AGENTS)**: ØMEGA uses the Composio Tool Router to give agents instant access to Gmail, Slack, GitHub, Google Drive, and 500+ other apps without writing custom API integrations. The `bypassPermissions` flag is used for autonomous background agents (like KAIROS), while interactive agents use the standard `ask` mode.
+
+---
+
 ## References
 
 [1]: https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/ "Fortune — Anthropic Says Testing Mythos"
@@ -984,7 +1059,12 @@ These patterns from Claude Code's architecture transfer to any agentic system:
 | SendMessage (4 routing modes) | **DOMINION (Ø)** | Bridge, UDS, in-process, mailbox with auto-resume. |
 | 108 Hidden Feature Flags | **ALL AGENTS** | DAEMON, VOICE_MODE, AGENT_TRIGGERS for future capabilities. |
 | Undercover Mode (SECURITY) | **WARDEN**, **SENTINEL** | Transparency controls preventing AI identity hiding. |
+| Model-Agnostic Harness | **DOMINION (Ø)** | BaseProvider pattern for DeepSeek/Gemini/Claude/Grok routing. |
+| Composio Tool Router (500+ Apps) | **ALL AGENTS** | Pre-initialized headless MCP for Gmail, Slack, GitHub, Drive. |
+| `bypassPermissions` Mode | **KAIROS**, Background Agents | Fully autonomous execution without approval prompts. |
+| Unified SSE Streaming Contract | **ALL AGENTS** | 7-event normalized stream across all providers. |
+| Skills System (`.claude/skills/`) | **ALL AGENTS** | Portable capability extension via `settingSources`. |
 
 ---
 
-> **This document is the complete architectural blueprint for DOMINION's brain. Every pattern, every abstraction, every table, every implementation detail from [claude-code-from-source.com](https://claude-code-from-source.com/) is captured here with ØMEGA AI applications mapped. Nothing from the source has been omitted.**
+> **This document is the complete architectural blueprint for DOMINION's brain. Every pattern, every abstraction, every table, every implementation detail from [claude-code-from-source.com](https://claude-code-from-source.com/) and [ComposioHQ/open-claude-cowork](https://github.com/ComposioHQ/open-claude-cowork) is captured here with ØMEGA AI applications mapped. Nothing from either source has been omitted.**

@@ -2915,7 +2915,8 @@ class TmuxSessionManager:
 ### 5.25 From Claude Code Source: DOMINION's Main Brain Architecture
 
 > **PRIMARY SOURCE**: [claude-code-from-source.com](https://claude-code-from-source.com/) — 18 chapters, 7 parts, ~400 pages reverse-engineered from Claude Code's TypeScript source maps.
-> **DEEP DIVE**: See [`docs/claude-code-source-architecture.md`](docs/claude-code-source-architecture.md) for the full 500+ line architectural blueprint.
+> **MODEL-AGNOSTIC HARNESS**: [ComposioHQ/open-claude-cowork](https://github.com/ComposioHQ/open-claude-cowork) — Provider abstraction layer enabling any model (DeepSeek, Gemini, Grok) to use the same tool pipeline + 500+ Composio integrations.
+> **DEEP DIVE**: See [`docs/claude-code-source-architecture.md`](docs/claude-code-source-architecture.md) for the full 1,000+ line architectural blueprint.
 > **This is the single most important capability source in the entire ØMEGA AI system. It defines how DOMINION's brain works.**
 
 #### 5.25.1 The 10 Foundational Patterns
@@ -3472,6 +3473,77 @@ class BuddySystem:
 ```
 
 **ØMEGA Application**: Procedural agent identity generation. Each of the 25 agents gets a deterministic visual identity using the same Mulberry32 PRNG seeded from agent name. The binary patching pattern applies to DOMINION's plugin/skin system.
+
+#### 5.25.19 The Model-Agnostic Harness (Open Claude Cowork)
+
+> **Source**: [ComposioHQ/open-claude-cowork](https://github.com/ComposioHQ/open-claude-cowork)
+
+The Open Claude Cowork repo demonstrates how to decouple the agent loop from any specific model provider. The architecture uses a `BaseProvider` abstract class with `query()` (async generator), `getSession()`, `setSession()`, `abort()`, and `cleanup()` methods. Two concrete implementations exist:
+
+| Provider | SDK | Key Adapter Logic |
+|----------|-----|-------------------|
+| **ClaudeProvider** | `@anthropic-ai/claude-agent-sdk` | Native `query()` generator. Captures `session_id` from `system/init` chunks. Supports `resume` for session persistence. Uses `AbortController` per `chatId`. |
+| **OpencodeProvider** | `@opencode-ai/sdk` | Wraps `client.event.subscribe()` SSE stream. Parses `message.part.updated` events. Deduplicates tool calls via `yieldedToolCalls` Set. Handles `reasoning` chunks for thinking models. Skips `step-start`/`step-finish` markers. |
+
+**Unified 7-Event Streaming Contract**: Both providers normalize output to `session_init`, `text`, `tool_use`, `tool_result`, `done`, `aborted`, `error`. This means DOMINION can swap models mid-conversation without changing the tool pipeline.
+
+**Runtime Provider Registration**: `registerProvider(name, ProviderClass)` allows adding new providers (DeepSeek, Gemini, Grok) at runtime without modifying the core loop.
+
+**Per-Request Model Selection**: The server accepts `{ provider: 'opencode', model: 'anthropic/claude-sonnet-4' }` per request, enabling dynamic routing.
+
+```javascript
+// BaseProvider — the interface every model must implement
+class BaseProvider {
+  async *query({ prompt, chatId, mcpServers, allowedTools, maxTurns }) {
+    // Yields: session_init | text | tool_use | tool_result | done | aborted | error
+    throw new Error('Must implement');
+  }
+  getSession(chatId) { return this.sessions.get(chatId); }
+  setSession(chatId, sessionId) { this.sessions.set(chatId, sessionId); }
+  abort(chatId) { /* cancel active query */ }
+}
+```
+
+**ØMEGA Application (DOMINION)**: This is the exact pattern DOMINION uses to route tasks to the optimal model. Reasoning tasks go to DeepSeek-V3, coding to Claude Sonnet, vision to Gemini 2.5 Pro, and trading analysis to specialized fine-tuned models — all through the same `BaseProvider` interface.
+
+#### 5.25.20 Composio Tool Router — 500+ Enterprise Integrations via MCP
+
+> **Source**: [ComposioHQ/open-claude-cowork](https://github.com/ComposioHQ/open-claude-cowork)
+
+The harness scales the tool system from 10 built-in tools to **500+ enterprise applications** using the Composio Tool Router via MCP:
+
+**Pre-Initialized Headless Sessions**: A Composio session is created on server startup and persists across all agent queries. The MCP URL and headers are written to `opencode.json` for file-based config bridging.
+
+**Default Tool Set**: `Read`, `Write`, `Edit`, `Bash`, `Glob`, `Grep`, `WebSearch`, `WebFetch`, `TodoWrite`, `Skill` — matching Claude Code's built-in tools.
+
+**Autonomous Execution Mode**: `permissionMode: 'bypassPermissions'` enables fully autonomous operation without user approval prompts. Combined with `maxTurns: 100` for extended multi-step workflows.
+
+**Portable Skills**: `settingSources: ['user', 'project']` enables loading `.claude/skills/` directories from both user home and project root. Skills are Markdown files with frontmatter (`name`, `description`, `license`) containing domain-specific instructions.
+
+**Electron Desktop Shell Security**: `nodeIntegration: false`, `contextIsolation: true`, `webSecurity: true`. Narrow `window.electronAPI` preload bridge. External URLs opened via `shell.openExternal`.
+
+```javascript
+// Composio MCP session bootstrap
+const composioSession = await composio.create('default-user');
+const mcpServers = {
+  composio: {
+    type: 'http',
+    url: composioSession.mcp.url,
+    headers: composioSession.mcp.headers
+  }
+};
+
+// Autonomous query with full tool access
+const queryOptions = {
+  allowedTools: ['Read', 'Write', 'Edit', 'Bash', 'Glob', 'Grep', 'WebSearch', 'WebFetch', 'TodoWrite', 'Skill'],
+  maxTurns: 100,
+  mcpServers,
+  permissionMode: 'bypassPermissions',
+  settingSources: ['user', 'project']
+};
+```
+
+**ØMEGA Application (ALL AGENTS)**: The Composio Tool Router gives every agent instant access to Gmail, Slack, GitHub, Google Drive, Calendar, and 500+ other apps without custom API integrations. KAIROS uses `bypassPermissions` for autonomous background operation. HERMES uses the Composio messaging adapters (WhatsApp, Telegram, Signal) for multi-platform communication.
 
 ---
 
