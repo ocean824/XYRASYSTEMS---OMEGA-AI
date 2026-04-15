@@ -978,3 +978,15 @@ This repository contains over 30 detailed research, architecture, and specificat
 * [openclaw-vulnerabilities.md](./security/openclaw-vulnerabilities.md) — Security analysis from 8 cybersecurity firms.
 * [prompt-injection-taxonomy.md](./security/prompt-injection-taxonomy.md) — Attack vectors and defenses.
 * [prompt-taxonomy.md](./docs/prompt-taxonomy.md) — System prompt engineering techniques.
+
+---
+## Additive Pre-CodeSpring Control-Plane Appendices
+These documents were added as **non-destructive implementation extensions** so the repository exposes clearer control-plane contracts and naming alignment without removing any original architecture material.
+
+| Document | Purpose |
+|---|---|
+| [canonical-control-plane-addendum.md](./docs/canonical-control-plane-addendum.md) | Standardizes **ØMEGA AI** as the full system and **PRIME** as the canonical top-level controller wherever older implementation-facing references overlap with DOMINION. |
+| [additive-implementation-priorities.md](./docs/additive-implementation-priorities.md) | Defines the first real working control-plane layer for ØMEGA and includes concrete code examples for registry, task, policy, memory, dispatch, and audit flow. |
+
+### TLDR: What These Additions Do
+These appendices make ØMEGA AI more **canonical and implementation-ready** by reducing naming ambiguity around the top-level controller and by turning the first orchestration layer into a more explicit set of contracts and working examples.
