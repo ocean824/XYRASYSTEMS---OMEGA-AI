@@ -55,7 +55,7 @@
 
 ### 9. Θ — QUANTUM
 - **Role**: Trading Intelligence Agent.
-- **Function**: Executes Blackbox trading system (ORACLE AI). Handles risk management and liquidity models.
+- **Function**: Executes Blackbox trading system (LEVIATHAN AI). Handles risk management and liquidity models.
 
 ### 10. Ι — AETHER
 - **Role**: Creative Engine (Music + Video + Content).

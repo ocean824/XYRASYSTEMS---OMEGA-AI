@@ -42,7 +42,7 @@ all business automation across Black Wealth Capital.
 5. Manage errors and recovery
 
 ## Sub-Agents Available
-- Trading Agent (ORACLE AI): Market analysis, signal processing, order flow execution
+- Trading Agent (LEVIATHAN AI): Market analysis, signal processing, order flow execution
 - Marketing Agent: Campaign management, audience targeting, analytics
 - E-commerce Agent: Product management, orders, fulfillment
 - Research Agent (MiroFish): Data collection, analysis, swarm intelligence prediction
@@ -80,9 +80,9 @@ All responses must be structured JSON with:
 
 ## Sub-Agent Modules
 
-### 1. Trading Agent (ORACLE AI)
+### 1. Trading Agent (LEVIATHAN AI)
 
-**Purpose:** Analyze market signals, manage positions, and execute trades using the **ORACLE AI** standalone intelligence stack.
+**Purpose:** Analyze market signals, manage positions, and execute trades using the **LEVIATHAN AI** standalone intelligence stack.
 
 **Operational Modes:**
 - **Integrated**: Acts as the specialized trading intelligence for the ØMEGA AI.

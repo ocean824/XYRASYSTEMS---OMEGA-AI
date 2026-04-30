@@ -13,7 +13,7 @@
 ØMEGA AI is not a chatbot. It is a **"dangerously real" autonomous business operating system** for XYRA Systems. It is designed to:
 
 1. **Self-improve**: Agents optimize each other through feedback loops (SIGMA → all agents).
-2. **Self-fund**: The system generates revenue autonomously through trading (ORACLE/QUANTUM), marketing (MAESTRO), and e-commerce pipelines (SIREN → TITHE).
+2. **Self-fund**: The system generates revenue autonomously through trading (LEVIATHAN/QUANTUM), marketing (MAESTRO), and e-commerce pipelines (SIREN → TITHE).
 3. **Self-protect**: WARDEN and SENTINEL enforce security, risk limits, and kill-switch logic.
 4. **Self-reflect**: MIRRORBACK evaluates long-term alignment with the user's (Ø's) vision.
 
@@ -124,7 +124,7 @@ Before building any agent, the following infrastructure must be initialized. Eve
 | **Workflow Engine (MVP)** | n8n (self-hosted) | Visual workflow automation, webhook triggers, 400+ integrations |
 | **Workflow Engine (Enterprise)** | Custom Python orchestrator | Full control over agent routing, priority queues, kill-switch |
 | **Agent Hand-offs** | OpenAI Swarm (lightweight) | Sequential agent-to-agent delegation with "routines" pattern |
-| **Cyclic Reasoning** | LangGraph | Stateful cyclic graphs for Research (MiroFish) and Trading (ORACLE) |
+| **Cyclic Reasoning** | LangGraph | Stateful cyclic graphs for Research (MiroFish) and Trading (LEVIATHAN) |
 | **Task Queue** | Celery + Redis | Async task distribution, retry logic, priority scheduling |
 
 ### 3.2 LLM Reasoning Engines
@@ -133,7 +133,7 @@ Before building any agent, the following infrastructure must be initialized. Eve
 | :--- | :--- | :--- | :--- |
 | **Claude Opus 4.5 / Sonnet 4.6** | Anthropic | Deep reasoning, code generation, long-context analysis | DOMINION, ARCANE, MODULUS |
 | **GPT-5 Agent Mode** | OpenAI | Multi-tool orchestration, web browsing, code execution | DOMINION, PHANTOM, ECHO |
-| **DeepSeek-V3 / V3.2** | DeepSeek | High-stakes decision-making, MoE architecture, tool-calling | QUANTUM (ORACLE), MODULUS, DOMINION |
+| **DeepSeek-V3 / V3.2** | DeepSeek | High-stakes decision-making, MoE architecture, tool-calling | QUANTUM (LEVIATHAN), MODULUS, DOMINION |
 | **Grok 4.x** | xAI | Real-time market sentiment, unfiltered analysis | PHANTOM, PSYCH |
 | **Gemini 2.5 Flash** | Google | Fast multimodal processing, vision tasks | AETHER (Visage), ECHO |
 | **Qwen-2.5-Coder** | Alibaba | Specialized code generation, low-level implementation | ARCANE |
@@ -182,7 +182,7 @@ All external services are connected via the **Model Context Protocol (MCP)** sta
 | **Google Sheets MCP** | Google Sheets | `spreadsheets.create`, `sheets.create`, `values.get/update/append`, `charts.create` | ECHO, MODULUS |
 | **Airtable MCP** | Airtable | `tables.list`, `records.list/create/update/delete` | ARCHIVE, ECHO |
 | **Canva MCP** | Canva | `designs.create/search/export`, `templates.search`, `brands.get` | ARTIFEX, REVENANT |
-| **Exchange APIs MCP** | Binance/Kraken/Coinbase/IBKR | `account.get_balance/get_positions`, `orders.create/list/cancel`, `trades.list`, `market.get_ticker/get_orderbook` | QUANTUM (ORACLE) |
+| **Exchange APIs MCP** | Binance/Kraken/Coinbase/IBKR | `account.get_balance/get_positions`, `orders.create/list/cancel`, `trades.list`, `market.get_ticker/get_orderbook` | QUANTUM (LEVIATHAN) |
 | **Market Data MCP** | CoinGecko/Alpha Vantage/Polygon.io | `prices.get/history`, `indicators.calculate`, `fundamentals.get` | QUANTUM, MODULUS |
 
 ### 3.6 Creative & Media Stack
@@ -216,7 +216,7 @@ All external services are connected via the **Model Context Protocol (MCP)** sta
 | **Risk Modeling** | Pyomo / PuLP / SciPy | Optimization, portfolio risk, Monte Carlo simulation | QUANTUM, MODULUS |
 | **Machine Learning** | scikit-learn / TensorFlow / PyTorch | Pattern recognition, anomaly detection, classification | SIGMA, QUANTUM |
 
-### 3.8 Trading Stack (ORACLE AI Integration)
+### 3.8 Trading Stack (LEVIATHAN AI Integration)
 
 | Component | Technology | Purpose | Used By |
 | :--- | :--- | :--- | :--- |
@@ -333,7 +333,7 @@ Each agent below includes: **Identity**, **Greek Letter**, **Tier**, **Core Func
 - Rate-limit agent requests
 - Audit all system actions
 - Trigger alerts and escalations
-- Enforce trading kill-switch logic (synced with ORACLE AI)
+- Enforce trading kill-switch logic (synced with LEVIATHAN AI)
 
 **Tech Stack**:
 - **Monitoring**: Prometheus + Grafana (system metrics), Datadog (APM), New Relic (error tracking)
@@ -510,19 +510,20 @@ Each agent below includes: **Identity**, **Greek Letter**, **Tier**, **Core Func
 
 ---
 
-### AGENT 9: Θ — QUANTUM (Trading Intelligence — ORACLE AI)
+### AGENT 9: Θ — QUANTUM (Trading Intelligence — LEVIATHAN AI)
 
 **Tier**: II (Core Operations)
 **Role**: Trading Intelligence, Order Flow Analysis, Execution Engine
-**External System**: **ORACLE AI** (standalone software at `ocean824/ORACLE-AI-BLACKWEALTHCAPITAL`)
+**External System**: **LEVIATHAN AI** (standalone software at `ocean824/ORACLE-AI-BLACKWEALTHCAPITAL`)
 
 **Core Functions**:
-- Execute the **4-Layer Confirmation Stack** (the heart of ORACLE AI)
+- Execute the **4-Layer Confirmation Stack** (the heart of LEVIATHAN AI)
+- Interface with **ORCA AI** for market-intelligence and truth synthesis, and with **MEGALODON AI** for execution-facing deployment within the LEVIATHAN organism.
 - Handle risk management and liquidity models
 - Provide high-confidence trade signals to DOMINION
 - Operate in both **Standalone Mode** (independent execution) and **Integrated Mode** (feeding intelligence to ØMEGA AI)
 
-**4-Layer Confirmation Stack (ORACLE AI)**:
+**4-Layer Confirmation Stack (LEVIATHAN AI)**:
 
 **Layer 1: Real Data Ingestion (The Core Brain)**
 - **Order Flow**: Bookmap API (liquidity/spoofing detection), Sierra Chart (footprint/delta), Rithmic/CQG (futures tick data)
@@ -553,8 +554,8 @@ Each agent below includes: **Identity**, **Greek Letter**, **Tier**, **Core Func
 - **Order Flow (Tape)**: Represents **executions** (market orders). Used for detecting actual aggressive buying/selling and absorption.
 - **The Edge**: True edge is found at the intersection of intentions, executions, and institutional options bias.
 
-**Communication Protocol (ORACLE ↔ ØMEGA)**:
-1. **Status Heartbeat** (every 60s): `{ system: "ORACLE", status: "ACTIVE", bias: "LONG", confidence: 82, regime: "TRENDING" }`
+**Communication Protocol (LEVIATHAN ↔ ØMEGA)**:
+1. **Status Heartbeat** (every 60s): `{ system: "LEVIATHAN", status: "ACTIVE", bias: "LONG", confidence: 82, regime: "TRENDING" }`
 2. **Inquiry/Response**: DOMINION asks for confirmation → QUANTUM returns Confidence Score
 3. **Knowledge Sharing**: QUANTUM shares discovered market regimes with MODULUS and PHANTOM
 4. **Kill Switch Sync**: Global halt in either system immediately triggers halt in the other
@@ -4026,7 +4027,7 @@ DOMINION (Ø) → Creates Plan:
 6. Implement SENTINEL: Heartbeat system, alert channels, monitoring dashboards
 
 ### Phase 2: Intelligence (Weeks 5-8)
-1. Implement QUANTUM: 4-Layer Confirmation Stack (mirror ORACLE AI), bidirectional communication
+1. Implement QUANTUM: 4-Layer Confirmation Stack (mirror LEVIATHAN AI), bidirectional communication
 2. Implement MODULUS: MiroFish integration, Monte Carlo simulation, scenario analysis
 3. Implement PHANTOM: Competitive intelligence scraping, trend analysis
 4. Implement SIGMA: Performance tracking, optimization loops, A/B testing framework

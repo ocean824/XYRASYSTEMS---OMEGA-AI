@@ -82,10 +82,10 @@ DOMINION (Ø), the supreme orchestrator, is built on the architecture documented
 - **Task**: Implement the **Simulation Agent** for parallel world rehearsals and GraphRAG knowledge construction.
 - **Logic**: Seed data ingestion → Swarm generation → Future trajectory reporting.
 
-### 3.4 The ORACLE Trading System
+### 3.4 The LEVIATHAN Trading System
 
 - **Source**: Separate repository (`ocean824/ORACLE-AI-BLACKWEALTHCAPITAL`)
-- **Task**: Build the ORACLE/QUANTUM trading engine with 12+ domains (Knowledge, Research, Signal, Session, State, Liquidity, Truth, Visual Overlay, TradingView Bot, Execution, Decision/Risk, Memory).
+- **Task**: Build the LEVIATHAN/QUANTUM trading engine with 12+ domains (Knowledge, Research, Signal, Session, State, Liquidity, Truth, Visual Overlay, TradingView Bot, Execution, Decision/Risk, Memory), with **ORCA AI** and **MEGALODON AI** as the first named internal LEVIATHAN sub-agents.
 - **Integration**: Status heartbeat, inquiry/response protocol, kill-switch sync with DOMINION.
 
 ---
@@ -123,7 +123,7 @@ DOMINION (Ø), the supreme orchestrator, is built on the architecture documented
 5. **Implement the 14-step tool execution pipeline** — every tool call in the system passes through this.
 6. **Implement the 15-step sub-agent spawning lifecycle** — this is how DOMINION creates and manages all 24 sub-agents.
 7. **Use DeepSeek-V3** as the primary reasoning engine for all high-stakes logic.
-8. **Mock the ORACLE AI data** for now, as it is being developed in a separate standalone repository.
+8. **Mock the LEVIATHAN AI data** for now, as it is being developed in a separate standalone repository.
 9. **Reference [claude-code-from-source.com](https://claude-code-from-source.com/)** for any architectural questions — it is the definitive source for the main brain.
 
 ---

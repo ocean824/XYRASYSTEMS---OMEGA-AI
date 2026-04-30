@@ -30,7 +30,7 @@ The "Inner Council" that handles the system's core cognitive functions:
 The "Execution Layer" where real-world tasks are performed:
 - **Ζ — ARCANE**: Engineering & Code Generation. Builds trading bots, SaaS, and automation.
 - **Η — LEDGER**: Finance & Capital Engine. Manages cash flow and investment modeling.
-- **Θ — QUANTUM**: Trading Intelligence. Executes the **ORACLE AI** trading system.
+- **Θ — QUANTUM**: Trading Intelligence. Executes the **LEVIATHAN AI** trading system.
 - **Ι — AETHER**: Creative Engine (Music + Video + Content). Unified SONUS + VISAGE.
 - **Κ — MODULUS**: Strategic Decision Engine. The "logic brain" under DOMINION.
 - **Λ — NEXUS**: Integration Hub. Handles APIs, OAuth, and webhooks.
@@ -59,7 +59,7 @@ The "Control Layer" that ensures long-term system integrity:
 
 | Engine | Specialized Agent | Capability | Key Technologies |
 | :--- | :--- | :--- | :--- |
-| **ORACLE AI** | **Θ — QUANTUM** | Quantitative Trading | 4-Layer Confirmation Stack, Order Flow, Vision |
+| **LEVIATHAN AI** | **Θ — QUANTUM** | Quantitative Trading | 4-Layer Confirmation Stack, Order Flow, Vision |
 | **MiroFish** | **Simulation Core** | Swarm Intelligence | Parallel World Simulation, GraphRAG, 100+ Personas |
 | **Visage** | **Δ — MAESTRO** | Video Generation | Open-Sora, Wan 2.x, Mochi, SVD |
 | **G0DM0D3** | **Ø — DOMINION** | Liberated Cognition | Unfiltered Reasoning, Red-Teaming, Strategic Edge |

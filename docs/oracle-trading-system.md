@@ -1,4 +1,4 @@
-# ORACLE AI: Advanced Order Flow & Intelligence Trading System
+# LEVIATHAN AI: Advanced Order Flow & Intelligence Trading System
 
 > **Status:** Strategic Blueprint — Integration for ØMEGA AI
 > **Context:** Derived from institutional-grade "Oracle" architecture (March 2026)
@@ -7,7 +7,7 @@
 
 ## 1. System Identity
 
-ORACLE AI is a multi-layer knowledge-ingesting intelligence system designed for high-probability trade decision quality. It is designed to function as both a **standalone trading software** and as the **intelligence core** within the ØMEGA AI.
+LEVIATHAN AI is a multi-layer knowledge-ingesting intelligence system designed for high-probability trade decision quality. It is designed to function as both a **standalone trading software** and as the **intelligence core** within the ØMEGA AI.
 
 It is:
 - **A Standalone Software**: Capable of independent market analysis and execution.
@@ -21,7 +21,7 @@ It is:
 
 ## 2. Core Directive
 
-Build ORACLE AI to achieve the following:
+Build LEVIATHAN AI to achieve the following:
 1. **Understand Markets**: Decipher structure and regime.
 2. **Understand Strategies**: Map indicators to actionable setups.
 3. **Understand External Knowledge**: Ingest news, options flow, and institutional positioning.
@@ -33,7 +33,7 @@ Build ORACLE AI to achieve the following:
 
 ## 3. Layered Architecture
 
-ORACLE AI operates through a 4-layer confirmation stack, moving beyond simple visual analysis.
+LEVIATHAN AI operates through a 4-layer confirmation stack, moving beyond simple visual analysis.
 
 ### Layer 1: Real Data Ingestion (The Core Brain)
 Direct connection to raw tick-level data feeds.
@@ -60,7 +60,7 @@ The final synthesis layer that answers: *"Are all systems aligned right now?"*
 
 ## 4. Key Insight: Intentions vs. Executions
 
-ORACLE AI distinguishes between the two critical components of market depth:
+LEVIATHAN AI distinguishes between the two critical components of market depth:
 - **Level 2 (DOM)**: Represents **intentions** (limit orders). Used for detecting spoofing and liquidity walls.
 - **Order Flow (Tape)**: Represents **executions** (market orders). Used for detecting actual aggressive buying/selling and absorption.
 - **The Edge**: True edge is found at the intersection of intentions, executions, and institutional options bias.
@@ -69,16 +69,16 @@ ORACLE AI distinguishes between the two critical components of market depth:
 
 ## 5. Integration and Standalone Operation
 
-ORACLE AI is built with a dual-mode operational architecture. It does not replace the Omega main control system; instead, it works within it while maintaining its own standalone identity.
+LEVIATHAN AI is built with a dual-mode operational architecture. It does not replace the Omega main control system; instead, it works within it while maintaining its own standalone identity.
 
 ### 5.1 Standalone Mode
-In standalone mode, ORACLE AI provides:
+In standalone mode, LEVIATHAN AI provides:
 - **Independent Execution**: Direct connection to exchanges and data feeds.
 - **Dedicated UI**: A specialized interface for order flow and visual intelligence.
 - **Direct Control**: For manual or semi-automated trading outside the broader Omega orchestration.
 
 ### 5.2 Integrated Mode (Omega Synergy)
-When integrated, ORACLE AI communicates with the Omega Master Orchestrator (PRIME) to provide:
+When integrated, LEVIATHAN AI communicates with the Omega Master Orchestrator (PRIME) to provide:
 - **Intelligence-as-a-Service**: Feeds confidence scores and trade biases to PRIME.
 - **Confirmation Stacking**: Acts as the final validation gate for Omega's automated signals.
 - **Cross-Agent Coordination**: Communicates with the Research and Risk agents to refine global portfolio strategy.
@@ -95,7 +95,7 @@ When integrated, ORACLE AI communicates with the Omega Master Orchestrator (PRIM
 
 ## 6. Communication Protocol (Oracle <-> Omega)
 
-ORACLE AI communicates with the Omega main control system via a dedicated protocol:
+LEVIATHAN AI communicates with the Omega main control system via a dedicated protocol:
 1. **Status Heartbeat**: Oracle reports its operational health and current market bias.
 2. **Inquiry/Response**: Omega asks for confirmation on a signal; Oracle returns a Confidence Score.
 3. **Knowledge Sharing**: Oracle shares discovered market regimes or strategy refinements with the Omega Research agent.

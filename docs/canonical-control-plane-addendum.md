@@ -17,7 +17,7 @@ The canonical rule established here is simple: **ØMEGA AI** is the name of the 
 | System | **ØMEGA AI** | The full operating system containing all agents, memory, governance, integrations, and specialized engines | Use this as the umbrella platform name in product, architecture, and deployment materials |
 | Top-level controller | **PRIME** | The supreme command agent responsible for orchestration, policy enforcement, prioritization, and cross-agent coordination | Use this in all new code, schemas, prompts, APIs, and diagrams |
 | Legacy alias | **DOMINION** | Historical or alternate naming used in existing documents for the same top-level controller concept | Preserve in historical docs, but map to PRIME in all new implementation work |
-| Trading subsystem peer | **ORACLE AI / QUANTUM** | The specialized trading organism integrated into ØMEGA AI | Keep distinct from PRIME; PRIME governs orchestration, ORACLE governs market intelligence |
+| Trading subsystem peer | **LEVIATHAN AI / QUANTUM** | The specialized trading organism integrated into ØMEGA AI | Keep distinct from PRIME; PRIME governs orchestration, while LEVIATHAN governs market intelligence through ORCA AI and MEGALODON AI within its own trading stack |
 
 ## Interpretation Rule for Existing Documents
 

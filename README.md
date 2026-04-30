@@ -176,7 +176,7 @@ The ØMEGA AI operates through a hierarchy of 25 specialized agents organized in
 |---|-------|------|------|----------------|
 | 7 | Z | **ARCANE** | Engineering and Code Generation | Builds trading bots, SaaS platforms, VSTs/DAWs. Python 3.11+, TypeScript/Node.js, Rust. React + Next.js + TailwindCSS. FastAPI + Drizzle ORM. Docker + Kubernetes. Enforces all 10 Mechanical Overrides. |
 | 8 | H | **LEDGER** | Finance and Capital Engine | Cash flow tracking, investment modeling, SBLC monetization. ROI tracking across all revenue streams. QuickBooks/Xero API. Prophet + ARIMA + LSTM forecasting. |
-| 9 | TH | **QUANTUM** | Trading Intelligence Agent | Executes ORACLE AI Blackbox trading system. 4-Layer Confirmation Stack: Order Flow (Bookmap/Rithmic) → Visual Intelligence (Gemini Vision/GPT-5 Vision) → Indicator Engine (TA-Lib/pandas-ta) → Decision Engine (DeepSeek-V3). IBKR/Binance/Kraken execution. |
+| 9 | TH | **QUANTUM** | Trading Intelligence Agent | Interfaces with the **LEVIATHAN AI** trading organism. Routes market-intelligence and truth synthesis through **ORCA AI** and routes execution-facing deployment flow through **MEGALODON AI**. 4-Layer Confirmation Stack: Order Flow (Bookmap/Rithmic) → Visual Intelligence (Gemini Vision/GPT-5 Vision) → Indicator Engine (TA-Lib/pandas-ta) → Decision Engine (DeepSeek-V3). IBKR/Binance/Kraken execution. |
 | 10 | I | **AETHER** | Creative Engine (Music + Video) | Unified SONUS + VISAGE. Video: Open-Sora → Wan 2.x → Mochi-1 → SVD → FFmpeg pipeline. Music: YuE (full songs), DiffRhythm (fast), ACE-Step (foundation). Voice: ElevenLabs/F5-TTS. Spatial audio: ViSAGe. |
 | 11 | K | **MODULUS** | Strategic Decision Engine | Monte Carlo simulation, scenario analysis, MiroFish swarm intelligence integration. Parallel digital world simulation with GraphRAG. Prophet/ARIMA/LSTM forecasting. Pyomo/PuLP optimization. |
 | 12 | L | **NEXUS** | Integration Hub | Manages all MCP server lifecycles. Handles OAuth flows, webhook management, API key rotation. Builds custom MCP servers using TypeScript template. Kong API Gateway. Redis pub/sub + RabbitMQ. |
@@ -219,7 +219,7 @@ The ØMEGA AI operates through a hierarchy of 25 specialized agents organized in
 | Workflow Engine (MVP) | n8n (self-hosted) | Visual workflow automation, webhook triggers, 400+ integrations |
 | Workflow Engine (Enterprise) | Custom Python orchestrator | Full control over agent routing, priority queues, kill-switch |
 | Agent Hand-offs | OpenAI Swarm (lightweight) | Sequential agent-to-agent delegation with "routines" pattern |
-| Cyclic Reasoning | LangGraph | Stateful cyclic graphs for Research (MiroFish) and Trading (ORACLE) |
+| Cyclic Reasoning | LangGraph | Stateful cyclic graphs for Research (MiroFish) and Trading (LEVIATHAN) |
 | Task Queue | Celery + Redis | Async task distribution, retry logic, priority scheduling |
 
 ### LLM Reasoning Engines
@@ -228,7 +228,7 @@ The ØMEGA AI operates through a hierarchy of 25 specialized agents organized in
 |-------|----------|-------------|-----------------|
 | Claude Opus 4.5 / Sonnet 4.6 | Anthropic | Deep reasoning, code generation, long-context analysis | DOMINION, ARCANE, MODULUS |
 | GPT-5 Agent Mode | OpenAI | Multi-tool orchestration, web browsing, code execution | DOMINION, PHANTOM, ECHO |
-| DeepSeek-V3 / V3.2 | DeepSeek | High-stakes decision-making, MoE architecture | QUANTUM (ORACLE), MODULUS, DOMINION |
+| DeepSeek-V3 / V3.2 | DeepSeek | High-stakes decision-making, MoE architecture | QUANTUM (LEVIATHAN), MODULUS, DOMINION |
 | Grok 4.x | xAI | Real-time market sentiment, unfiltered analysis | PHANTOM, PSYCH |
 | Gemini 2.5 Flash | Google | Fast multimodal processing, vision tasks | AETHER (Visage), ECHO |
 | Qwen-2.5-Coder | Alibaba | Specialized code generation, low-level implementation | ARCANE |
@@ -270,7 +270,7 @@ The ØMEGA AI operates through a hierarchy of 25 specialized agents organized in
 | Image Generation | Midjourney / DALL-E 3 / SDXL / Flux | Marketing assets, product photos | ARTIFEX |
 | Voice Synthesis | ElevenLabs / Bark / F5-TTS | Audiobook narration, voice-overs | AETHER (Sonus) |
 
-### Trading Stack (ORACLE AI Integration)
+### Trading Stack (LEVIATHAN AI Integration)
 
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
@@ -663,7 +663,7 @@ All external services are connected via the **Model Context Protocol (MCP)** sta
 | Google Sheets MCP | Google Sheets | `spreadsheets.create`, `sheets.create`, `values.get/update/append`, `charts.create` | ECHO, MODULUS |
 | Airtable MCP | Airtable | `tables.list`, `records.list/create/update/delete` | ARCHIVE, ECHO |
 | Canva MCP | Canva | `designs.create/search/export`, `templates.search`, `brands.get` | ARTIFEX, REVENANT |
-| Exchange APIs MCP | Binance/Kraken/Coinbase/IBKR | `account.get_balance/get_positions`, `orders.create/list/cancel`, `trades.list`, `market.get_ticker/get_orderbook` | QUANTUM (ORACLE) |
+| Exchange APIs MCP | Binance/Kraken/Coinbase/IBKR | `account.get_balance/get_positions`, `orders.create/list/cancel`, `trades.list`, `market.get_ticker/get_orderbook` | QUANTUM (LEVIATHAN) |
 | Market Data MCP | CoinGecko/Alpha Vantage/Polygon.io | `prices.get/history`, `indicators.calculate`, `fundamentals.get` | QUANTUM, MODULUS |
 
 ### Custom MCP Server Development
@@ -737,7 +737,7 @@ WARDEN enforces a **5-layer defense-in-depth** security model across all agents:
 
 ### Phase 2: Intelligence (Weeks 5-8)
 
-1. Implement QUANTUM: 4-Layer Confirmation Stack (mirror ORACLE AI), bidirectional communication
+1. Implement QUANTUM: 4-Layer Confirmation Stack (mirror LEVIATHAN AI), bidirectional communication
 2. Implement MODULUS: MiroFish integration, Monte Carlo simulation, scenario analysis
 3. Implement PHANTOM: Competitive intelligence scraping, trend analysis
 4. Implement SIGMA: Performance tracking, optimization loops, A/B testing framework
@@ -820,7 +820,7 @@ XYRASYSTEMS---OMEGA-AI/
 |   |-- agent-structure.md                       <- Detailed agent hierarchy with examples
 |   |-- agent-integration-patterns.md            <- Cross-agent workflow patterns and protocols
 |   |-- platform-doctrine.md                     <- MVP to enterprise migration strategy
-|   |-- oracle-trading-system.md                 <- ORACLE AI trading system specification
+|   |-- oracle-trading-system.md                 <- LEVIATHAN AI trading system specification
 |   |-- mirofish-swarm-intelligence.md           <- Swarm intelligence and prediction engine
 |   |-- audio-media-generation.md                <- Sonus (Audio) and Visage (Visual) agents
 |   |-- visage-video-pipeline.md                 <- Multi-stage cinematic video production
@@ -957,7 +957,7 @@ This repository contains over 30 detailed research, architecture, and specificat
 ### ⚙️ Specialized Sub-Systems
 * [sub-agent-modules.md](./docs/sub-agent-modules.md) — Trading, Marketing, E-commerce, Research, and Operations specs.
 * [mcp-integration-strategy.md](./docs/mcp-integration-strategy.md) — Connecting to external services (full MCP spec).
-* [oracle-trading-system.md](./docs/oracle-trading-system.md) — ORACLE AI trading system specification.
+* [oracle-trading-system.md](./docs/oracle-trading-system.md) — LEVIATHAN AI trading system specification.
 * [mirofish-swarm-intelligence.md](./docs/mirofish-swarm-intelligence.md) — Swarm intelligence and prediction engine.
 * [audio-media-generation.md](./docs/audio-media-generation.md) — Sonus (Audio) and Visage (Visual) creative agents.
 * [visage-video-pipeline.md](./docs/visage-video-pipeline.md) — Multi-stage cinematic video production.
