@@ -994,98 +994,60 @@ These appendices make ØMEGA AI more **canonical and implementation-ready** by r
 
 ---
 
-## Hermes Pantheon — Additive Multi-Agent Council, Governance & Self-Learning Module
+## Hermes Skills — Additive Capability Plumbing for the Canonical 25
 
-> **Status:** Strictly additive ØMEGA module. Nothing in the existing architecture is removed, replaced, or modified. The Pantheon plugs in alongside PRIME, DOMINION, ULTRAPLAN, Coordinator, Swarm, Open Claude Cowork, and Composio integrations — it does not replace any of them.
-> **Scope:** Domain-agnostic. Trading is referenced only as one possible specialization (canonical reference deployment lives in [`ocean824/LEVIATHAN-AI-BLACKWEALTHCAPITAL`](https://github.com/ocean824/LEVIATHAN-AI-BLACKWEALTHCAPITAL)).
-> **Module path:** `hermes_pantheon/`
+> **What this is:** Six domain-agnostic *skills* (plumbing — capabilities, tools, and logic) that ØMEGA's canonical 25 agents call. **No new agents.** This module slots into the existing architecture as additional callable capabilities for DOMINION and the 24 subordinate agents documented in `docs/master-agent-index.md`.
+> **What this is not:** A new pantheon, a new agent layer, or a trading system. The trading-specific 14-agent oceanic Pantheon — used internally by **Θ — QUANTUM** within its own LEVIATHAN AI vertical — lives in [`ocean824/LEVIATHAN-AI-BLACKWEALTHCAPITAL`](https://github.com/ocean824/LEVIATHAN-AI-BLACKWEALTHCAPITAL/tree/main/hermes_pantheon). That repo is the canonical *reference deployment* of these same skills, fully specialized to one vertical.
+> **Strictly additive.** Replaces, renames, or overrides nothing in `docs/`, `architectures/`, `prompts/`, `security/`, `CODESPRING-MASTER-INSTRUCTIONS.md`, or the canonical 25-agent roster.
+> **Module path:** `hermes_skills/`
 
-### Why It Was Added
-ØMEGA deployments increasingly need a *standard pattern* for high-stakes orchestration: cases where a decision must be defended by multiple specialist perspectives, validated against historical or simulated reality before commitment, gated by an immutable policy the agent cannot self-edit, and continuously learning from a curated knowledge vault — all without losing any of ØMEGA's existing control-plane authority.
+### How These Skills Plug Into the Canonical 25
 
-The Hermes Pantheon supplies that pattern as plug-and-play subagents, contracts, and policy files.
+The roster of 25 in `docs/master-agent-index.md` is authoritative. These skills are tools those agents use.
 
-### The Four Layers (See `hermes_pantheon/README.md` for full spec)
-
-1. **Council Debate Layer** — A roster of specialist subagents debate a Briefing and emit a `ConsensusSignal` or `ConsensusRejection`. Inspired by Godmod3 / Mirrorfish multi-agent debate patterns. Wire-level contract in `hermes_pantheon/council/debate_protocol.md`.
-2. **Validation Gauntlet (RBI)** — Research → Backtest/Validate → Implement. In trading deployments this is MoonDev-style backtesting with Monte Carlo, walk-forward, and regime testing. In other domains the Validate stage is dry-run, sandboxed simulation, A/B test, or peer-review. Spec in `hermes_pantheon/rbi/rbi_pipeline.md`.
-3. **Sovereign Governance** — A YAML policy file held immutable at the OS level (`chattr +i` / `chflags uchg` / ICACLS deny-write) with a SHA-256 hash verified on every irreversible action and on a 60-second heartbeat. The agent has read-only access; modification requires the operator to manually unlock, edit, and re-lock. The TIAMAT daemon (`hermes_pantheon/risk/risk_guardian.md`) is the only authority that can issue a hard halt.
-4. **Knowledge Vault** — A directory the platform watches for new domain knowledge (Markdown, PDF, transcripts, screenshots). New artifacts are chunked, tagged, and routed to the relevant specialist's training corpus by TRITON, the open-source `hermes-agent` (Nous Research) self-improving harness. Operator workflow in `hermes_pantheon/knowledge_vault/README.md`.
-
-### The Reference Roster (Oceanic Mythos — 14 Agents)
-Each name maps to a *system role* (rename or re-theme freely per deployment):
-
-| Layer | Agent | Generic Role |
+| Skill | Primary Caller(s) Among the 25 | What the Skill Adds to Their Existing Job |
 |---|---|---|
-| Apex Orchestrator | **POSEIDON AI** | User-facing surface; translates operator intent into Council briefings and reports outcomes back. |
-| Primordial Powers | **LEVIATHAN AI** | High-level optimizer that converts Council consensus into the final decision/allocation. |
-| Primordial Powers | **TIAMAT AI** | Sovereign Governance Daemon — the only authority that can hard-halt the system. |
-| Primordial Powers | **LOCHNESS AI** | Strategy/Artifact Engineer — authors the concrete code/asset to be deployed. |
-| Primordial Powers | **MEGALODON AI** | Apex Routing/Execution — performs the irreversible action through the appropriate external API. |
-| Titans | **ORCA AI** | Position/State Hunter — manages the live state of any active commitment after MEGALODON has acted. |
-| Titans | **NAUTILUS AI** | Research/Validation Lab — runs the RBI gauntlet before MEGALODON is allowed to act. |
-| Titans | **AEGIR AI** | Macro/External-Context Adapter — pulls upstream context (e.g., WorldMonitor for market deployments, threat-intel for security deployments). |
-| Sensory Network | **SCYLLA AI** | Ground-truth raw-data sensor specialist. |
-| Sensory Network | **CHARYBDIS AI** | Distribution / regime / state classifier specialist. |
-| Sensory Network | **SIREN AI** | Signal extraction + dashboard rendering specialist. |
-| Sensory Network | **MERMAID AI** | Temporal-context / time-of-day / cyclic-pattern specialist. |
-| Servants | **TRITON AI** | Knowledge Domain — watches the Vault, parses new artifacts, routes chunks. Built on `hermes-agent` (Nous Research). |
-| Servants | **PROTEUS AI** | Visual Overlay — surfaces every internal Council/Validator/Governance event into the operator console. |
+| `council_debate` | **Ø — DOMINION**, **Κ — MODULUS**, **Ψ — MIRRORBACK**, with **G0DM0D3** filling the red-team seat | Formal Briefing → Position → Rebuttal → Consensus protocol so MODULUS produces *defended* decisions and DOMINION can route on weighted multi-agent consensus. The 5 Meta-Agents (LOOM, WARDEN, SIGMA, MAESTRO, PHANTOM) — DOMINION's Inner Council — are the natural seat composition. |
+| `validation_gauntlet` | **Γ — SIGMA**, **Ζ — ARCANE**, **Θ — QUANTUM** (in trading deployments) | Standardized 8-stage Research → Validate → Implement contract: initial validation, sandboxed dry-run, Monte Carlo, walk-forward, regime/segment robustness, peer cross-reference, paper/shadow deployment, live with continuous audit. SIGMA's existing "track performance, improve autonomously" mandate gets a formal pipeline. |
+| `sovereign_governance_lock` | **Β — WARDEN**, with **Φ — JURIS** auditing the policy file | OS-level immutable policy file pattern with SHA-256 master hash + heartbeat verification + standalone guardian process. Closes the *"agent edits its own safety rules"* failure mode by making constraints physically unmodifiable from inside the system. Extends — does not replace — `security/guardrails-framework.md`. |
+| `knowledge_vault` | **Α — LOOM**, **Υ — ARCHIVE**, with the open-source `hermes-agent` (Nous Research) writing reusable skill artifacts | Watched directory + ingestion pipeline that routes new domain knowledge (PDFs, transcripts, screenshots, Markdown) to the appropriate agent's training corpus. LOOM holds long-term context; ARCHIVE persists the structured ingest index; `hermes-agent` runs as a *subordinate skill* (not a 26th agent) drafting reusable artifacts that go through `validation_gauntlet` before promotion. |
+| `external_context_adapter` | **Λ — NEXUS**, with **Ε — PHANTOM** and **Χ — SENTINEL** as common downstream consumers | Generic adapter contract for pulling external context (news, threat-intel, regulatory feeds, market data, competitor signals, etc.) into PRIME-orchestrated task envelopes. Includes `stale=true` flag handling and conservative-mode fallback for upstream degradation — honoring ØMEGA's failure-cache tiering anti-pattern. |
+| `operator_console_overlay` | **Ω — TRIBUNE**, **Ο — ECHO**, with **Ι — AETHER** for high-severity visual production | WebSocket event-bus contract that surfaces internal Council/Validation/Governance events to whatever frontend the deployment uses. TRIBUNE owns the human-agent boundary; ECHO supplies the analytics overlay; AETHER produces visuals when severity warrants. |
 
-### Cooperation with Existing ØMEGA Constructs
-- **PRIME Control Plane** retains canonical top-level authority. POSEIDON inherits PRIME's task envelopes; the Council debate runs as a PRIME-orchestrated task type.
-- **DOMINION / canonical control plane addenda** retain architectural authority. The Pantheon's TIAMAT verifies its hash against a policy file PRIME registers in the canonical policy store.
-- **Open Claude Cowork model-agnostic harness** is the substrate the specialist agents run on; provides their LLM-provider abstraction.
-- **Composio 500+ integrations** are available to MEGALODON for irreversible-action routing in any vertical.
-- **ULTRAPLAN, Coordinator, Swarm, SendMessage, Undercover Mode** all remain available; the Council is one *additional* coordination pattern, not a replacement.
+The Tier I/II/III sub-agent layout, the 5 Meta-Agents (DOMINION's Inner Council), the canonical PRIME/DOMINION naming rule from the control-plane addendum, the ULTRAPLAN/Coordinator/Swarm patterns, and every other ØMEGA construct stay exactly as defined in the existing docs.
 
-### Two Reference Deployment Examples
+### The Hermes Logic in One Sentence
 
-**A — Trading (canonical reference, lives in a separate repo):** Risk lock = drawdown / leverage / news embargo; RBI thresholds = Sharpe / MaxDD / win rate; specialist corpora = Order Flow / Bank Protocol, Market Cipher, Delta + Volume Profile, Market Profile / Auction Theory, Wyckoff / VSA, Markov-HMM, Algo Pro, LuxAlgo, QuantPad, Jim Simons / RenTech statistical arb. Adapters = WorldMonitor (AEGIR), BB-Terminal (PROTEUS).
+When DOMINION needs to make a high-stakes decision, **MODULUS** convenes a `council_debate` over the 5 Meta-Agents (with G0DM0D3 in the red-team seat); if consensus emerges, **SIGMA** runs the proposal through a `validation_gauntlet`; **WARDEN** verifies it does not violate the immutable `sovereign_governance_lock`; **NEXUS** supplies fresh `external_context_adapter` snapshots throughout; **LOOM/ARCHIVE** persist everything the system learns via the `knowledge_vault`; and **TRIBUNE/ECHO** surface the entire chain to the operator through the `operator_console_overlay`.
 
-**B — Any non-trading vertical:** Replace the policy lock with a domain-appropriate constraint contract (e.g., for content moderation: max-daily-bans, escalation tiers, immutable allow/deny lists). Replace the methodology corpora with the relevant specialist literature. Replace AEGIR's adapter target (e.g., a CVE feed for security ops). Replace PROTEUS's frontend (e.g., Grafana). The Council debate protocol, RBI gauntlet, Sovereign Governance daemon, Knowledge Vault watcher, and the 14 agent skeletons remain unchanged.
+### How DOMINION Calls a Skill
 
-### Quick Start (Domain-Agnostic)
+PRIME / DOMINION invokes a Hermes skill the same way it invokes any other capability — through the existing task envelope, MCP tool registration, or harness call. Skills are pure functions of their inputs and write only to their own audit logs and the canonical policy/audit store. They never spawn new persistent agents and never claim a slot in the canonical 25.
 
 ```
-1. Edit hermes_pantheon/risk/risk_governance.lock.yaml to your domain's constraints
-2. chmod 444 risk_governance.lock.yaml
-3. sudo chattr +i risk_governance.lock.yaml      (Linux)
-   chflags uchg risk_governance.lock.yaml         (macOS)
-   icacls ... /deny "*S-1-1-0:(W)"                (Windows)
-4. sha256sum risk_governance.lock.yaml > risk_master.hash
-5. python hermes_pantheon/risk/risk_guardian.py &
-6. Drop domain knowledge into hermes_pantheon/knowledge_vault/
-7. Register `council_session` as a PRIME task type
-8. Issue first briefing through POSEIDON
+DOMINION → opens task envelope { skill: "council_debate", briefing: {...}, agents: [LOOM, WARDEN, SIGMA, MAESTRO, PHANTOM] }
+         → routes to skill handler
+         → handler returns { consensus: true|false, signal: {...}, transcript: [...] }
+         → DOMINION records to canonical audit store, then routes downstream (e.g., to validation_gauntlet)
 ```
 
 ### Module Map
 
 ```
-hermes_pantheon/
-├── README.md                          ← full domain-agnostic spec
-├── agents/                            ← 14 system-prompt files (one per agent)
-│   ├── poseidon.md     leviathan.md    tiamat.md    lochness.md    megalodon.md
-│   ├── orca.md         nautilus.md     aegir.md
-│   ├── scylla.md       charybdis.md    siren.md     mermaid.md
-│   └── triton.md       proteus.md
-├── council/
-│   └── debate_protocol.md             ← Briefing → Position → Rebuttal → Consensus contract
-├── rbi/
-│   └── rbi_pipeline.md                ← 8-stage Research → Validate → Implement gauntlet
-├── risk/
-│   ├── risk_governance.lock.yaml      ← immutable policy file (trading-flavored example values)
-│   └── risk_guardian.md               ← TIAMAT daemon spec + Python reference impl
-├── adapters/
-│   ├── aegir_worldmonitor.md          ← reference external-context adapter
-│   └── proteus_bbterminal.md          ← reference operator-console adapter
-└── knowledge_vault/
-    └── README.md                      ← operator drop-point and TRITON ingest workflow
+hermes_skills/
+├── README.md                          ← orientation + 25-agent mapping
+├── council_debate/README.md           ← Briefing → Position → Rebuttal → Consensus contract
+├── validation_gauntlet/README.md      ← 8-stage Research → Validate → Implement contract
+├── sovereign_governance_lock/README.md ← immutable policy file + guardian daemon pattern
+├── knowledge_vault/README.md          ← watched directory + LOOM/ARCHIVE ingest workflow
+├── external_context_adapter/README.md ← adapter contract for upstream feeds
+└── operator_console_overlay/README.md ← WebSocket event-bus contract for frontends
 ```
 
 ### Anti-Pattern Discipline (inherited from ØMEGA)
-This module honors ØMEGA's existing engineering anti-patterns: atomic writes for shared state, no silent skips (every failure logs a named reason), no speculative writes (entities are not marked validated without the artifact on disk first), diagnostic-first on repeated failures, and failure-cache tiering for upstream-context adapters that lose connectivity.
+
+Every skill honors ØMEGA's existing engineering anti-patterns: atomic writes for shared state, no silent skips (every failure logs a named reason), no speculative writes (entities never marked validated without the artifact already on disk), diagnostic-first on repeated failures, and failure-cache tiering for adapters whose upstream context goes stale.
 
 ### TLDR
-A domain-agnostic plug-in for ØMEGA that gives any deployment a **debate-then-validate-then-execute** pattern with an **operator-locked policy file** and a **self-learning knowledge vault**. The trading reference deployment lives in a separate repo; this module ships the pattern. Nothing in ØMEGA's existing architecture changes — the Pantheon is one more coordination tool in the toolbox, fully composable with PRIME, DOMINION, ULTRAPLAN, Coordinator, Swarm, Open Claude Cowork, and Composio.
+
+Six new skills the canonical 25 agents can call. They formalize debate, validation, immutable governance, knowledge ingestion, external context, and operator overlay as reusable plumbing. Each skill explicitly maps to existing ØMEGA agents — no parallel pantheon is introduced, no new character is added, the canonical roster of 25 is preserved exactly. The trading-specific instantiation (which Θ — QUANTUM uses internally as the 14-agent oceanic Pantheon) lives in a separate repo. ØMEGA's existing architecture is untouched.
